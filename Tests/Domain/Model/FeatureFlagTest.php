@@ -1,8 +1,5 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../Classes/Domain/Model/FeatureFlag.php';
-require_once dirname(__FILE__) . '/../../../../phpunit/Classes/TestCase.php';
-
 /**
  * Tx_FeatureFlag_Domain_Model_FeatureFlag test case.
  */

@@ -1,8 +1,5 @@
 <?php
 
-require_once dirname(__FILE__) . '/../Classes/Service.php';
-require_once dirname(__FILE__) . '/../../phpunit/Classes/TestCase.php';
-
 /**
  * Tx_FeatureFlag_Service test case.
  */
@@ -49,6 +46,18 @@ class Tx_FeatureFlag_ServiceTest extends Tx_Phpunit_TestCase
         $this->injectMockRepository(false);
         $result = $this->service->isFeatureEnabled('my_cool_feature');
         $this->assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfFlagDoesNotExist()
+    {
+        $mockRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findByFlag'));
+        $mockRepository->expects($this->once())->method('findByFlag')->will($this->throwException(new Exception()));
+        $this->service->injectFeatureFlagRepository($mockRepository);
+        $this->setExpectedException('Tx_FeatureFlag_Service_Exception_FeatureNotFound');
+        $this->service->isFeatureEnabled('my_cool_feature');
     }
 
     /**
