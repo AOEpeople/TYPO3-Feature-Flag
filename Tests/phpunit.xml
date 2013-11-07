@@ -1,0 +1,7 @@
+<phpunit>
+    <testsuites>
+        <testsuite name="feature_flag">
+            <directory suffix="Test.php">./</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
