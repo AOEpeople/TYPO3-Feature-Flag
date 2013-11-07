@@ -1,13 +1,16 @@
 <?php
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
-t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Google Tag Manager');
-Tx_Extbase_Utility_Extension::registerPlugin(
-	$_EXTKEY,
-	'DataLayer',
-	'Google Tag Manager DataLayer'
-);
 
-$TCA['tt_content']['types']['list']['subtypes_excludelist']['googletagmanager_datalayer'] = 'layout,recursive,select_key,pages';
-$TCA['tt_content']['types']['list']['subtypes_addlist']['googletagmanager_datalayer'] = 'pi_flexform';
-t3lib_extMgm::addPiFlexFormValue( 'googletagmanager_datalayer', 'FILE:EXT:google_tag_manager/Configuration/FlexForms/datalayer.xml');
-?>
+t3lib_extMgm::allowTableOnStandardPages('tx_featureflag_domain_model_featureflag');
+$TCA['tx_featureflag_domain_model_featureflag'] = array(
+    'ctrl' => array(
+        'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_featureflag',
+        'label' => 'description',
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'dividers2tabs' => TRUE,
+        'searchFields' => 'description,flag,',
+        'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/FeatureFlag.php',
+        'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/TCA/FeatureFlag.gif'
+    ),
+);

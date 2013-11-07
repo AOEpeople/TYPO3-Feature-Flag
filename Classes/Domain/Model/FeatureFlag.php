@@ -3,12 +3,17 @@
  * Feature Flag
  * @package FeatureFlag
  */
-class Tx_FeatureFlag_Domain_Model_FeatureFlag
+class Tx_FeatureFlag_Domain_Model_FeatureFlag extends Tx_Extbase_DomainObject_AbstractEntity
 {
     /**
      * @var string
      */
-    private $name;
+    private $description;
+
+    /**
+     * @var string
+     */
+    private $flag;
 
     /**
      * @var boolean
@@ -32,18 +37,34 @@ class Tx_FeatureFlag_Domain_Model_FeatureFlag
     }
 
     /**
-     * @param string $name
+     * @param string $description
      */
-    public function setName($name)
+    public function setDescription($description)
     {
-        $this->name = $name;
+        $this->description = $description;
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getDescription()
     {
-        return $this->name;
+        return $this->description;
+    }
+
+    /**
+     * @param string $flag
+     */
+    public function setFlag($flag)
+    {
+        $this->flag = $flag;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFlag()
+    {
+        return $this->flag;
     }
 }
