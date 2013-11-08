@@ -8,6 +8,9 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 
+            <label index="tt_content.feature_flag">Feature Flag</label>
+            <label index="pages.feature_flag">Feature Flag</label>
+
 			<label index="tx_featureflag_domain_model_featureflag">Feature Flag</label>
 			<label index="tx_featureflag_domain_model_featureflag.description">Flag Description</label>
 			<label index="tx_featureflag_domain_model_featureflag.flag">Flag Identifier</label>

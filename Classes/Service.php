@@ -1,7 +1,6 @@
 <?php
 
 /**
- * Class Configuration
  * @package FeatureFlag
  */
 class Tx_FeatureFlag_Service

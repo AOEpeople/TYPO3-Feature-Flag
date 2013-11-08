@@ -1,2 +1,0 @@
-# cat=basic/enable; type=string; label= Path to YAML configuration
-path_to_yml =
