@@ -17,15 +17,15 @@ CREATE TABLE tx_featureflag_domain_model_featureflag (
 ) ENGINE=InnoDB;
 
 #
-# Table structure for table 'tt_content'
+# Table structure for table 'tx_featureflag_table_featureflag_mm'
 #
-CREATE TABLE tt_content (
-  tx_featureflag_featureflag varchar(255) DEFAULT '' NOT NULL,
-) ENGINE=InnoDB;
+CREATE TABLE tx_featureflag_table_featureflag_mm (
+  uid_local int(11) DEFAULT '0' NOT NULL,
+  uid_foreign int(11) DEFAULT '0' NOT NULL,
+  tablenames varchar(255) DEFAULT '' NOT NULL,
+  sorting int(11) DEFAULT '0' NOT NULL,
 
-#
-# Table structure for table 'pages'
-#
-CREATE TABLE pages (
-  tx_featureflag_featureflag varchar(255) DEFAULT '' NOT NULL,
-) ENGINE=InnoDB;
+  PRIMARY KEY (uid_local,uid_foreign),
+  KEY uid_local (uid_local),
+  KEY uid_foreign (uid_foreign)
+);

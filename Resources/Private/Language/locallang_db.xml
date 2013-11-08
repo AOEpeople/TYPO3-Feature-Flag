@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>database</type>
-		<description>Language labels for database tables/fields belonging to extension 'feature_flag'
-		</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
+    <meta type="array">
+        <type>database</type>
+        <description>Language labels for database tables/fields belonging to extension 'feature_flag'
+        </description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
 
-            <label index="tt_content.feature_flag">Feature Flag</label>
-            <label index="pages.feature_flag">Feature Flag</label>
+            <label index="feature_flag">Feature Flag</label>
 
-			<label index="tx_featureflag_domain_model_featureflag">Feature Flag</label>
-			<label index="tx_featureflag_domain_model_featureflag.description">Flag Description</label>
-			<label index="tx_featureflag_domain_model_featureflag.flag">Flag Identifier</label>
-			<label index="tx_featureflag_domain_model_featureflag.enabled">Is Flag Enabled?</label>
+            <label index="tx_featureflag_domain_model_featureflag">Feature Flag</label>
+            <label index="tx_featureflag_domain_model_featureflag.description">Flag Description</label>
+            <label index="tx_featureflag_domain_model_featureflag.flag">Flag Identifier</label>
+            <label index="tx_featureflag_domain_model_featureflag.enabled">Is Flag Enabled?</label>
 
-		</languageKey>
-	</data>
+        </languageKey>
+    </data>
 </T3locallang>

@@ -8,17 +8,17 @@ class Tx_FeatureFlag_Domain_Model_FeatureFlag extends Tx_Extbase_DomainObject_Ab
     /**
      * @var string
      */
-    private $description;
+    protected $description;
 
     /**
      * @var string
      */
-    private $flag;
+    protected $flag;
 
     /**
      * @var boolean
      */
-    private $enabled;
+    protected $enabled;
 
     /**
      * @param boolean $enabled

@@ -30,7 +30,7 @@ class Tx_FeatureFlag_Service
      */
     public function isFeatureEnabled($flag)
     {
-        if(false === array_key_exists($flag, $this->cachedFlags)) {
+        if (false === array_key_exists($flag, $this->cachedFlags)) {
             try {
                 $isEnabled = $this->featureFlagRepository->findByFlag($flag)->isEnabled();
                 $this->cachedFlags[$flag] = $isEnabled;

@@ -6,6 +6,7 @@
  * @package Feature_Flag
  * @subpackage Service_Exception
  */
-class Tx_FeatureFlag_Service_Exception_FeatureNotFound extends Exception {
+class Tx_FeatureFlag_Service_Exception_FeatureNotFound extends Exception
+{
 
 }
