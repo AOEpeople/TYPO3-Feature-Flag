@@ -20,7 +20,7 @@ if (isset ($config['tables'])) {
                     'maxitems' => 1,
                     'MM' => 'tx_featureflag_table_featureflag_mm',
                     'MM_match_fields' => array(
-                        'tablenames' => $table
+                        'ident' => $table
                     ),
                 )
             )), 1);

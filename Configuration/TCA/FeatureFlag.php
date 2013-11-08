@@ -31,7 +31,7 @@ $TCA['tx_featureflag_domain_model_featureflag'] = array(
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required'
+                'eval' => 'alphanum_x,trim,required,unique'
             ),
         ),
         'enabled' => array(
