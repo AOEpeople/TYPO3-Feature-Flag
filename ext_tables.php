@@ -6,25 +6,47 @@ if (isset ($config['tables'])) {
     $tables = explode(',', $config ['tables']);
     foreach ($tables as $table) {
         t3lib_extMgm::addTCAcolumns($table, array(
-            'tx_featureflag_featureflag' => array(
-                'exclude' => 1,
-                'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag',
-                'config' => array(
-                    'type' => 'select',
-                    'foreign_table' => 'tx_featureflag_domain_model_featureflag',
-                    'items' => array(
-                        array('', 0)
-                    ),
-                    'size' => 1,
-                    'minitems' => 0,
-                    'maxitems' => 1,
-                    'MM' => 'tx_featureflag_table_featureflag_mm',
-                    'MM_match_fields' => array(
-                        'ident' => $table
-                    ),
+                'tx_featureflag_hide' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag_hide',
+                    'config' => array(
+                        'type' => 'select',
+                        'foreign_table' => 'tx_featureflag_domain_model_featureflag',
+                        'items' => array(
+                            array('', 0)
+                        ),
+                        'size' => 1,
+                        'minitems' => 0,
+                        'maxitems' => 1,
+                        'MM' => 'tx_featureflag_mapping',
+                        'MM_match_fields' => array(
+                            'local_table' => $table,
+                            'local_column' => 'tx_featureflag_hide',
+                        ),
+                    )
+                ),
+                'tx_featureflag_show' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag_show',
+                    'config' => array(
+                        'type' => 'select',
+                        'foreign_table' => 'tx_featureflag_domain_model_featureflag',
+                        'items' => array(
+                            array('', 0)
+                        ),
+                        'size' => 1,
+                        'minitems' => 0,
+                        'maxitems' => 1,
+                        'MM' => 'tx_featureflag_mapping',
+                        'MM_match_fields' => array(
+                            'local_table' => $table,
+                            'local_column' => 'tx_featureflag_show',
+                        ),
+                    )
                 )
-            )), 1);
-        t3lib_extMgm::addToAllTCAtypes($table, '--div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,tx_featureflag_featureflag');
+            ),
+            1);
+        t3lib_extMgm::addToAllTCAtypes($table, '--div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,tx_featureflag_hide,tx_featureflag_show');
     }
 }
 

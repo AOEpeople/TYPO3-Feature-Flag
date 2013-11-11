@@ -9,6 +9,8 @@
         <languageKey index="default" type="array">
 
             <label index="feature_flag">Feature Flag</label>
+            <label index="feature_flag_hide">Hide this content element on Feature Flag</label>
+            <label index="feature_flag_show">Show this content element on Feature Flag</label>
 
             <label index="tx_featureflag_system_typo3_task_flagentries.title">Flag Entries</label>
             <label index="tx_featureflag_system_typo3_task_flagentries.description">Flags all configured tables by Feature Flags</label>

@@ -19,7 +19,7 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends tx_scheduler_Task
     /**
      * @return Tx_FeatureFlag_Domain_Repository_FeatureFlag
      */
-    private function getFeatureFlagRepository()
+    protected function getFeatureFlagRepository()
     {
         return $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
     }
@@ -27,7 +27,7 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends tx_scheduler_Task
     /**
      * @return Tx_FeatureFlag_System_Typo3_Configuration
      */
-    private function getConfiguration()
+    protected function getConfiguration()
     {
         return $this->getObjectManager()->get('Tx_FeatureFlag_System_Typo3_Configuration');
     }

@@ -46,5 +46,6 @@ class Tx_FeatureFlag_System_Typo3_ConfigurationTest extends Tx_Phpunit_TestCase
         ));
         $configuration = new Tx_FeatureFlag_System_Typo3_Configuration();
         $this->assertTrue(is_array($configuration->getTables()));
+        $this->assertCount(4, $configuration->getTables());
     }
 }
