@@ -10,7 +10,8 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends tx_scheduler_Task
      */
     public function execute()
     {
-        return TRUE;
+        $this->getFeatureFlagRepository()->updateFeatureFlagStatusForTable('pages');
+        return true;
     }
 
     /**

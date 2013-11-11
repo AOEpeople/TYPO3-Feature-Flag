@@ -10,6 +10,9 @@
 
             <label index="feature_flag">Feature Flag</label>
 
+            <label index="tx_featureflag_system_typo3_task_flagentries.title">Flag Entries</label>
+            <label index="tx_featureflag_system_typo3_task_flagentries.description">Flags all configured tables by Feature Flags</label>
+
             <label index="tx_featureflag_domain_model_featureflag">Feature Flag</label>
             <label index="tx_featureflag_domain_model_featureflag.description">Flag Description</label>
             <label index="tx_featureflag_domain_model_featureflag.flag">Flag Identifier</label>
