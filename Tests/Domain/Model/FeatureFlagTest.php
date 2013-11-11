@@ -33,9 +33,11 @@ class Tx_FeatureFlag_Domain_Model_FeatureFlagTest extends Tx_Phpunit_TestCase
      */
     public function checkProperties()
     {
-        $this->featureFlag->setDescription('my_new_feature_flag');
+        $this->featureFlag->setDescription('This is a test description');
         $this->featureFlag->setEnabled(true);
+        $this->featureFlag->setFlag('my_new_feature_flag');
         $this->assertTrue($this->featureFlag->isEnabled());
-        $this->assertEquals($this->featureFlag->getDescription(), 'my_new_feature_flag');
+        $this->assertEquals($this->featureFlag->getDescription(), 'This is a test description');
+        $this->assertEquals($this->featureFlag->getFlag(), 'my_new_feature_flag');
     }
 }

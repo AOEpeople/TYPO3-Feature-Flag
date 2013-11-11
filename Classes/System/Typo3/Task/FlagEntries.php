@@ -10,7 +10,9 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends tx_scheduler_Task
      */
     public function execute()
     {
-        $this->getFeatureFlagRepository()->updateFeatureFlagStatusForTable('pages');
+        foreach ($this->getConfiguration()->getTables() as $table) {
+            $this->getFeatureFlagRepository()->updateFeatureFlagStatusForTable($table);
+        }
         return true;
     }
 
@@ -23,11 +25,11 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends tx_scheduler_Task
     }
 
     /**
-     * @return Tx_Extbase_Persistence_Manager
+     * @return Tx_FeatureFlag_System_Typo3_Configuration
      */
-    private function getPersistenceManager()
+    private function getConfiguration()
     {
-        return $this->getObjectManager()->get('Tx_Extbase_Persistence_Manager');
+        return $this->getObjectManager()->get('Tx_FeatureFlag_System_Typo3_Configuration');
     }
 
     /**
