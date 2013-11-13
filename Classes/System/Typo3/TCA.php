@@ -87,14 +87,15 @@ class Tx_FeatureFlag_System_Typo3_TCA
      * @param array $incomingFieldArray
      * @param string $table
      * @param integer $id
-     * @param t3lib_tcemain $tcemain
+     * @param t3lib_tcemain $tceMain
      */
-    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, t3lib_TCEmain &$tcemain)
+    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, t3lib_TCEmain &$tceMain)
     {
-        $this->updateMapping($table, $id, self::FIELD_HIDE, $incomingFieldArray[self::FIELD_HIDE]);
-        $this->updateMapping($table, $id, self::FIELD_SHOW, $incomingFieldArray[self::FIELD_SHOW]);
-        unset ($incomingFieldArray [self::FIELD_HIDE]);
-        unset ($incomingFieldArray [self::FIELD_SHOW]);
+        $pid = $tceMain->getPID($table, $id);
+        $this->updateMapping($table, $id, self::FIELD_HIDE, $incomingFieldArray[self::FIELD_HIDE], $pid);
+        $this->updateMapping($table, $id, self::FIELD_SHOW, $incomingFieldArray[self::FIELD_SHOW], $pid);
+        unset($incomingFieldArray[self::FIELD_HIDE]);
+        unset($incomingFieldArray[self::FIELD_SHOW]);
     }
 
     /**
@@ -121,9 +122,10 @@ class Tx_FeatureFlag_System_Typo3_TCA
      * @param string $table
      * @param int $id
      * @param string $field
+     * @param int $pid
      * @param int $featureFlag
      */
-    protected function updateMapping($table, $id, $field, $featureFlag)
+    protected function updateMapping($table, $id, $field, $featureFlag, $pid)
     {
         $mapping = $this->getMappingRepository()->findByForeignTableNameUidAndColumnName(
             $id,
@@ -141,6 +143,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
         } elseif (0 != $featureFlag) {
             /** @var Tx_FeatureFlag_Domain_Model_Mapping $mapping */
             $mapping = $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Model_Mapping');
+            $mapping->setPid($pid);
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             $mapping->setForeignTableName($table);
             $mapping->setForeignTableUid($id);
