@@ -38,7 +38,7 @@ $TCA['tx_featureflag_domain_model_featureflag'] = array(
         'dividers2tabs' => TRUE,
         'searchFields' => 'description,flag,',
         'delete' => 'deleted',
-        'enablecolumns'     => array (
+        'enablecolumns' => array(
             'disabled' => 'hidden'
         ),
         'rootLevel' => 1,
@@ -56,7 +56,7 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         'crdate' => 'crdate',
         'dividers2tabs' => TRUE,
         'delete' => 'deleted',
-        'enablecolumns'     => array (),
+        'enablecolumns' => array(),
         'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Mapping.php',
         'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/TCA/Mapping.gif'
     ),

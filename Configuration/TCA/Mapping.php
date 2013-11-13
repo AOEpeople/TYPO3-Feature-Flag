@@ -1,8 +1,5 @@
 <?php
-
-if (!defined('TYPO3_MODE')) {
-    die ('Access denied.');
-}
+if (!defined('TYPO3_MODE')) die ('Access denied.');
 
 $TCA['tx_featureflag_domain_model_mapping'] = array(
     'ctrl' => $TCA['tx_featureflag_domain_model_mapping']['ctrl'],
