@@ -2,10 +2,14 @@
 # Table structure for table 'tx_featureflag_domain_model_featureflag'
 #
 CREATE TABLE tx_featureflag_domain_model_featureflag (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
+  uid int(11) NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  deleted tinyint(4) DEFAULT '0' NOT NULL,
+  hidden tinyint(4) DEFAULT '0' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  sorting int(10) DEFAULT '0' NOT NULL,
+  crdate int(11) DEFAULT '0' NOT NULL,
+  cruser_id int(11) DEFAULT '0' NOT NULL,
 
 	description varchar(255) DEFAULT '' NOT NULL,
 	flag varchar(255) DEFAULT '' NOT NULL,
@@ -17,34 +21,23 @@ CREATE TABLE tx_featureflag_domain_model_featureflag (
 ) ENGINE=InnoDB;
 
 #
-# Table structure for table 'tx_featureflag_domain_model_featureflag_mapping'
+# Table structure for table 'tx_featureflag_domain_model_mapping'
 #
-CREATE TABLE tx_featureflag_mapping (
+CREATE TABLE tx_featureflag_domain_model_mapping (
   uid int(11) NOT NULL auto_increment,
-  uid_local int(11) DEFAULT '0' NOT NULL,
-  uid_foreign int(11) DEFAULT '0' NOT NULL,
-  sorting int(11) DEFAULT '0' NOT NULL,
-  sorting_foreign int(11) DEFAULT '0' NOT NULL,
-  local_table varchar(30) DEFAULT '' NOT NULL,
-  local_column varchar(30) DEFAULT '' NOT NULL,
+  pid int(11) DEFAULT '0' NOT NULL,
+  deleted tinyint(4) DEFAULT '0' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  crdate int(11) DEFAULT '0' NOT NULL,
+  cruser_id int(11) DEFAULT '0' NOT NULL,
+
+  feature_flag int(11) DEFAULT '0' NOT NULL,
+  foreign_table_uid int(11) DEFAULT '0' NOT NULL,
+  foreign_table_name varchar(30) DEFAULT '' NOT NULL,
+  foreign_table_column varchar(30) DEFAULT '' NOT NULL,
 
   PRIMARY KEY (uid),
-  KEY uid_local (uid_local),
-  KEY uid_foreign (uid_foreign)
-) ENGINE=InnoDB;
-
-#
-# Table structure for table 'pages'
-#
-CREATE TABLE pages (
-  tx_featureflag_hide int(11) DEFAULT '0' NOT NULL,
-  tx_featureflag_show int(11) DEFAULT '0' NOT NULL
-) ENGINE=InnoDB;
-
-#
-# Table structure for table 'tt_content'
-#
-CREATE TABLE tt_content (
-  tx_featureflag_hide int(11) DEFAULT '0' NOT NULL,
-  tx_featureflag_show int(11) DEFAULT '0' NOT NULL
+  KEY parent (pid),
+  KEY foreign_uid_name (foreign_table_uid, foreign_table_name),
+  KEY foreign_uid_name_column (foreign_table_uid, foreign_table_name, foreign_table_column)
 ) ENGINE=InnoDB;

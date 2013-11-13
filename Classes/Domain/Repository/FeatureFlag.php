@@ -85,7 +85,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
         /** @var Tx_Extbase_Persistence_Query $query */
         $query = $this->configureQuery();
         $statement = $this->sqlFactory->getUpdateStatementForContentElements($table);
-        $query->statement($statement);
+        $query->statement($statement, array($hidden, $uids));
         return $query->execute();
     }
 
@@ -101,7 +101,8 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
         $statement = $this->sqlFactory->getSelectStatementForContentElements($table, $column, $enabled);
         $query->statement($statement);
         $uids = array();
-        foreach ($query->execute() as $row) {
+        $rows = $query->execute();
+        foreach ($rows as $row) {
             $uids[] = $row['uid'];
         }
         return $uids;

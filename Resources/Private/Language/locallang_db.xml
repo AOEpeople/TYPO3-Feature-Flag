@@ -20,6 +20,15 @@
             <label index="tx_featureflag_domain_model_featureflag.flag">Flag Identifier</label>
             <label index="tx_featureflag_domain_model_featureflag.enabled">Is Flag Enabled?</label>
 
+            <label index="tx_featureflag_domain_model_mapping">Mapping of Feature Flags to Tables</label>
+            <label index="tx_featureflag_domain_model_mapping.crdate">Creation date</label>
+            <label index="tx_featureflag_domain_model_mapping.tstamp">Date of last change</label>
+            <label index="tx_featureflag_domain_model_mapping.feature_flag">Feature Flag</label>
+            <label index="tx_featureflag_domain_model_mapping.foreign_table_uid">ID of the foreign table</label>
+            <label index="tx_featureflag_domain_model_mapping.foreign_table_name">Name of the foreign table</label>
+            <label index="tx_featureflag_domain_model_mapping.foreign_table_column">Column in foreign table</label>
+            <label index="tx_featureflag_domain_model_mapping.processed">Processed after deletion</label>
+
         </languageKey>
     </data>
 </T3locallang>

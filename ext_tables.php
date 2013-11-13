@@ -10,38 +10,16 @@ if (isset ($config['tables'])) {
                     'exclude' => 1,
                     'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag_hide',
                     'config' => array(
-                        'type' => 'select',
-                        'foreign_table' => 'tx_featureflag_domain_model_featureflag',
-                        'items' => array(
-                            array('', 0)
-                        ),
-                        'size' => 1,
-                        'minitems' => 0,
-                        'maxitems' => 1,
-                        'MM' => 'tx_featureflag_mapping',
-                        'MM_match_fields' => array(
-                            'local_table' => $table,
-                            'local_column' => 'tx_featureflag_hide',
-                        ),
+                        'type' => 'user',
+                        'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelect',
                     )
                 ),
                 'tx_featureflag_show' => array(
                     'exclude' => 1,
                     'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag_show',
                     'config' => array(
-                        'type' => 'select',
-                        'foreign_table' => 'tx_featureflag_domain_model_featureflag',
-                        'items' => array(
-                            array('', 0)
-                        ),
-                        'size' => 1,
-                        'minitems' => 0,
-                        'maxitems' => 1,
-                        'MM' => 'tx_featureflag_mapping',
-                        'MM_match_fields' => array(
-                            'local_table' => $table,
-                            'local_column' => 'tx_featureflag_show',
-                        ),
+                        'type' => 'user',
+                        'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelect',
                     )
                 )
             ),
@@ -59,8 +37,30 @@ $TCA['tx_featureflag_domain_model_featureflag'] = array(
         'crdate' => 'crdate',
         'dividers2tabs' => TRUE,
         'searchFields' => 'description,flag,',
+        'delete' => 'deleted',
+        'enablecolumns'     => array (
+            'disabled' => 'hidden'
+        ),
         'rootLevel' => 1,
         'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/FeatureFlag.php',
         'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/TCA/FeatureFlag.gif'
     ),
 );
+
+t3lib_extMgm::allowTableOnStandardPages('tx_featureflag_domain_model_mapping');
+$TCA['tx_featureflag_domain_model_mapping'] = array(
+    'ctrl' => array(
+        'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping',
+        'label' => '',
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'dividers2tabs' => TRUE,
+        'delete' => 'deleted',
+        'enablecolumns'     => array (),
+        'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Mapping.php',
+        'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/TCA/Mapping.gif'
+    ),
+);
+
+$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:feature_flag/Classes/System/Typo3/TCA.php:Tx_FeatureFlag_System_Typo3_TCA';
+$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'EXT:feature_flag/Classes/System/Typo3/TCA.php:Tx_FeatureFlag_System_Typo3_TCA';
