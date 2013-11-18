@@ -58,6 +58,11 @@ class Tx_FeatureFlag_System_Typo3_TCA
     protected $persistenceManager;
 
     /**
+     * @var Tx_Extbase_Persistence_QueryResultInterface
+     */
+    protected static $hashedMappings;
+
+    /**
      * @param array $PA
      * @param t3lib_TCEforms $fob
      * @return string
@@ -66,8 +71,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
     {
         $activeMapping = $this->getMappingRepository()->findByForeignTableNameUidAndColumnName($PA['row']['uid'], $PA['table'], $PA['field']);
         $html = '';
-        $html .= "<select id=\"{$PA['itemFormElID']}\" name=\"{$PA['itemFormElName']}\">";
-        $html .= "<option value=\"0\"></option>";
+        $html .= '<select id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
+        $html .= '<option value="0"></option>';
         foreach ($this->getFeatureFlagRepository()->findAll() as $featureFlag) {
             /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
             $selected = '';
@@ -76,9 +81,9 @@ class Tx_FeatureFlag_System_Typo3_TCA
             }
             $value = $featureFlag->getUid();
             $label = $featureFlag->getDescription();
-            $html .= "<option value=\"$value\"$selected>$label</option>";
+            $html .= '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
         }
-        $html .= "</select>";
+        $html .= '</select>';
         return $html;
     }
 
@@ -123,10 +128,16 @@ class Tx_FeatureFlag_System_Typo3_TCA
      * @param array $row
      * @param string $status
      */
-    public function overrideIconOverlay($table, $row, &$status) {
-        $mapping = $this->getMappingRepository()->findByForeignTableNameAndUid($row['uid'], $table);
-        $status['feature_flag_hidden'] = ($mapping->count() > 0 && $row['hidden'] == 1) ? true : false;
-        $status['feature_flag'] = ($mapping->count() > 0) ? true : false;
+    public function overrideIconOverlay($table, $row, &$status)
+    {
+        if ($this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
+            $mapping = $this->getMappingRepository()->findByForeignTableNameAndUid($row['uid'], $table);
+            $status['feature_flag_hidden'] = ($mapping->count() > 0 && $row['hidden'] === '1') ? true : false;
+            $status['feature_flag'] = ($mapping->count() > 0) ? true : false;
+        } else {
+            $status['feature_flag_hidden'] = false;
+            $status['feature_flag'] = false;
+        }
     }
 
     /**
@@ -144,14 +155,14 @@ class Tx_FeatureFlag_System_Typo3_TCA
             $field
         );
         if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
-            if (0 == $featureFlag) {
+            if ('0' === $featureFlag) {
                 $this->getMappingRepository()->remove($mapping);
             } else {
                 $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             }
             $mapping->setTstamp(time());
             $this->getMappingRepository()->update($mapping);
-        } elseif (0 != $featureFlag) {
+        } elseif ('0' !== $featureFlag) {
             /** @var Tx_FeatureFlag_Domain_Model_Mapping $mapping */
             $mapping = $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Model_Mapping');
             $mapping->setPid($pid);
@@ -164,6 +175,23 @@ class Tx_FeatureFlag_System_Typo3_TCA
             $this->getMappingRepository()->add($mapping);
         }
         $this->getPersistenceManager()->persistAll();
+    }
+
+    /**
+     * @param int $foreignTableUid
+     * @param string $foreignTableName
+     * @return bool
+     */
+    protected function isMappingAvailableForTableAndUid($foreignTableUid, $foreignTableName)
+    {
+        if (NULL === self::$hashedMappings) {
+            self::$hashedMappings = $this->getMappingRepository()->getHashedMappings();
+        }
+        $identifier = sha1($foreignTableUid . '_' . $foreignTableName);
+        if (array_key_exists($identifier, self::$hashedMappings)) {
+            return true;
+        }
+        return false;
     }
 
     /**
