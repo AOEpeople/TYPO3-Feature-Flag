@@ -13,6 +13,13 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         '1' => array('showitem' => ''),
     ),
     'columns' => array(
+        'uid' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.uid',
+            'config' => array(
+                'type' => 'passthrough'
+            )
+        ),
         'pid' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.pid',

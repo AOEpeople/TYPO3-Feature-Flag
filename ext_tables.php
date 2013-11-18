@@ -51,7 +51,9 @@ t3lib_extMgm::allowTableOnStandardPages('tx_featureflag_domain_model_mapping');
 $TCA['tx_featureflag_domain_model_mapping'] = array(
     'ctrl' => array(
         'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping',
-        'label' => '',
+        'label' => 'uid',
+        'label_alt' => 'foreign_table_uid,foreign_table_name,foreign_table_column',
+        'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'dividers2tabs' => TRUE,

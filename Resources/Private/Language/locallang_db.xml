@@ -22,6 +22,7 @@
 
             <label index="tx_featureflag_domain_model_mapping">Mapping of Feature Flags to Tables</label>
             <label index="tx_featureflag_domain_model_mapping.crdate">Creation date</label>
+            <label index="tx_featureflag_domain_model_mapping.uid">Mapping Information</label>
             <label index="tx_featureflag_domain_model_mapping.tstamp">Date of last change</label>
             <label index="tx_featureflag_domain_model_mapping.feature_flag">Feature Flag</label>
             <label index="tx_featureflag_domain_model_mapping.foreign_table_uid">ID of the foreign table</label>
