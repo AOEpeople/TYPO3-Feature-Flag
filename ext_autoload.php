@@ -11,6 +11,7 @@ return array(
     'tx_featureflag_system_typo3_configuration' => $extensionClassesPath . 'System/Typo3/Configuration.php',
     'tx_featureflag_system_typo3_task_flagentries' => $extensionClassesPath . 'System/Typo3/Task/FlagEntries.php',
     'tx_featureflag_system_typo3_tca' => $extensionClassesPath . 'System/Typo3/TCA.php',
+    'tx_featureflag_system_typo3_cli' => $extensionClassesPath . 'System/Typo3/Cli.php',
     'tx_featureflag_system_db_sqlfactory' => $extensionClassesPath . 'System/Db/SqlFactory.php',
     'tx_featureflag_domain_model_featureflagtest' => $extensionPath . 'Tests/Domain/Model/FeatureFlagTest.php',
     'tx_featureflag_domain_model_mappingtest' => $extensionPath . 'Tests/Domain/Model/MappingTest.php',
