@@ -81,7 +81,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
             }
             $value = $featureFlag->getUid();
             $label = $featureFlag->getDescription();
-            $html .= '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
+            $html .= '<option value="' . $value . '"' . $selected . '>' . $label . '</option>';
         }
         $html .= '</select>';
         return $html;

@@ -61,7 +61,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
     public function selectRendersCorrectly()
     {
         $featureFlag = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', array('getUid'));
-        $featureFlag->_setProperty('uid', 4711);
+        $featureFlag->_setProperty('uid', '4711');
         $mapping = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping', array('getFeatureFlag'));
         $mapping->expects($this->any())->method('getFeatureFlag')->will($this->returnValue($featureFlag));
         $mappingRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('findByForeignTableNameUidAndColumnName'));
@@ -73,7 +73,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
 
         $PA = array();
         $PA['row'] = array();
-        $PA['row']['uid'] = 111;
+        $PA['row']['uid'] = '111';
         $PA['table'] = 'pages';
         $PA['field'] = 'tx_featureflag_hide';
         $PA['itemFormElID'] = 'itemFormElID';
@@ -102,10 +102,10 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
 
         $tceMainMock = $this->getMock('t3lib_TCEmain');
         $incomingFieldArray = array(
-            'tx_featureflag_hide' => 0,
-            'tx_featureflag_show' => 0,
+            'tx_featureflag_hide' => '0',
+            'tx_featureflag_show' => '0',
         );
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $tceMainMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', '4711', $tceMainMock);
     }
 
     /**
@@ -122,10 +122,10 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
 
         $tceMainMock = $this->getMock('t3lib_TCEmain');
         $incomingFieldArray = array(
-            'tx_featureflag_hide' => 0,
-            'tx_featureflag_show' => 0,
+            'tx_featureflag_hide' => '0',
+            'tx_featureflag_show' => '0',
         );
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $tceMainMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', '4711', $tceMainMock);
     }
 
     /**
@@ -134,7 +134,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
     public function processDatamapRemoveMappingIfHideSelectedAndMappingExists()
     {
         $featureFlag = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', array('getUid'));
-        $featureFlag->_setProperty('uid', 4712);
+        $featureFlag->_setProperty('uid', '4712');
         $expectedFeatureFlag = clone $featureFlag;
         $mapping = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping', array('setFeatureFlag'));
         $mapping->expects($this->once())->method('setFeatureFlag')->with($this->equalTo($expectedFeatureFlag));
@@ -147,8 +147,8 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
 
         $tceMainMock = $this->getMock('t3lib_TCEmain');
         $incomingFieldArray = array(
-            'tx_featureflag_hide' => 4711,
-            'tx_featureflag_show' => 0,
+            'tx_featureflag_hide' => '4711',
+            'tx_featureflag_show' => '0',
         );
         $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 123, $tceMainMock);
     }
@@ -170,10 +170,10 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
 
         $tceMainMock = $this->getMock('t3lib_TCEmain');
         $incomingFieldArray = array(
-            'tx_featureflag_hide' => 4711,
-            'tx_featureflag_show' => 0,
+            'tx_featureflag_hide' => '4711',
+            'tx_featureflag_show' => '0',
         );
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 123, $tceMainMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', '123', $tceMainMock);
     }
 
     /**
@@ -182,7 +182,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
     public function processCmdmapCommandIsNotDelete()
     {
         $this->tca->expects($this->never())->method('getMappingRepository');
-        $this->tca->processCmdmap_postProcess('not_delete', 'my_table', 4711);
+        $this->tca->processCmdmap_postProcess('not_delete', 'my_table', '4711');
     }
 
     /**
@@ -195,7 +195,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
         $mappingRepository->expects($this->exactly(2))->method('remove');
         $this->tca->expects($this->any())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
 
-        $this->tca->processCmdmap_postProcess('delete', 'my_table', 4711);
+        $this->tca->processCmdmap_postProcess('delete', 'my_table', '4711');
     }
 
     /**

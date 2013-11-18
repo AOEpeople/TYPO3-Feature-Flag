@@ -50,24 +50,24 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getSelectStatementForContentElements($table, $column, $enabled)
     {
-        $statement = "SELECT $table.uid FROM ";
-        $statement .= "$table,";
-        $statement .= self::TABLE_MAPPING . ",";
-        $statement .= self::TABLE_FLAGS;
-        $statement .= " WHERE ";
-        $statement .= self::TABLE_MAPPING . ".feature_flag = " . self::TABLE_FLAGS . ".uid";
-        $statement .= " AND ";
-        $statement .= "$table.uid = " . self::TABLE_MAPPING . ".foreign_table_uid";
-        $statement .= " AND ";
-        $statement .= self::TABLE_FLAGS . ".enabled = $enabled";
-        $statement .= " AND ";
-        $statement .= self::TABLE_MAPPING . ".foreign_table_name = '$table'";
-        $statement .= " AND ";
-        $statement .= self::TABLE_MAPPING . ".foreign_table_column = '$column'";
-        $statement .= " AND ";
-        $statement .= self::TABLE_FLAGS . ".deleted = 0";
-        $statement .= " AND ";
-        $statement .= self::TABLE_FLAGS . ".hidden = 0";
+        $statement = 'SELECT ' . mysql_real_escape_string($table) . '.uid FROM ';
+        $statement .= mysql_real_escape_string($table) . ',';
+        $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . ',';
+        $statement .= mysql_real_escape_string(self::TABLE_FLAGS);
+        $statement .= ' WHERE ';
+        $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.feature_flag = ' . mysql_real_escape_string(self::TABLE_FLAGS) . '.uid';
+        $statement .= ' AND ';
+        $statement .= mysql_real_escape_string($table) . '.uid = ' . mysql_real_escape_string(self::TABLE_MAPPING) . '.foreign_table_uid';
+        $statement .= ' AND ';
+        $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.enabled = ' . mysql_real_escape_string($enabled);
+        $statement .= ' AND ';
+        $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.foreign_table_name = "' . mysql_real_escape_string($table) . '"';
+        $statement .= ' AND ';
+        $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.foreign_table_column = "' . mysql_real_escape_string($column) . '"';
+        $statement .= ' AND ';
+        $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.deleted = 0';
+        $statement .= ' AND ';
+        $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.hidden = 0';
         return $statement;
     }
 
@@ -77,14 +77,6 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getUpdateStatementForContentElements($table)
     {
-        return "UPDATE $table SET hidden = ? WHERE uid IN ?;";
-    }
-
-    /**
-     * @return string
-     */
-    public function getUpdateStatementForMappingsAfterDeletion()
-    {
-        return "UPDATE " . self::TABLE_MAPPING . " SET processed = 1 WHERE deleted = 1;";
+        return "UPDATE " . mysql_real_escape_string($table) . " SET hidden = ? WHERE uid IN ?;";
     }
 }
