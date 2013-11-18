@@ -120,6 +120,17 @@ class Tx_FeatureFlag_System_Typo3_TCA
 
     /**
      * @param string $table
+     * @param array $row
+     * @param string $status
+     */
+    public function overrideIconOverlay($table, $row, &$status) {
+        $mapping = $this->getMappingRepository()->findByForeignTableNameAndUid($row['uid'], $table);
+        $status['feature_flag_hidden'] = ($mapping->count() > 0 && $row['hidden'] == 1) ? true : false;
+        $status['feature_flag'] = ($mapping->count() > 0) ? true : false;
+    }
+
+    /**
+     * @param string $table
      * @param int $id
      * @param string $field
      * @param int $pid

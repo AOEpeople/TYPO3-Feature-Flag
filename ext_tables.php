@@ -64,3 +64,19 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
 
 $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:feature_flag/Classes/System/Typo3/TCA.php:Tx_FeatureFlag_System_Typo3_TCA';
 $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'EXT:feature_flag/Classes/System/Typo3/TCA.php:Tx_FeatureFlag_System_Typo3_TCA';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][] = 'EXT:feature_flag/Classes/System/Typo3/TCA.php:Tx_FeatureFlag_System_Typo3_TCA';
+
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array_merge(
+    array(
+        'feature_flag_hidden',
+        'feature_flag',
+    ),
+    $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities']
+);
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['feature_flag'] = 'extensions-feature_flag-feature_flag';
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['feature_flag_hidden'] = 'extensions-feature_flag-feature_flag_hidden';
+
+t3lib_SpriteManager::addSingleIcons(array(
+    'feature_flag' => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Public/Icons/TBE/FeatureFlag.gif',
+    'feature_flag_hidden' => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Public/Icons/TBE/FeatureFlagHidden.gif'
+), $_EXTKEY);
