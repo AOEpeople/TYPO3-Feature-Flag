@@ -35,12 +35,12 @@ class Tx_FeatureFlag_System_Typo3_TCA
     /**
      * @var string
      */
-    const FIELD_HIDE = 'tx_featureflag_hide';
+    const FIELD_BEHAVIOR = 'tx_featureflag_behavior';
 
     /**
      * @var string
      */
-    const FIELD_SHOW = 'tx_featureflag_show';
+    const FIELD_FLAG = 'tx_featureflag_flag';
 
     /**
      * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
@@ -67,11 +67,11 @@ class Tx_FeatureFlag_System_Typo3_TCA
      * @param t3lib_TCEforms $fob
      * @return string
      */
-    public function renderSelect(array $PA, t3lib_TCEforms $fob)
+    public function renderSelectForFlag(array $PA, t3lib_TCEforms $fob)
     {
-        $activeMapping = $this->getMappingRepository()->findByForeignTableNameUidAndColumnName($PA['row']['uid'], $PA['table'], $PA['field']);
+        $activeMapping = $this->getMappingRepository()->findByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
         $html = '';
-        $html .= '<select id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
+        $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         $html .= '<option value="0"></option>';
         foreach ($this->getFeatureFlagRepository()->findAll() as $featureFlag) {
             /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
@@ -88,6 +88,49 @@ class Tx_FeatureFlag_System_Typo3_TCA
     }
 
     /**
+     * @param array $PA
+     * @param t3lib_TCEforms $fob
+     * @return string
+     */
+    public function renderInfo(array $PA, t3lib_TCEforms $fob)
+    {
+        return '<p>Die Veränderung der Featureflag-Auswirkung auf einem Datensatz wird nicht automatisch publiziert
+und hat nicht automatisch einen Wirkung auf diesen Datensatz.<br />Diese redaktionelle Änderung muss durch einen TYPO3-Administrator durch das Starten eines Scheduler-Tasks aktiviert werden.</p></p>';
+    }
+
+    /**
+     * @param array $PA
+     * @param t3lib_TCEforms $fob
+     * @return string
+     */
+    public function renderSelectForBehavior(array $PA, t3lib_TCEforms $fob)
+    {
+        $activeMapping = $this->getMappingRepository()->findByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
+        $html = '';
+        $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
+        if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping && $activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_HIDE) {
+            $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '" selected>' .
+                $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide')
+                . '</option>';
+        } else {
+            $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '">' .
+                $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide')
+                . '</option>';
+        }
+        if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping && $activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_SHOW) {
+            $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '" selected>' .
+                $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show')
+                . '</option>';
+        } else {
+            $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '">' .
+                $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show')
+                . '</option>';
+        }
+        $html .= '</select>';
+        return $html;
+    }
+
+    /**
      * Hook for updates in Typo3 backend
      * @param array $incomingFieldArray
      * @param string $table
@@ -96,12 +139,11 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, t3lib_TCEmain &$tceMain)
     {
-        if (array_key_exists(self::FIELD_HIDE, $incomingFieldArray) && array_key_exists(self::FIELD_SHOW, $incomingFieldArray)) {
+        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG, $incomingFieldArray)) {
             $pid = $tceMain->getPID($table, $id);
-            $this->updateMapping($table, $id, self::FIELD_HIDE, $incomingFieldArray[self::FIELD_HIDE], $pid);
-            $this->updateMapping($table, $id, self::FIELD_SHOW, $incomingFieldArray[self::FIELD_SHOW], $pid);
-            unset($incomingFieldArray[self::FIELD_HIDE]);
-            unset($incomingFieldArray[self::FIELD_SHOW]);
+            $this->updateMapping($table, $id, $incomingFieldArray[self::FIELD_FLAG], $pid, $incomingFieldArray[self::FIELD_BEHAVIOR]);
+            unset($incomingFieldArray[self::FIELD_BEHAVIOR]);
+            unset($incomingFieldArray[self::FIELD_FLAG]);
         }
     }
 
@@ -134,8 +176,13 @@ class Tx_FeatureFlag_System_Typo3_TCA
     {
         if ($this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
             $mapping = $this->getMappingRepository()->findByForeignTableNameAndUid($row['uid'], $table);
-            $status['feature_flag_hidden'] = ($mapping->count() > 0 && $row['hidden'] === '1') ? true : false;
-            $status['feature_flag'] = ($mapping->count() > 0) ? true : false;
+            if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+                $status['feature_flag_hidden'] = ($row['hidden'] === '1') ? true : false;
+                $status['feature_flag'] = true;
+            } else {
+                $status['feature_flag_hidden'] = false;
+                $status['feature_flag'] = false;
+            }
         } else {
             $status['feature_flag_hidden'] = false;
             $status['feature_flag'] = false;
@@ -145,22 +192,19 @@ class Tx_FeatureFlag_System_Typo3_TCA
     /**
      * @param string $table
      * @param int $id
-     * @param string $field
-     * @param int $pid
      * @param int $featureFlag
+     * @param int $pid
+     * @param string $behavior
      */
-    protected function updateMapping($table, $id, $field, $featureFlag, $pid)
+    protected function updateMapping($table, $id, $featureFlag, $pid, $behavior)
     {
-        $mapping = $this->getMappingRepository()->findByForeignTableNameUidAndColumnName(
-            $id,
-            $table,
-            $field
-        );
+        $mapping = $this->getMappingRepository()->findByForeignTableNameAndUid($id, $table);
         if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
             if ('0' === $featureFlag) {
                 $this->getMappingRepository()->remove($mapping);
             } else {
                 $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
+                $mapping->setBehavior($behavior);
             }
             $mapping->setTstamp(time());
             $this->getMappingRepository()->update($mapping);
@@ -171,9 +215,9 @@ class Tx_FeatureFlag_System_Typo3_TCA
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             $mapping->setForeignTableName($table);
             $mapping->setForeignTableUid($id);
-            $mapping->setForeignTableColumn($field);
             $mapping->setCrdate(time());
             $mapping->setTstamp(time());
+            $mapping->setBehavior($behavior);
             $this->getMappingRepository()->add($mapping);
         }
         $this->getPersistenceManager()->persistAll();

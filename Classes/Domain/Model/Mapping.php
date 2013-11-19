@@ -63,9 +63,9 @@ class Tx_FeatureFlag_Domain_Model_Mapping extends Tx_Extbase_DomainObject_Abstra
     protected $foreignTableColumn;
 
     /**
-     * @var boolean
+     * @var string
      */
-    protected $processed;
+    protected $behavior;
 
     /**
      * @param string $crdate
@@ -164,18 +164,18 @@ class Tx_FeatureFlag_Domain_Model_Mapping extends Tx_Extbase_DomainObject_Abstra
     }
 
     /**
-     * @param boolean $processed
+     * @param string $behavior
      */
-    public function setProcessed($processed)
+    public function setBehavior($behavior)
     {
-        $this->processed = $processed;
+        $this->behavior = (int)$behavior;
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function getProcessed()
+    public function getBehavior()
     {
-        return $this->processed;
+        return (int)$this->behavior;
     }
 }

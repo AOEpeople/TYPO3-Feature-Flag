@@ -6,25 +6,34 @@ if (isset ($config['tables'])) {
     $tables = explode(',', $config ['tables']);
     foreach ($tables as $table) {
         t3lib_extMgm::addTCAcolumns($table, array(
-                'tx_featureflag_hide' => array(
+                'tx_featureflag_info' => array(
                     'exclude' => 1,
-                    'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag_hide',
+                    'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info',
                     'config' => array(
                         'type' => 'user',
-                        'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelect',
+                        'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderInfo',
                     )
                 ),
-                'tx_featureflag_show' => array(
+                'tx_featureflag_flag' => array(
                     'exclude' => 1,
-                    'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag_show',
+                    'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_flag',
                     'config' => array(
                         'type' => 'user',
-                        'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelect',
+                        'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelectForFlag',
+                    )
+                ),
+                'tx_featureflag_behavior' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior',
+                    'config' => array(
+                        'type' => 'user',
+                        'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelectForBehavior',
                     )
                 )
             ),
             1);
-        t3lib_extMgm::addToAllTCAtypes($table, '--div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,tx_featureflag_hide,tx_featureflag_show');
+        $TCA[$table]['palettes']['tx_featureflag'] = array('showitem' => 'tx_featureflag_flag,tx_featureflag_behavior');
+        t3lib_extMgm::addToAllTCAtypes($table, '--div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,tx_featureflag_info,--palette--;;tx_featureflag');
     }
 }
 

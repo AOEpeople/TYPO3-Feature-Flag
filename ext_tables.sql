@@ -34,10 +34,9 @@ CREATE TABLE tx_featureflag_domain_model_mapping (
   feature_flag int(11) DEFAULT '0' NOT NULL,
   foreign_table_uid int(11) DEFAULT '0' NOT NULL,
   foreign_table_name varchar(30) DEFAULT '' NOT NULL,
-  foreign_table_column varchar(30) DEFAULT '' NOT NULL,
+  behavior int(11) DEFAULT '0' NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid),
-  KEY foreign_uid_name (foreign_table_uid, foreign_table_name),
-  KEY foreign_uid_name_column (foreign_table_uid, foreign_table_name, foreign_table_column)
+  KEY foreign_uid_name (foreign_table_uid, foreign_table_name)
 ) ENGINE=InnoDB;

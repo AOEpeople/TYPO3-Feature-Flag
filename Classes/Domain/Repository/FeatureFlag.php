@@ -75,10 +75,10 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
      */
     public function updateFeatureFlagStatusForTable($table)
     {
-        $this->hideEntries($table, $this->getUpdateEntriesUids($table, 'tx_featureflag_hide', 1));
-        $this->unHideEntries($table, $this->getUpdateEntriesUids($table, 'tx_featureflag_hide'));
-        $this->hideEntries($table, $this->getUpdateEntriesUids($table, 'tx_featureflag_show'));
-        $this->unHideEntries($table, $this->getUpdateEntriesUids($table, 'tx_featureflag_show', 1));
+        $this->hideEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 1));
+        $this->hideEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 0));
+        $this->showEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 1));
+        $this->showEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 0));
     }
 
     /**
@@ -96,7 +96,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
      * @param array $uids
      * @return array|Tx_Extbase_Persistence_QueryResultInterface
      */
-    private function unHideEntries($table, array $uids)
+    private function showEntries($table, array $uids)
     {
         return $this->updateEntries($table, $uids, 0);
     }
@@ -121,14 +121,14 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
 
     /**
      * @param string $table
-     * @param string $column
+     * @param int $behavior
      * @param int $enabled
      * @return array
      */
-    private function getUpdateEntriesUids($table, $column, $enabled = 0)
+    private function getUpdateEntriesUids($table, $behavior, $enabled)
     {
         $query = $this->configureQuery();
-        $statement = $this->sqlFactory->getSelectStatementForContentElements($table, $column, $enabled);
+        $statement = $this->sqlFactory->getSelectStatementForContentElements($table, $behavior, $enabled);
         $query->statement($statement);
         $uids = array();
         $rows = $query->execute();

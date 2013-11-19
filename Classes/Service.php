@@ -32,6 +32,16 @@
 class Tx_FeatureFlag_Service
 {
     /**
+     * @var int
+     */
+    const BEHAVIOR_HIDE = 0;
+
+    /**
+     * @var int
+     */
+    const BEHAVIOR_SHOW = 1;
+
+    /**
      * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
      */
     private $featureFlagRepository;

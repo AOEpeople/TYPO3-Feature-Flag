@@ -60,7 +60,7 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_uid',
             'config' => array(
-                'type' => 'input',
+                'type' => 'none',
                 'size' => 30,
             ),
         ),
@@ -68,7 +68,7 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_name',
             'config' => array(
-                'type' => 'input',
+                'type' => 'none',
                 'size' => 30,
             ),
         ),
@@ -76,8 +76,16 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_column',
             'config' => array(
-                'type' => 'input',
+                'type' => 'none',
                 'size' => 30,
+            ),
+        ),
+        'behavior' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.behavior',
+            'config' => array(
+                'type' => 'none',
+                'size' => 5,
             ),
         ),
     ),

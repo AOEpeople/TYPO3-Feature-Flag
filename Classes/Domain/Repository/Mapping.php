@@ -61,26 +61,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
     /**
      * @param $foreignTableUid
      * @param $foreignTableName
-     * @param $foreignTableColumn
-     * @return null|Tx_FeatureFlag_Domain_Model_Mapping
-     */
-    public function findByForeignTableNameUidAndColumnName($foreignTableUid, $foreignTableName, $foreignTableColumn)
-    {
-        $query = $this->createQuery();
-        $query->matching(
-            $query->logicalAnd(
-                $query->equals('foreign_table_uid', $foreignTableUid),
-                $query->equals('foreign_table_name', $foreignTableName),
-                $query->equals('foreign_table_column', $foreignTableColumn)
-            )
-        );
-        return $query->execute()->getFirst();
-    }
-
-    /**
-     * @param $foreignTableUid
-     * @param $foreignTableName
-     * @return array|Tx_Extbase_Persistence_QueryResultInterface
+     * @return Tx_FeatureFlag_Domain_Model_Mapping
      */
     public function findByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
     {
@@ -91,7 +72,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
                 $query->equals('foreign_table_name', $foreignTableName)
             )
         );
-        return $query->execute();
+        return $query->execute()->getFirst();
     }
 
     /**

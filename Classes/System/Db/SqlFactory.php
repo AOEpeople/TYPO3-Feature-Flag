@@ -44,11 +44,11 @@ class Tx_FeatureFlag_System_Db_SqlFactory
 
     /**
      * @param string $table
-     * @param string $column
-     * @param int $enabled
+     * @param int $behavior Hide or show record?
+     * @param int $enabled Is feature flag enabled?
      * @return string
      */
-    public function getSelectStatementForContentElements($table, $column, $enabled)
+    public function getSelectStatementForContentElements($table, $behavior, $enabled)
     {
         $statement = 'SELECT ' . mysql_real_escape_string($table) . '.uid FROM ';
         $statement .= mysql_real_escape_string($table) . ',';
@@ -59,11 +59,11 @@ class Tx_FeatureFlag_System_Db_SqlFactory
         $statement .= ' AND ';
         $statement .= mysql_real_escape_string($table) . '.uid = ' . mysql_real_escape_string(self::TABLE_MAPPING) . '.foreign_table_uid';
         $statement .= ' AND ';
-        $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.enabled = ' . mysql_real_escape_string($enabled);
+        $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.enabled = "' . mysql_real_escape_string($enabled) . '"';
         $statement .= ' AND ';
         $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.foreign_table_name = "' . mysql_real_escape_string($table) . '"';
         $statement .= ' AND ';
-        $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.foreign_table_column = "' . mysql_real_escape_string($column) . '"';
+        $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.behavior = "' . mysql_real_escape_string($behavior) . '"';
         $statement .= ' AND ';
         $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.deleted = 0';
         $statement .= ' AND ';
