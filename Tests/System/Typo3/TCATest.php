@@ -111,6 +111,26 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_Extbase_Tests_Unit_BaseTest
     /**
      * @test
      */
+    public function processDatamapDoNothingIfNotInFeatureFlagContext()
+    {
+        $mappingRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('findByForeignTableNameUidAndColumnName', 'add', 'remove', 'update'));
+        $mappingRepository->expects($this->never())->method('findByForeignTableNameUidAndColumnName')->will($this->returnValue(null));
+        $mappingRepository->expects($this->never())->method('add');
+        $mappingRepository->expects($this->never())->method('remove');
+        $mappingRepository->expects($this->never())->method('update');
+        $this->tca->expects($this->never())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
+        $this->tca->expects($this->never())->method('getFeatureFlagByUid');
+
+        $tceMainMock = $this->getMock('t3lib_TCEmain');
+        $incomingFieldArray = array(
+            'hidden' => '0',
+        );
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', '4711', $tceMainMock);
+    }
+
+    /**
+     * @test
+     */
     public function processDatamapRemoveMappingIfNothingSelectedAndMappingExists()
     {
         $mapping = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping');

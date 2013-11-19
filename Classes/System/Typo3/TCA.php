@@ -96,11 +96,13 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, t3lib_TCEmain &$tceMain)
     {
-        $pid = $tceMain->getPID($table, $id);
-        $this->updateMapping($table, $id, self::FIELD_HIDE, $incomingFieldArray[self::FIELD_HIDE], $pid);
-        $this->updateMapping($table, $id, self::FIELD_SHOW, $incomingFieldArray[self::FIELD_SHOW], $pid);
-        unset($incomingFieldArray[self::FIELD_HIDE]);
-        unset($incomingFieldArray[self::FIELD_SHOW]);
+        if (array_key_exists(self::FIELD_HIDE, $incomingFieldArray) && array_key_exists(self::FIELD_SHOW, $incomingFieldArray)) {
+            $pid = $tceMain->getPID($table, $id);
+            $this->updateMapping($table, $id, self::FIELD_HIDE, $incomingFieldArray[self::FIELD_HIDE], $pid);
+            $this->updateMapping($table, $id, self::FIELD_SHOW, $incomingFieldArray[self::FIELD_SHOW], $pid);
+            unset($incomingFieldArray[self::FIELD_HIDE]);
+            unset($incomingFieldArray[self::FIELD_SHOW]);
+        }
     }
 
     /**
