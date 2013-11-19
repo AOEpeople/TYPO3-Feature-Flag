@@ -94,8 +94,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderInfo(array $PA, t3lib_TCEforms $fob)
     {
-        return '<p>Die Veränderung der Featureflag-Auswirkung auf einem Datensatz wird nicht automatisch publiziert
-und hat nicht automatisch einen Wirkung auf diesen Datensatz.<br />Diese redaktionelle Änderung muss durch einen TYPO3-Administrator durch das Starten eines Scheduler-Tasks aktiviert werden.</p></p>';
+        return $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text');
     }
 
     /**

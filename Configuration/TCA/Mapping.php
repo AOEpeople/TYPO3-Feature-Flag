@@ -4,10 +4,10 @@ if (!defined('TYPO3_MODE')) die ('Access denied.');
 $TCA['tx_featureflag_domain_model_mapping'] = array(
     'ctrl' => $TCA['tx_featureflag_domain_model_mapping']['ctrl'],
     'interface' => array(
-        'showRecordFieldList' => 'feature_flag,foreign_table_uid,foreign_table_name,foreign_table_column',
+        'showRecordFieldList' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior',
     ),
     'types' => array(
-        '1' => array('showitem' => 'feature_flag,foreign_table_uid,foreign_table_name,foreign_table_column'),
+        '1' => array('showitem' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior'),
     ),
     'palettes' => array(
         '1' => array('showitem' => ''),
@@ -17,32 +17,36 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
             'exclude' => 0,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.uid',
             'config' => array(
-                'type' => 'passthrough'
+                'type' => 'passthrough',
             )
         ),
         'pid' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.pid',
             'config' => array(
-                'type' => 'passthrough'
+                'type' => 'passthrough',
             )
         ),
         'tstamp' => Array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.tstamp',
             'config' => Array(
-                'type' => 'none',
+                'type' => 'text',
+                'size' => 10,
                 'format' => 'date',
                 'eval' => 'date',
+                'readOnly' => 1,
             )
         ),
         'crdate' => Array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.crdate',
             'config' => Array(
-                'type' => 'none',
+                'type' => 'text',
+                'size' => 10,
                 'format' => 'date',
                 'eval' => 'date',
+                'readOnly' => 1,
             )
         ),
         'feature_flag' => array(
@@ -54,38 +58,34 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
                 'size' => 1,
                 'minitems' => 1,
                 'maxitems' => 1,
+                'readOnly' => 1,
             ),
         ),
         'foreign_table_uid' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_uid',
             'config' => array(
-                'type' => 'none',
-                'size' => 30,
+                'type' => 'text',
+                'size' => 10,
+                'readOnly' => 1,
             ),
         ),
         'foreign_table_name' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_name',
             'config' => array(
-                'type' => 'none',
-                'size' => 30,
-            ),
-        ),
-        'foreign_table_column' => array(
-            'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_column',
-            'config' => array(
-                'type' => 'none',
-                'size' => 30,
+                'type' => 'text',
+                'size' => 10,
+                'readOnly' => 1,
             ),
         ),
         'behavior' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.behavior',
             'config' => array(
-                'type' => 'none',
-                'size' => 5,
+                'type' => 'text',
+                'size' => 10,
+                'readOnly' => 1,
             ),
         ),
     ),

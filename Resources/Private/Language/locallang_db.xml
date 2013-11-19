@@ -7,21 +7,25 @@
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
-
             <label index="feature_flag">Feature Flag</label>
             <label index="tx_featureflag_flag">Choose Feature Flag</label>
             <label index="tx_featureflag_behavior">Behavior on Feature Flag</label>
-            <label index="tx_featureflag_info">Hinweis</label>
+            <label index="tx_featureflag_info.label">Notice!</label>
+            <label index="tx_featureflag_info.text"><![CDATA[
+                Feature Flag changes on a record are not automatically published
+                and did not have automatically an effect on this record.<br />This editorial change has to
+                be activated by a TYPO3 administrator by starting a scheduler task.
+            ]]></label>
             <label index="tx_featureflag_behavior.hide">hide</label>
             <label index="tx_featureflag_behavior.show">show</label>
 
-            <label index="tx_featureflag_system_typo3_task_flagentries.title">Flag Entries</label>
+            <label index="tx_featureflag_system_typo3_task_flagentries.title">Update records by Feature Flags</label>
             <label index="tx_featureflag_system_typo3_task_flagentries.description">Flags all configured tables by Feature Flags</label>
 
             <label index="tx_featureflag_domain_model_featureflag">Feature Flag</label>
-            <label index="tx_featureflag_domain_model_featureflag.description">Flag Description</label>
-            <label index="tx_featureflag_domain_model_featureflag.flag">Flag Identifier</label>
-            <label index="tx_featureflag_domain_model_featureflag.enabled">Is Flag Enabled?</label>
+            <label index="tx_featureflag_domain_model_featureflag.description">Description</label>
+            <label index="tx_featureflag_domain_model_featureflag.flag">Unique identifier</label>
+            <label index="tx_featureflag_domain_model_featureflag.enabled">enabled?</label>
 
             <label index="tx_featureflag_domain_model_mapping">Mapping of Feature Flags to Tables</label>
             <label index="tx_featureflag_domain_model_mapping.crdate">Creation date</label>
@@ -30,9 +34,37 @@
             <label index="tx_featureflag_domain_model_mapping.feature_flag">Feature Flag</label>
             <label index="tx_featureflag_domain_model_mapping.foreign_table_uid">ID of the foreign table</label>
             <label index="tx_featureflag_domain_model_mapping.foreign_table_name">Name of the foreign table</label>
-            <label index="tx_featureflag_domain_model_mapping.foreign_table_column">Column in foreign table</label>
             <label index="tx_featureflag_domain_model_mapping.behavior">Behavior</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="feature_flag">Feature Flag</label>
+            <label index="tx_featureflag_flag">Feature Flag auswählen</label>
+            <label index="tx_featureflag_behavior">Verhalten bei gewähltem Feature Flag</label>
+            <label index="tx_featureflag_info.label">Hinweis!</label>
+            <label index="tx_featureflag_info.text"><![CDATA[
+                Die Veränderung der Featureflag-Auswirkung auf einem Datensatz wird nicht automatisch publiziert
+                und hat nicht automatisch einen Wirkung auf diesen Datensatz.<br /> Diese redaktionelle Änderung
+                muss durch einen TYPO3-Administrator durch das Starten eines Scheduler-Tasks aktiviert werden.
+            ]]></label>
+            <label index="tx_featureflag_behavior.hide">ausblenden</label>
+            <label index="tx_featureflag_behavior.show">einblenden</label>
 
+            <label index="tx_featureflag_system_typo3_task_flagentries.title">Datensätze anhand Feature Flags aktualisieren</label>
+            <label index="tx_featureflag_system_typo3_task_flagentries.description">Aktualisiert alle Datensätze in den konfigurierten Tabellen anhand der hinterlegten Feature Flags</label>
+
+            <label index="tx_featureflag_domain_model_featureflag">Feature Flag</label>
+            <label index="tx_featureflag_domain_model_featureflag.description">Beschreibung</label>
+            <label index="tx_featureflag_domain_model_featureflag.flag">Eindeutiger Identifikator</label>
+            <label index="tx_featureflag_domain_model_featureflag.enabled">aktiv?</label>
+
+            <label index="tx_featureflag_domain_model_mapping">Mapping zwischen Tabellen und Feature Flags</label>
+            <label index="tx_featureflag_domain_model_mapping.crdate">Erstellt am</label>
+            <label index="tx_featureflag_domain_model_mapping.uid">Mapping Information</label>
+            <label index="tx_featureflag_domain_model_mapping.tstamp">Zukletzt aktualisiert am</label>
+            <label index="tx_featureflag_domain_model_mapping.feature_flag">Gewähltes Feature Flag</label>
+            <label index="tx_featureflag_domain_model_mapping.foreign_table_uid">ID der Fremdtabelle</label>
+            <label index="tx_featureflag_domain_model_mapping.foreign_table_name">Name der Fremdtabelle</label>
+            <label index="tx_featureflag_domain_model_mapping.behavior">Verhalten bei gewähltem Feature Flag</label>
         </languageKey>
     </data>
 </T3locallang>

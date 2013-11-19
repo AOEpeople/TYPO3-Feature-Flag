@@ -8,7 +8,7 @@ if (isset ($config['tables'])) {
         t3lib_extMgm::addTCAcolumns($table, array(
                 'tx_featureflag_info' => array(
                     'exclude' => 1,
-                    'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info',
+                    'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.label',
                     'config' => array(
                         'type' => 'user',
                         'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderInfo',
