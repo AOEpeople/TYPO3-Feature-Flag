@@ -81,7 +81,7 @@ class Tx_FeatureFlag_ServiceTest extends Tx_Phpunit_TestCase
     public function shouldThrowExceptionIfFlagDoesNotExist()
     {
         $mockRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findByFlag'));
-        $mockRepository->expects($this->once())->method('findByFlag')->will($this->throwException(new Exception()));
+        $mockRepository->expects($this->once())->method('findByFlag')->will($this->returnValue(null));
         $this->service->injectFeatureFlagRepository($mockRepository);
         $this->setExpectedException('Tx_FeatureFlag_Service_Exception_FeatureNotFound');
         $this->service->isFeatureEnabled('my_cool_feature');

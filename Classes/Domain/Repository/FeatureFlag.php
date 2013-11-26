@@ -59,7 +59,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
 
     /**
      * @param string $flag
-     * @return object
+     * @return Tx_FeatureFlag_Domain_Model_FeatureFlag
      */
     public function findByFlag($flag)
     {
