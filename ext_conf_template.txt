@@ -1,2 +1,2 @@
 # cat=basic; type=input; label=Enable Feature Flags for tables
-tables = tt_content,pages
+tables = tt_content,pages,sys_template
