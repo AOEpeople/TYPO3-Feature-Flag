@@ -43,7 +43,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlagTest extends Tx_Phpunit_TestCa
      */
     protected function setUp()
     {
-        $sqlFactory = $this->getMock('Tx_FeatureFlag_System_Db_SqlFactory', array('getSelectStatementForContentElements', 'getUpdateStatementForContentElements'));
+		$sqlFactory = $this->getMock('Tx_FeatureFlag_System_Db_SqlFactory', array('getSelectStatementForContentElements', 'getUpdateStatementForContentElements'));
         $sqlFactory->expects($this->exactly(4))->method('getSelectStatementForContentElements');
 
         $mockQomFactory = $this->getMock('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory');
@@ -56,9 +56,11 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlagTest extends Tx_Phpunit_TestCa
         $mockQueryFactory = $this->getMock('Tx_Extbase_Persistence_QueryFactory', array('create'));
         $mockQueryFactory->expects($this->any())->method('create')->will($this->returnValue($mockQuery));
 
-        $this->featureFlag = new Tx_FeatureFlag_Domain_Repository_FeatureFlag();
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager', array('get'));
+		$mockObjectManager->expects($this->once())->method('get')->with('Tx_FeatureFlag_System_Db_SqlFactory')->will($this->returnValue($sqlFactory));
+
+		$this->featureFlag = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($mockObjectManager);
         $this->featureFlag->injectQueryFactory($mockQueryFactory);
-        $this->featureFlag->injectSqlFactory($sqlFactory);
     }
 
     /**
