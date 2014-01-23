@@ -64,7 +64,17 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
      * @param $foreignTableName
      * @return Tx_FeatureFlag_Domain_Model_Mapping
      */
-    public function findByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
+    public function findOneByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
+    {
+        return $this->findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)->getFirst();
+    }
+
+    /**
+     * @param $foreignTableUid
+     * @param $foreignTableName
+     * @return Tx_Extbase_Persistence_QueryResultInterface
+     */
+    public function findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
     {
         $query = $this->createQuery();
         $query->matching(
@@ -73,7 +83,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
                 $query->equals('foreign_table_name', $foreignTableName)
             )
         );
-        return $query->execute()->getFirst();
+        return $query->execute();
     }
 
     /**

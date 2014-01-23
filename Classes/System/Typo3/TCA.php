@@ -69,7 +69,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderSelectForFlag(array $PA, t3lib_TCEforms $fob)
     {
-        $activeMapping = $this->getMappingRepository()->findByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         $html .= '<option value="0"></option>';
@@ -104,7 +104,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderSelectForBehavior(array $PA, t3lib_TCEforms $fob)
     {
-        $activeMapping = $this->getMappingRepository()->findByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping && $activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_HIDE) {
@@ -157,7 +157,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
         if ($command !== 'delete') {
             return;
         }
-        $mappings = $this->getMappingRepository()->findByForeignTableNameAndUid($id, $table);
+        $mappings = $this->getMappingRepository()->findAllByForeignTableNameAndUid($id, $table);
         foreach ($mappings as $mapping) {
             if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
                 $this->getMappingRepository()->remove($mapping);
@@ -174,7 +174,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
     public function overrideIconOverlay($table, $row, &$status)
     {
         if ($this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
-            $mapping = $this->getMappingRepository()->findByForeignTableNameAndUid($row['uid'], $table);
+            $mapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($row['uid'], $table);
             if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
                 $status['feature_flag_hidden'] = ($row['hidden'] === '1') ? true : false;
                 $status['feature_flag'] = true;
@@ -197,7 +197,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     protected function updateMapping($table, $id, $featureFlag, $pid, $behavior)
     {
-        $mapping = $this->getMappingRepository()->findByForeignTableNameAndUid($id, $table);
+        $mapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($id, $table);
         if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
             if ('0' === $featureFlag) {
                 $this->getMappingRepository()->remove($mapping);
