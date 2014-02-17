@@ -158,6 +158,9 @@ class Tx_FeatureFlag_System_Typo3_TCA
             return;
         }
         $mappings = $this->getMappingRepository()->findAllByForeignTableNameAndUid($id, $table);
+        if (FALSE === is_array($mappings) && FALSE === ($mappings instanceof Tx_Extbase_Persistence_QueryResultInterface)) {
+            return;
+        }
         foreach ($mappings as $mapping) {
             if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
                 $this->getMappingRepository()->remove($mapping);
