@@ -43,8 +43,10 @@ class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_Extbase_Tests_Unit
         $query->expects($this->once())->method('execute')->will($this->returnValue($result));
         $query->expects($this->once())->method('matching');
         $query->expects($this->once())->method('logicalAnd');
-        $query->expects($this->at(0))->method('equals')->with($this->equalTo('foreign_table_uid'), $this->equalTo(4711));
-        $query->expects($this->at(1))->method('equals')->with($this->equalTo('foreign_table_name'), $this->equalTo('pages'));
+        $query->expects($this->at(0))->method('equals')->with($this->equalTo('foreign_table_uid'),
+            $this->equalTo(4711));
+        $query->expects($this->at(1))->method('equals')->with($this->equalTo('foreign_table_name'),
+            $this->equalTo('pages'));
         $repository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('createQuery'));
         $repository->expects($this->once())->method('createQuery')->will($this->returnValue($query));
         /** @var Tx_FeatureFlag_Domain_Repository_Mapping $repository */
@@ -62,8 +64,10 @@ class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_Extbase_Tests_Unit
         $query->expects($this->once())->method('execute')->will($this->returnValue($result));
         $query->expects($this->once())->method('matching');
         $query->expects($this->once())->method('logicalAnd');
-        $query->expects($this->at(0))->method('equals')->with($this->equalTo('foreign_table_uid'), $this->equalTo(4711));
-        $query->expects($this->at(1))->method('equals')->with($this->equalTo('foreign_table_name'), $this->equalTo('pages'));
+        $query->expects($this->at(0))->method('equals')->with($this->equalTo('foreign_table_uid'),
+            $this->equalTo(4711));
+        $query->expects($this->at(1))->method('equals')->with($this->equalTo('foreign_table_name'),
+            $this->equalTo('pages'));
         $repository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('createQuery'));
         $repository->expects($this->once())->method('createQuery')->will($this->returnValue($query));
         /** @var Tx_FeatureFlag_Domain_Repository_Mapping $repository */

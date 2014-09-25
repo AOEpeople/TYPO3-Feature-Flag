@@ -37,14 +37,14 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
      */
     private $sqlFactory;
 
-	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
-	 */
-	public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = NULL)
-	{
-		parent::__construct($objectManager);
-		$this->sqlFactory = $this->objectManager->get('Tx_FeatureFlag_System_Db_SqlFactory');
-	}
+    /**
+     * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+     */
+    public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = null)
+    {
+        parent::__construct($objectManager);
+        $this->sqlFactory = $this->objectManager->get('Tx_FeatureFlag_System_Db_SqlFactory');
+    }
 
     /**
      * @return void
@@ -53,8 +53,8 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
     {
         /** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
         $defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
-        $defaultQuerySettings->setRespectStoragePage(FALSE);
-        $defaultQuerySettings->setRespectSysLanguage(FALSE);
+        $defaultQuerySettings->setRespectStoragePage(false);
+        $defaultQuerySettings->setRespectSysLanguage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
 
@@ -65,8 +65,8 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
     public function findByFlag($flag)
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
-        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()->setRespectStoragePage(false);
         $query->matching($query->equals('flag', $flag));
         return $query->execute()->getFirst();
     }
@@ -146,8 +146,8 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
     {
         /** @var Tx_Extbase_Persistence_Query $query */
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectEnableFields(FALSE);
-        $query->getQuerySettings()->setReturnRawQueryResult(TRUE);
+        $query->getQuerySettings()->setRespectEnableFields(false);
+        $query->getQuerySettings()->setReturnRawQueryResult(true);
         return $query;
     }
 }

@@ -69,7 +69,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderSelectForFlag(array $PA, t3lib_TCEforms $fob)
     {
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'],
+            $PA['table']);
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         $html .= '<option value="0"></option>';
@@ -104,7 +105,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderSelectForBehavior(array $PA, t3lib_TCEforms $fob)
     {
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'],
+            $PA['table']);
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping && $activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_HIDE) {
@@ -138,9 +140,12 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, t3lib_TCEmain &$tceMain)
     {
-        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG, $incomingFieldArray)) {
+        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG,
+                $incomingFieldArray)
+        ) {
             $pid = $tceMain->getPID($table, $id);
-            $this->updateMapping($table, $id, $incomingFieldArray[self::FIELD_FLAG], $pid, $incomingFieldArray[self::FIELD_BEHAVIOR]);
+            $this->updateMapping($table, $id, $incomingFieldArray[self::FIELD_FLAG], $pid,
+                $incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_FLAG]);
         }
@@ -158,7 +163,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
             return;
         }
         $mappings = $this->getMappingRepository()->findAllByForeignTableNameAndUid($id, $table);
-        if (FALSE === is_array($mappings) && FALSE === ($mappings instanceof Tx_Extbase_Persistence_QueryResultInterface)) {
+        if (false === is_array($mappings) && false === ($mappings instanceof Tx_Extbase_Persistence_QueryResultInterface)) {
             return;
         }
         foreach ($mappings as $mapping) {
@@ -232,7 +237,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     protected function isMappingAvailableForTableAndUid($foreignTableUid, $foreignTableName)
     {
-        if (NULL === self::$hashedMappings) {
+        if (null === self::$hashedMappings) {
             self::$hashedMappings = $this->getMappingRepository()->getHashedMappings();
         }
         $identifier = sha1($foreignTableUid . '_' . $foreignTableName);
@@ -252,7 +257,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
         /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
         $featureFlag = $this->getFeatureFlagRepository()->findByUid($uid);
         if (false === ($featureFlag instanceof Tx_FeatureFlag_Domain_Model_FeatureFlag)) {
-            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found by uid: "' . $uid . '"', 1384340431);
+            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found by uid: "' . $uid . '"',
+                1384340431);
         }
         return $featureFlag;
     }
@@ -278,7 +284,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     protected function getObjectManager()
     {
-        if (FALSE === ($this->objectManager instanceof Tx_Extbase_Object_ObjectManager)) {
+        if (false === ($this->objectManager instanceof Tx_Extbase_Object_ObjectManager)) {
             $this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
         }
         return $this->objectManager;
@@ -289,7 +295,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     protected function getPersistenceManager()
     {
-        if (FALSE === ($this->persistenceManager instanceof Tx_Extbase_Persistence_Manager)) {
+        if (false === ($this->persistenceManager instanceof Tx_Extbase_Persistence_Manager)) {
             $this->persistenceManager = $this->getObjectManager()->get('Tx_Extbase_Persistence_Manager');
         }
         return $this->persistenceManager;

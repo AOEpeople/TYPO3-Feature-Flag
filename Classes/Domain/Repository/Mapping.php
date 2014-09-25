@@ -37,14 +37,14 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
      */
     private $sqlFactory;
 
-	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
-	 */
-	public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = NULL)
-	{
-		parent::__construct($objectManager);
-		$this->sqlFactory = $this->objectManager->get('Tx_FeatureFlag_System_Db_SqlFactory');
-	}
+    /**
+     * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+     */
+    public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = null)
+    {
+        parent::__construct($objectManager);
+        $this->sqlFactory = $this->objectManager->get('Tx_FeatureFlag_System_Db_SqlFactory');
+    }
 
     /**
      * @return void
@@ -53,9 +53,9 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
     {
         /** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
         $defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
-        $defaultQuerySettings->setRespectStoragePage(FALSE);
-        $defaultQuerySettings->setRespectEnableFields(TRUE);
-        $defaultQuerySettings->setRespectSysLanguage(FALSE);
+        $defaultQuerySettings->setRespectStoragePage(false);
+        $defaultQuerySettings->setRespectEnableFields(true);
+        $defaultQuerySettings->setRespectSysLanguage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
 
@@ -95,8 +95,8 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
         $query->getQuerySettings()->setReturnRawQueryResult(true);
         $mappings = $query->execute();
         $prepared = array();
-        foreach($mappings as $mapping) {
-            $identifier = sha1($mapping['foreign_table_uid'].'_'.$mapping['foreign_table_name']);
+        foreach ($mappings as $mapping) {
+            $identifier = sha1($mapping['foreign_table_uid'] . '_' . $mapping['foreign_table_name']);
             $prepared[$identifier] = $identifier;
         }
         return $prepared;

@@ -47,7 +47,8 @@ class Tx_FeatureFlag_System_Typo3_ConfigurationTest extends Tx_Phpunit_TestCase
     public function methodGetShouldThrowException()
     {
         $configuration = new Tx_FeatureFlag_System_Typo3_Configuration();
-        $this->setExpectedException('InvalidArgumentException', 'Configuration key "InvalidConfigurationKey" does not exist.', 1384161387);
+        $this->setExpectedException('InvalidArgumentException',
+            'Configuration key "InvalidConfigurationKey" does not exist.', 1384161387);
         $configuration->get('InvalidConfigurationKey');
     }
 

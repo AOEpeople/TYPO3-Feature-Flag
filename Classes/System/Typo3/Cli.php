@@ -24,7 +24,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-if (!defined('TYPO3_cliMode')) die ('Access denied: CLI only.');
+if (!defined('TYPO3_cliMode')) {
+    die ('Access denied: CLI only.');
+}
 
 /**
  * @package FeatureFlag
