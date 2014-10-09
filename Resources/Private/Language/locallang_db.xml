@@ -20,7 +20,9 @@
             <label index="tx_featureflag_behavior.show">show</label>
 
             <label index="tx_featureflag_system_typo3_task_flagentries.title">Update records by Feature Flags</label>
-            <label index="tx_featureflag_system_typo3_task_flagentries.description">Flags all configured tables by Feature Flags</label>
+            <label index="tx_featureflag_system_typo3_task_flagentries.description">Flags all configured tables by
+                Feature Flags
+            </label>
 
             <label index="tx_featureflag_domain_model_featureflag">Feature Flag</label>
             <label index="tx_featureflag_domain_model_featureflag.description">Description</label>
@@ -49,8 +51,12 @@
             <label index="tx_featureflag_behavior.hide">ausblenden</label>
             <label index="tx_featureflag_behavior.show">einblenden</label>
 
-            <label index="tx_featureflag_system_typo3_task_flagentries.title">Datensätze anhand Feature Flags aktualisieren</label>
-            <label index="tx_featureflag_system_typo3_task_flagentries.description">Aktualisiert alle Datensätze in den konfigurierten Tabellen anhand der hinterlegten Feature Flags</label>
+            <label index="tx_featureflag_system_typo3_task_flagentries.title">Datensätze anhand Feature Flags
+                aktualisieren
+            </label>
+            <label index="tx_featureflag_system_typo3_task_flagentries.description">Aktualisiert alle Datensätze in den
+                konfigurierten Tabellen anhand der hinterlegten Feature Flags
+            </label>
 
             <label index="tx_featureflag_domain_model_featureflag">Feature Flag</label>
             <label index="tx_featureflag_domain_model_featureflag.description">Beschreibung</label>

@@ -69,8 +69,10 @@ class Tx_FeatureFlag_Service
         if (false === array_key_exists($flag, $this->cachedFlags)) {
             $flagModel = $this->featureFlagRepository->findByFlag($flag);
             if (false === $flagModel instanceof Tx_FeatureFlag_Domain_Model_FeatureFlag) {
-                throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found: "' . $flag . '"',
-                    1383842028);
+                throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound(
+                    'Feature Flag not found: "' . $flag . '"',
+                    1383842028
+                );
             }
             $isEnabled = $flagModel->isEnabled();
             $this->cachedFlags[$flag] = $isEnabled;

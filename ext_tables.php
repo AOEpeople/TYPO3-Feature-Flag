@@ -1,11 +1,15 @@
 <?php
-if (!defined('TYPO3_MODE')) die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+    die ('Access denied.');
+}
 
 $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
 if (isset ($config['tables'])) {
     $tables = explode(',', $config ['tables']);
     foreach ($tables as $table) {
-        t3lib_extMgm::addTCAcolumns($table, array(
+        t3lib_extMgm::addTCAcolumns(
+            $table,
+            array(
                 'tx_featureflag_info' => array(
                     'exclude' => 1,
                     'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.label',
@@ -31,9 +35,13 @@ if (isset ($config['tables'])) {
                     )
                 )
             ),
-            1);
+            1
+        );
         $TCA[$table]['palettes']['tx_featureflag'] = array('showitem' => 'tx_featureflag_flag,tx_featureflag_behavior');
-        t3lib_extMgm::addToAllTCAtypes($table, '--div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,tx_featureflag_info,--palette--;;tx_featureflag');
+        t3lib_extMgm::addToAllTCAtypes(
+            $table,
+            '--div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,tx_featureflag_info,--palette--;;tx_featureflag'
+        );
     }
 }
 
@@ -44,7 +52,7 @@ $TCA['tx_featureflag_domain_model_featureflag'] = array(
         'label' => 'description',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'dividers2tabs' => TRUE,
+        'dividers2tabs' => true,
         'searchFields' => 'description,flag,',
         'delete' => 'deleted',
         'enablecolumns' => array(
@@ -65,7 +73,7 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'dividers2tabs' => TRUE,
+        'dividers2tabs' => true,
         'delete' => 'deleted',
         'enablecolumns' => array(),
         'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Mapping.php',
@@ -87,7 +95,10 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = a
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['feature_flag'] = 'extensions-feature_flag-feature_flag';
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['feature_flag_hidden'] = 'extensions-feature_flag-feature_flag_hidden';
 
-t3lib_SpriteManager::addSingleIcons(array(
-    'feature_flag' => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Public/Icons/TBE/FeatureFlag.gif',
-    'feature_flag_hidden' => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Public/Icons/TBE/FeatureFlagHidden.gif'
-), $_EXTKEY);
+t3lib_SpriteManager::addSingleIcons(
+    array(
+        'feature_flag' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/TBE/FeatureFlag.gif',
+        'feature_flag_hidden' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/TBE/FeatureFlagHidden.gif'
+    ),
+    $_EXTKEY
+);

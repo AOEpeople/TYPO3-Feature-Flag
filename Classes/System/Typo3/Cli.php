@@ -56,13 +56,16 @@ class Tx_FeatureFlag_System_Typo3_Cli extends t3lib_cli
     {
         parent::t3lib_cli();
         $this->cli_options = array_merge($this->cli_options, array());
-        $this->cli_help = array_merge($this->cli_help, array(
-            'name' => $this->prefixId,
-            'synopsis' => $this->extKey . ' command',
-            'description' => 'This script can flag all configured tables by feature flags.',
-            'examples' => 'typo3/cli_dispatch.phpsh ' . $this->extKey . ' [flagEntries]',
-            'author' => '(c) 2013 AOE media GmbH <dev@aoemedia.de>',
-        ));
+        $this->cli_help = array_merge(
+            $this->cli_help,
+            array(
+                'name' => $this->prefixId,
+                'synopsis' => $this->extKey . ' command',
+                'description' => 'This script can flag all configured tables by feature flags.',
+                'examples' => 'typo3/cli_dispatch.phpsh ' . $this->extKey . ' [flagEntries]',
+                'author' => '(c) 2013 AOE media GmbH <dev@aoemedia.de>',
+            )
+        );
         $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
     }
 
@@ -111,7 +114,9 @@ class Tx_FeatureFlag_System_Typo3_Cli extends t3lib_cli
     private function processScheduler()
     {
         $MCONF['name'] = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'][1];
-        include(t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'][0]));
+        include(t3lib_div::getFileAbsFileName(
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'][0]
+        ));
     }
 
     /**
