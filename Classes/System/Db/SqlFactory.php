@@ -56,24 +56,24 @@ class Tx_FeatureFlag_System_Db_SqlFactory
         $statement .= mysql_real_escape_string(self::TABLE_FLAGS);
         $statement .= ' WHERE ';
         $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.feature_flag = ' . mysql_real_escape_string(
-                self::TABLE_FLAGS
-            ) . '.uid';
+            self::TABLE_FLAGS
+         ) . '.uid';
         $statement .= ' AND ';
         $statement .= mysql_real_escape_string($table) . '.uid = ' . mysql_real_escape_string(
-                self::TABLE_MAPPING
-            ) . '.foreign_table_uid';
+            self::TABLE_MAPPING
+         ) . '.foreign_table_uid';
         $statement .= ' AND ';
         $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.enabled = "' . mysql_real_escape_string(
-                $enabled
-            ) . '"';
+            $enabled
+        ) . '"';
         $statement .= ' AND ';
         $statement .= mysql_real_escape_string(
-                self::TABLE_MAPPING
-            ) . '.foreign_table_name = "' . mysql_real_escape_string($table) . '"';
+            self::TABLE_MAPPING
+        ) . '.foreign_table_name = "' . mysql_real_escape_string($table) . '"';
         $statement .= ' AND ';
         $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.behavior = "' . mysql_real_escape_string(
-                $behavior
-            ) . '"';
+            $behavior
+        ) . '"';
         $statement .= ' AND ';
         $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.deleted = 0';
         $statement .= ' AND ';
