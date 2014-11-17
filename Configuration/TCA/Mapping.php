@@ -29,10 +29,10 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
                 'type' => 'passthrough',
             )
         ),
-        'tstamp' => Array(
+        'tstamp' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.tstamp',
-            'config' => Array(
+            'config' => array(
                 'type' => 'text',
                 'size' => 10,
                 'format' => 'date',
@@ -40,10 +40,10 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
                 'readOnly' => 1,
             )
         ),
-        'crdate' => Array(
+        'crdate' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.crdate',
-            'config' => Array(
+            'config' => array(
                 'type' => 'text',
                 'size' => 10,
                 'format' => 'date',
