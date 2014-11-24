@@ -44,41 +44,25 @@ class Tx_FeatureFlag_System_Db_SqlFactory
 
     /**
      * @param string $table
-     * @param int $behavior Hide or show record?
-     * @param int $enabled Is feature flag enabled?
+     * @param integer $behavior Hide or show record?
+     * @param integer $enabled Is feature flag enabled?
      * @return string
      */
     public function getSelectStatementForContentElements($table, $behavior, $enabled)
     {
-        $statement = 'SELECT ' . mysql_real_escape_string($table) . '.uid FROM ';
-        $statement .= mysql_real_escape_string($table) . ',';
-        $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . ',';
-        $statement .= mysql_real_escape_string(self::TABLE_FLAGS);
-        $statement .= ' WHERE ';
-        $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.feature_flag = ' . mysql_real_escape_string(
-            self::TABLE_FLAGS
-         ) . '.uid';
-        $statement .= ' AND ';
-        $statement .= mysql_real_escape_string($table) . '.uid = ' . mysql_real_escape_string(
-            self::TABLE_MAPPING
-         ) . '.foreign_table_uid';
-        $statement .= ' AND ';
-        $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.enabled = "' . mysql_real_escape_string(
-            $enabled
-        ) . '"';
-        $statement .= ' AND ';
-        $statement .= mysql_real_escape_string(
-            self::TABLE_MAPPING
-        ) . '.foreign_table_name = "' . mysql_real_escape_string($table) . '"';
-        $statement .= ' AND ';
-        $statement .= mysql_real_escape_string(self::TABLE_MAPPING) . '.behavior = "' . mysql_real_escape_string(
-            $behavior
-        ) . '"';
-        $statement .= ' AND ';
-        $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.deleted = 0';
-        $statement .= ' AND ';
-        $statement .= mysql_real_escape_string(self::TABLE_FLAGS) . '.hidden = 0';
-        return $statement;
+        $escaptedTable = mysql_real_escape_string($table);
+
+        $sql  = 'SELECT ' . $escaptedTable . '.uid';
+        $sql .= ' FROM ' . $escaptedTable . ',' . self::TABLE_MAPPING . ',' . self::TABLE_FLAGS;
+        $sql .= ' WHERE ' . self::TABLE_MAPPING . '.feature_flag=' . self::TABLE_FLAGS . '.uid';
+        $sql .= ' AND ' . $escaptedTable . '.uid=' . self::TABLE_MAPPING . '.foreign_table_uid';
+        $sql .= ' AND ' . self::TABLE_FLAGS . '.enabled=' . intval($enabled);
+        $sql .= ' AND ' . self::TABLE_FLAGS . '.deleted=0';
+        $sql .= ' AND ' . self::TABLE_FLAGS . '.hidden=0';
+        $sql .= ' AND ' . self::TABLE_MAPPING . '.foreign_table_name="' . $escaptedTable . '"';
+        $sql .= ' AND ' . self::TABLE_MAPPING . '.behavior=' . intval($behavior);
+
+        return $sql;
     }
 
     /**
