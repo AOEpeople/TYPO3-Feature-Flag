@@ -57,13 +57,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
         $defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
         $defaultQuerySettings->setRespectStoragePage(false);
         $defaultQuerySettings->setRespectSysLanguage(false);
-
-        if (true === t3lib_div::compat_version('4.7')) {
-            $defaultQuerySettings->setRespectEnableFields(true);
-        } else {
-            $defaultQuerySettings->setIgnoreEnableFields(false)->setIncludeDeleted(false);
-        }
-
+        $defaultQuerySettings->setIgnoreEnableFields(false)->setIncludeDeleted(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
 

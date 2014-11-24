@@ -50,7 +50,7 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getSelectStatementForContentElements($table, $behavior, $enabled)
     {
-        $escaptedTable = mysql_real_escape_string($table);
+        $escaptedTable = mysqli_real_escape_string($GLOBALS['TYPO3_DB']->link, $table);
 
         $sql  = 'SELECT ' . $escaptedTable . '.uid';
         $sql .= ' FROM ' . $escaptedTable . ',' . self::TABLE_MAPPING . ',' . self::TABLE_FLAGS;
@@ -71,6 +71,6 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getUpdateStatementForContentElements($table)
     {
-        return "UPDATE " . mysql_real_escape_string($table) . " SET hidden = ? WHERE uid IN ?;";
+        return "UPDATE " . mysqli_real_escape_string($GLOBALS['TYPO3_DB']->link, $table) . " SET hidden = ? WHERE uid IN ?;";
     }
 }
