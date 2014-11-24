@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoemedia.de>
+ *  (c) 2013 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -27,8 +27,8 @@
 /**
  * @package FeatureFlag
  * @subpackage Domain_Repository
- * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @author Matthias Gutjahr <matthias.gutjahr@aoemedia.de>
+ * @author Kevin Schu <kevin.schu@aoe.com>
+ * @author Matthias Gutjahr <dev@aoe.com>
  */
 class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Repository
 {
@@ -38,10 +38,12 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
     private $sqlFactory;
 
     /**
-     * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+     * @return void
      */
-    public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = null)
+    public function __construct()
     {
+            // TODO: ugly implementation for creating an instance
+        $objectManager = t3lib_div::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         parent::__construct($objectManager);
         $this->sqlFactory = $this->objectManager->get('Tx_FeatureFlag_System_Db_SqlFactory');
     }
@@ -54,7 +56,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
         /** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
         $defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
         $defaultQuerySettings->setRespectStoragePage(false);
-        $defaultQuerySettings->setRespectEnableFields(true);
+        $defaultQuerySettings->setIgnoreEnableFields(false)->setIncludeDeleted(false);
         $defaultQuerySettings->setRespectSysLanguage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
