@@ -39,6 +39,15 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
     private $sqlFactory;
 
     /**
+     *
+     */
+    public function __construct()
+    {
+        $objectManager = t3lib_div::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        parent::__construct($objectManager);
+    }
+
+    /**
      * @return void
      */
     public function initializeObject()
