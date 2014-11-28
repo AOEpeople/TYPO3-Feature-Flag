@@ -147,7 +147,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
     {
         /** @var Tx_Extbase_Persistence_Query $query */
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectEnableFields(false);
+        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
         $query->getQuerySettings()->setReturnRawQueryResult(true);
         return $query;
     }

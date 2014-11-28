@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoemedia.de>
+ *  (c) 2014 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -50,7 +50,7 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getSelectStatementForContentElements($table, $behavior, $enabled)
     {
-        $escaptedTable = mysqli_real_escape_string($GLOBALS['TYPO3_DB']->link, $table);
+        $escaptedTable = mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table);
 
         $sql  = 'SELECT ' . $escaptedTable . '.uid';
         $sql .= ' FROM ' . $escaptedTable . ',' . self::TABLE_MAPPING . ',' . self::TABLE_FLAGS;
@@ -71,6 +71,6 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getUpdateStatementForContentElements($table)
     {
-        return "UPDATE " . mysqli_real_escape_string($GLOBALS['TYPO3_DB']->link, $table) . " SET hidden = ? WHERE uid IN ?;";
+        return "UPDATE " . mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table) . " SET hidden = ? WHERE uid IN ?;";
     }
 }
