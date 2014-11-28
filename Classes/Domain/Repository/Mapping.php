@@ -34,19 +34,9 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
 {
     /**
      * @var Tx_FeatureFlag_System_Db_SqlFactory
+     * @inject
      */
     private $sqlFactory;
-
-    /**
-     * @return void
-     */
-    public function __construct()
-    {
-            // TODO: ugly implementation for creating an instance
-        $objectManager = t3lib_div::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        parent::__construct($objectManager);
-        $this->sqlFactory = $this->objectManager->get('Tx_FeatureFlag_System_Db_SqlFactory');
-    }
 
     /**
      * @return void

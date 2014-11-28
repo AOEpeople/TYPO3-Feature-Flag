@@ -34,17 +34,9 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
 {
     /**
      * @var Tx_FeatureFlag_System_Db_SqlFactory
+     * @inject
      */
     private $sqlFactory;
-
-    /**
-     * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
-     */
-    public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = null)
-    {
-        parent::__construct($objectManager);
-        $this->sqlFactory = $this->objectManager->get('Tx_FeatureFlag_System_Db_SqlFactory');
-    }
 
     /**
      * @return void
