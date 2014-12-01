@@ -83,9 +83,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends Tx_Extbase_Persistence_Re
      */
     public function getHashedMappings()
     {
-        $query = $this->createQuery();
-        $query->getQuerySettings()->setReturnRawQueryResult(true);
-        $mappings = $query->execute();
+        $mappings = $this->createQuery()->execute(true);
         $prepared = array();
         foreach ($mappings as $mapping) {
             $identifier = sha1($mapping['foreign_table_uid'] . '_' . $mapping['foreign_table_name']);
