@@ -86,39 +86,36 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
     /**
      * @param string $table
      * @param array $uids
-     * @return array|Tx_Extbase_Persistence_QueryResultInterface
+     * @return void
      */
     private function hideEntries($table, array $uids)
     {
-        return $this->updateEntries($table, $uids, 1);
+        $this->updateEntries($table, $uids, false);
     }
 
     /**
      * @param string $table
      * @param array $uids
-     * @return array|Tx_Extbase_Persistence_QueryResultInterface
+     * @return void
      */
     private function showEntries($table, array $uids)
     {
-        return $this->updateEntries($table, $uids, 0);
+        $this->updateEntries($table, $uids, true);
     }
 
     /**
      * @param $table
      * @param array $uids
-     * @param $hidden
-     * @return array|Tx_Extbase_Persistence_QueryResultInterface
+     * @param boolean $isVisible
+     * @return void
      */
-    private function updateEntries($table, array $uids, $hidden)
+    private function updateEntries($table, array $uids, $isVisible)
     {
         if (empty($uids)) {
-            return array();
+            return;
         }
-        /** @var Tx_Extbase_Persistence_Query $query */
-        $query = $this->configureQuery();
-        $statement = $this->sqlFactory->getUpdateStatementForContentElements($table);
-        $query->statement($statement, array($hidden, $uids));
-        return $query->execute();
+        $statement = $this->sqlFactory->getUpdateStatementForContentElements($table, $uids, $isVisible);
+        $GLOBALS['TYPO3_DB']->sql_query($statement);
     }
 
     /**
@@ -129,26 +126,15 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
      */
     private function getUpdateEntriesUids($table, $behavior, $enabled)
     {
-        $query = $this->configureQuery();
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
         $statement = $this->sqlFactory->getSelectStatementForContentElements($table, $behavior, $enabled);
         $query->statement($statement);
         $uids = array();
-        $rows = $query->execute();
+        $rows = $query->execute(true);
         foreach ($rows as $row) {
             $uids[] = $row['uid'];
         }
         return $uids;
-    }
-
-    /**
-     * @return Tx_Extbase_Persistence_Query
-     */
-    private function configureQuery()
-    {
-        /** @var Tx_Extbase_Persistence_Query $query */
-        $query = $this->createQuery();
-        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
-        $query->getQuerySettings()->setReturnRawQueryResult(true);
-        return $query;
     }
 }

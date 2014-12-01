@@ -67,10 +67,15 @@ class Tx_FeatureFlag_System_Db_SqlFactory
 
     /**
      * @param string $table
+     * @param array $uids
+     * @param boolean $isVisible
      * @return string
      */
-    public function getUpdateStatementForContentElements($table)
+    public function getUpdateStatementForContentElements($table, array $uids, $isVisible)
     {
-        return "UPDATE " . mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table) . " SET hidden = ? WHERE uid IN ?;";
+        $sql  = 'UPDATE ' . mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table);
+        $sql .= ' SET hidden = ' . ($isVisible === true ? 0 : 1);
+        $sql .= ' WHERE uid IN (' . implode(',', $uids) . ');';
+        return $sql;
     }
 }
