@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoemedia.de>
+ *  (c) 2013 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -27,10 +27,9 @@
 /**
  * @package FeatureFlag
  * @subpackage Tests_System_Db
- * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @author Matthias Gutjahr <matthias.gutjahr@aoemedia.de>
+ * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_System_Db_SqlFactoryTest extends Tx_Phpunit_TestCase
+class Tx_FeatureFlag_System_Db_SqlFactoryTest extends Tx_FeatureFlag_Tests_BaseTest
 {
     /**
      * @var Tx_FeatureFlag_System_Db_SqlFactory

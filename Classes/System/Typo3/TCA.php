@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoemedia.de>
+ *  (c) 2013 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -27,8 +27,7 @@
 /**
  * @package FeatureFlag
  * @subpackage System_Typo3
- * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @author Matthias Gutjahr <matthias.gutjahr@aoemedia.de>
+ * @author Kevin Schu <kevin.schu@aoe.com>
  */
 class Tx_FeatureFlag_System_Typo3_TCA
 {
@@ -69,20 +68,18 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderSelectForFlag(array $PA, t3lib_TCEforms $fob)
     {
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid(
-            $PA['row']['uid'],
-            $PA['table']
-        );
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
+
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         $html .= '<option value="0"></option>';
         foreach ($this->getFeatureFlagRepository()->findAll() as $featureFlag) {
             /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
             $selected = '';
-            if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping && $activeMapping->getFeatureFlag(
-                )->getUid() === $featureFlag->getUid()
+            if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping &&
+                $activeMapping->getFeatureFlag()->getUid() === $featureFlag->getUid()
             ) {
-                $selected = ' selected';
+                $selected = ' selected="selected"';
             }
             $value = $featureFlag->getUid();
             $label = $featureFlag->getDescription();
@@ -94,57 +91,42 @@ class Tx_FeatureFlag_System_Typo3_TCA
 
     /**
      * @param array $PA
-     * @param t3lib_TCEforms $fob
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fob
      * @return string
      */
-    public function renderInfo(array $PA, t3lib_TCEforms $fob)
+    public function renderInfo(array $PA, \TYPO3\CMS\Backend\Form\FormEngine $fob)
     {
         return $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text');
     }
 
     /**
      * @param array $PA
-     * @param t3lib_TCEforms $fob
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fob
      * @return string
      */
-    public function renderSelectForBehavior(array $PA, t3lib_TCEforms $fob)
+    public function renderSelectForBehavior(array $PA, \TYPO3\CMS\Backend\Form\FormEngine $fob)
     {
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid(
-            $PA['row']['uid'],
-            $PA['table']
-        );
+        // check, which behavior is selected
+        $isBehaviorHideSelected = false;
+        $isBehaviorShowSelected = false;
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
+        if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+            if ($activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_HIDE) {
+                $isBehaviorHideSelected = true;
+            } elseif ($activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_SHOW) {
+                $isBehaviorShowSelected = true;
+            }
+        }
+
+        // build select-box
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
-        if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping && $activeMapping->getBehavior(
-            ) === Tx_FeatureFlag_Service::BEHAVIOR_HIDE
-        ) {
-            $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '" selected>' .
-                $fob->sL(
-                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide'
-                )
-                . '</option>';
-        } else {
-            $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '">' .
-                $fob->sL(
-                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide'
-                )
-                . '</option>';
-        }
-        if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping && $activeMapping->getBehavior(
-            ) === Tx_FeatureFlag_Service::BEHAVIOR_SHOW
-        ) {
-            $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '" selected>' .
-                $fob->sL(
-                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show'
-                )
-                . '</option>';
-        } else {
-            $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '">' .
-                $fob->sL(
-                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show'
-                )
-                . '</option>';
-        }
+        $html .= '<option value="'.Tx_FeatureFlag_Service::BEHAVIOR_HIDE.'"'. ($isBehaviorHideSelected ? ' selected="selected"' : '') .'>';
+        $html .= $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide');
+        $html .= '</option>';
+        $html .= '<option value="'.Tx_FeatureFlag_Service::BEHAVIOR_SHOW.'"'. ($isBehaviorShowSelected ? ' selected="selected"' : '') .'>';
+        $html .= $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show');
+        $html .= '</option>';
         $html .= '</select>';
         return $html;
     }
@@ -158,11 +140,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, t3lib_TCEmain &$tceMain)
     {
-        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(
-                self::FIELD_FLAG,
-                $incomingFieldArray
-            )
-        ) {
+        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG, $incomingFieldArray)) {
             $pid = $tceMain->getPID($table, $id);
             $this->updateMapping(
                 $table,
@@ -188,10 +166,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
             return;
         }
         $mappings = $this->getMappingRepository()->findAllByForeignTableNameAndUid($id, $table);
-        if (false === is_array(
-                $mappings
-            ) && false === ($mappings instanceof Tx_Extbase_Persistence_QueryResultInterface)
-        ) {
+        if (false === is_array($mappings) && false === ($mappings instanceof Tx_Extbase_Persistence_QueryResultInterface)) {
             return;
         }
         foreach ($mappings as $mapping) {
@@ -285,10 +260,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
         /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
         $featureFlag = $this->getFeatureFlagRepository()->findByUid($uid);
         if (false === ($featureFlag instanceof Tx_FeatureFlag_Domain_Model_FeatureFlag)) {
-            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound(
-                'Feature Flag not found by uid: "' . $uid . '"',
-                1384340431
-            );
+            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found by uid: "' . $uid . '"', 1384340431);
         }
         return $featureFlag;
     }
@@ -315,7 +287,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
     protected function getObjectManager()
     {
         if (false === ($this->objectManager instanceof Tx_Extbase_Object_ObjectManager)) {
-            $this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extbase_Object_ObjectManager');
         }
         return $this->objectManager;
     }

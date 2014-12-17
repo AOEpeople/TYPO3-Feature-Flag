@@ -10,7 +10,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_FeatureFlag_
 );
 
 if (TYPO3_MODE == 'BE') {
-    $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array(
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array(
         'EXT:' . $_EXTKEY . '/Classes/System/Typo3/Cli.php',
         '_CLI_feature_flag'
     );

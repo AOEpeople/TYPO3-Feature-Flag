@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoemedia.de>
+ *  (c) 2013 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -27,10 +27,9 @@
 /**
  * @package FeatureFlag
  * @subpackage System_Typo3_Task
- * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @author Matthias Gutjahr <matthias.gutjahr@aoemedia.de>
+ * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends tx_scheduler_Task
+class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
     /**
      * @return boolean
@@ -64,6 +63,6 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends tx_scheduler_Task
      */
     private function getObjectManager()
     {
-        return t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extbase_Object_ObjectManager');
     }
 }

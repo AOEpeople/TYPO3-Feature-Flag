@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoemedia.de>
+ *  (c) 2013 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -27,10 +27,9 @@
 /**
  * @package FeatureFlag
  * @subpackage Domain_Model
- * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @author Matthias Gutjahr <matthias.gutjahr@aoemedia.de>
+ * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_Domain_Model_FeatureFlag extends Tx_Extbase_DomainObject_AbstractEntity
+class Tx_FeatureFlag_Domain_Model_FeatureFlag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /**
      * @var string

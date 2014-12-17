@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoemedia.de>
+ *  (c) 2013 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -31,10 +31,9 @@ if (!defined('TYPO3_cliMode')) {
 /**
  * @package FeatureFlag
  * @subpackage System_Typo3
- * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @author Matthias Gutjahr <matthias.gutjahr@aoemedia.de>
+ * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_System_Typo3_Cli extends t3lib_cli
+class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
 {
     /**
      * @var string
@@ -54,11 +53,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends t3lib_cli
      */
     public function __construct()
     {
-        if (version_compare(TYPO3_version, '4.6.0', '>=')) {
-            parent::__construct();
-        } else {
-            parent::t3lib_cli();
-        }
+        parent::__construct();
         $this->cli_options = array_merge($this->cli_options, array());
         $this->cli_help = array_merge(
             $this->cli_help,
@@ -67,7 +62,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends t3lib_cli
                 'synopsis' => $this->extKey . ' command',
                 'description' => 'This script can flag all configured tables by feature flags.',
                 'examples' => 'typo3/cli_dispatch.phpsh ' . $this->extKey . ' [flagEntries]',
-                'author' => '(c) 2013 AOE media GmbH <dev@aoemedia.de>',
+                'author' => '(c) 2013 AOE GmbH <dev@aoe.com>',
             )
         );
         $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
@@ -118,7 +113,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends t3lib_cli
     private function processScheduler()
     {
         $MCONF['name'] = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'][1];
-        include(t3lib_div::getFileAbsFileName(
+        include(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'][0]
         ));
     }
@@ -128,7 +123,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends t3lib_cli
      *
      * @return boolean
      */
-    private function schedulerIsInstalled()
+    private function isSchedulerInstalled()
     {
         return is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler']);
     }
@@ -137,7 +132,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends t3lib_cli
      */
     private function flagEntries()
     {
-        if ($this->schedulerIsInstalled()) {
+        if ($this->isSchedulerInstalled()) {
             // set tasks (which updates the caches) to 1 (than the tasks will be executed the next time)
             $sqlFrom = 'tx_scheduler_task';
             $sqlWhere = 'classname = "Tx_FeatureFlag_System_Typo3_Task_FlagEntries"';
@@ -149,5 +144,5 @@ class Tx_FeatureFlag_System_Typo3_Cli extends t3lib_cli
 }
 
 /** @var Tx_FeatureFlag_System_Typo3_Cli $cli */
-$cli = t3lib_div::makeInstance('Tx_FeatureFlag_System_Typo3_Cli');
+$cli = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_FeatureFlag_System_Typo3_Cli');
 exit($cli->cli_main($_SERVER['argv']));

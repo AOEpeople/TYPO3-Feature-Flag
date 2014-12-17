@@ -1,5 +1,5 @@
 <?php
-$extensionPath = t3lib_extMgm::extPath('feature_flag');
+$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('feature_flag');
 $extensionClassesPath = $extensionPath . 'Classes/';
 return array(
     'tx_featureflag_domain_model_featureflag' => $extensionClassesPath . 'Domain/Model/FeatureFlag.php',

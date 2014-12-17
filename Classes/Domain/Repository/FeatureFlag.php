@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoemedia.de>
+ *  (c) 2013 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -27,10 +27,9 @@
 /**
  * @package FeatureFlag
  * @subpackage Domain_Repository
- * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @author Matthias Gutjahr <matthias.gutjahr@aoemedia.de>
+ * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistence_Repository
+class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     /**
      * @var Tx_FeatureFlag_System_Db_SqlFactory
@@ -43,7 +42,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Tx_Extbase_Persistenc
      */
     public function __construct()
     {
-        $objectManager = t3lib_div::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         parent::__construct($objectManager);
     }
 

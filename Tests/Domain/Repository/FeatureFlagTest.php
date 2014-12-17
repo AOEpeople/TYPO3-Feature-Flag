@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoemedia.de>
+ *  (c) 2013 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -27,10 +27,9 @@
 /**
  * @package FeatureFlag
  * @subpackage Tests_Domain_Repository
- * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @author Matthias Gutjahr <matthias.gutjahr@aoemedia.de>
+ * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_Domain_Repository_FeatureFlagTest extends Tx_Phpunit_TestCase
+class Tx_FeatureFlag_Domain_Repository_FeatureFlagTest extends Tx_FeatureFlag_Tests_BaseTest
 {
     /**
      * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
@@ -49,23 +48,23 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlagTest extends Tx_Phpunit_TestCa
         );
         $sqlFactory->expects($this->exactly(4))->method('getSelectStatementForContentElements');
 
-        $mockQomFactory = $this->getMock('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory');
         $mockQuerySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings');
+        $mockQuerySettings->expects($this->any())->method('setIgnoreEnableFields')->will($this->returnValue($mockQuerySettings));
+        $mockQuerySettings->expects($this->any())->method('setIncludeDeleted')->will($this->returnValue($mockQuerySettings));
+
         $mockQuery = $this->getMock('Tx_Extbase_Persistence_Query', array('execute', 'getQuerySettings'));
         $mockQuery->expects($this->any())->method('execute')->will($this->returnValue(array()));
         $mockQuery->expects($this->any())->method('getQuerySettings')->will($this->returnValue($mockQuerySettings));
-        $mockQuery->injectQomFactory($mockQomFactory);
+        $this->inject($mockQuery, 'qomFactory', $this->getMock('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory'));
 
-        $mockQueryFactory = $this->getMock('Tx_Extbase_Persistence_QueryFactory', array('create'));
-        $mockQueryFactory->expects($this->any())->method('create')->will($this->returnValue($mockQuery));
+        $mockPersistenceManager = $this->getMock('\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('createQueryForType'));
+        $mockPersistenceManager->expects($this->any())->method('createQueryForType')->will($this->returnValue($mockQuery));
 
         $mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager', array('get'));
-        $mockObjectManager->expects($this->once())->method('get')->with('Tx_FeatureFlag_System_Db_SqlFactory')->will(
-            $this->returnValue($sqlFactory)
-        );
 
         $this->featureFlag = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($mockObjectManager);
-        $this->featureFlag->injectQueryFactory($mockQueryFactory);
+        $this->inject($this->featureFlag, 'persistenceManager', $mockPersistenceManager);
+        $this->inject($this->featureFlag, 'sqlFactory', $sqlFactory);
     }
 
     /**
