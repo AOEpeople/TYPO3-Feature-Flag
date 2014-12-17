@@ -107,18 +107,6 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
     }
 
     /**
-     * include scheduler-cli-script (so the scheduler-cli will be processed)
-     * @return void
-     */
-    private function processScheduler()
-    {
-        $MCONF['name'] = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'][1];
-        include(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'][0]
-        ));
-    }
-
-    /**
      * check if scheduler is installed
      *
      * @return boolean
@@ -129,16 +117,30 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
     }
 
     /**
+     * @throws RuntimeException
      */
     private function flagEntries()
     {
         if ($this->isSchedulerInstalled()) {
-            // set tasks (which updates the caches) to 1 (than the tasks will be executed the next time)
-            $sqlFrom = 'tx_scheduler_task';
-            $sqlWhere = 'classname = "Tx_FeatureFlag_System_Typo3_Task_FlagEntries"';
-            $sqlValues = array('nextexecution' => 1, 'disable' => 0);
-            echo $GLOBALS['TYPO3_DB']->exec_UPDATEquery($sqlFrom, $sqlWhere, $sqlValues);
-            $this->processScheduler();
+            /* @var $scheduler \TYPO3\CMS\Scheduler\Scheduler */
+            $scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
+
+            $result = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+                'uid',
+                'tx_scheduler_task',
+                'classname = "Tx_FeatureFlag_System_Typo3_Task_FlagEntries"'
+            );
+
+            if (is_array($result)) {
+                foreach ($result as $row) {
+                    $task = $scheduler->fetchTask($row['uid']);
+                    if ($scheduler->isValidTaskObject($task)) {
+                        $scheduler->executeTask($task);
+                    } else {
+                        throw new RuntimeException('task-object of feature-flag-task with uid "' . $row['uid'] . '" is not valid!');
+                    }
+                }
+            }
         }
     }
 }
