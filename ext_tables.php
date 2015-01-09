@@ -34,8 +34,7 @@ if (isset ($config['tables'])) {
                         'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelectForBehavior',
                     )
                 )
-            ),
-            1
+            )
         );
         $TCA[$table]['palettes']['tx_featureflag'] = array('showitem' => 'tx_featureflag_flag,tx_featureflag_behavior');
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
