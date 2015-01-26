@@ -52,8 +52,8 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
      */
     public function initializeObject()
     {
-        /** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
-        $defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
+        /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
+        $defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $defaultQuerySettings->setRespectStoragePage(false);
         $defaultQuerySettings->setRespectSysLanguage(false);
         $defaultQuerySettings->setIgnoreEnableFields(false)->setIncludeDeleted(false);
@@ -73,7 +73,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     /**
      * @param $foreignTableUid
      * @param $foreignTableName
-     * @return Tx_Extbase_Persistence_QueryResultInterface
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
     public function findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
     {

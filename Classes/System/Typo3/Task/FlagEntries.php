@@ -59,10 +59,10 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends \TYPO3\CMS\Scheduler\
     }
 
     /**
-     * @return Tx_Extbase_Object_ObjectManager
+     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     private function getObjectManager()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extbase_Object_ObjectManager');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
     }
 }

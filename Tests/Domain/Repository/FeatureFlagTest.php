@@ -48,19 +48,19 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlagTest extends Tx_FeatureFlag_Te
         );
         $sqlFactory->expects($this->exactly(4))->method('getSelectStatementForContentElements');
 
-        $mockQuerySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings');
+        $mockQuerySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $mockQuerySettings->expects($this->any())->method('setIgnoreEnableFields')->will($this->returnValue($mockQuerySettings));
         $mockQuerySettings->expects($this->any())->method('setIncludeDeleted')->will($this->returnValue($mockQuerySettings));
 
-        $mockQuery = $this->getMock('Tx_Extbase_Persistence_Query', array('execute', 'getQuerySettings'));
+        $mockQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query', array('execute', 'getQuerySettings'));
         $mockQuery->expects($this->any())->method('execute')->will($this->returnValue(array()));
         $mockQuery->expects($this->any())->method('getQuerySettings')->will($this->returnValue($mockQuerySettings));
-        $this->inject($mockQuery, 'qomFactory', $this->getMock('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory'));
+        $this->inject($mockQuery, 'qomFactory', $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory'));
 
-        $mockPersistenceManager = $this->getMock('\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('createQueryForType'));
+        $mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager', array('createQueryForType'));
         $mockPersistenceManager->expects($this->any())->method('createQueryForType')->will($this->returnValue($mockQuery));
 
-        $mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager', array('get'));
+        $mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', array('get'));
 
         $this->featureFlag = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($mockObjectManager);
         $this->inject($this->featureFlag, 'persistenceManager', $mockPersistenceManager);

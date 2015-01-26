@@ -36,8 +36,8 @@ class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_FeatureFlag_Tests_
      */
     public function findOneByForeignTableNameAndUid()
     {
-        $query = $this->getMock('Tx_Extbase_Persistence_Query', array('execute', 'matching', 'logicalAnd', 'equals'));
-        $result = $this->getMock('Tx_Extbase_Persistence_QueryResult', array('getFirst'), array($query), '', true);
+        $query = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query', array('execute', 'matching', 'logicalAnd', 'equals'));
+        $result = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('getFirst'), array($query), '', true);
         $result->expects($this->once())->method('getFirst');
         $query->expects($this->once())->method('execute')->will($this->returnValue($result));
         $query->expects($this->once())->method('matching');
@@ -61,8 +61,8 @@ class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_FeatureFlag_Tests_
      */
     public function findAllByForeignTableNameAndUid()
     {
-        $query = $this->getMock('Tx_Extbase_Persistence_Query', array('execute', 'matching', 'logicalAnd', 'equals'));
-        $result = $this->getMock('Tx_Extbase_Persistence_QueryResult', array('getFirst'), array($query), '', true);
+        $query = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query', array('execute', 'matching', 'logicalAnd', 'equals'));
+        $result = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('getFirst'), array($query), '', true);
         $result->expects($this->never())->method('getFirst');
         $query->expects($this->once())->method('execute')->will($this->returnValue($result));
         $query->expects($this->once())->method('matching');

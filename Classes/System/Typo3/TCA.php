@@ -47,26 +47,26 @@ class Tx_FeatureFlag_System_Typo3_TCA
     protected $featureFlagRepository;
 
     /**
-     * @var Tx_Extbase_Object_ObjectManager
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     protected $objectManager;
 
     /**
-     * @var Tx_Extbase_Persistence_Manager
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
      */
     protected $persistenceManager;
 
     /**
-     * @var Tx_Extbase_Persistence_QueryResultInterface
+     * @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
     protected static $hashedMappings;
 
     /**
      * @param array $PA
-     * @param t3lib_TCEforms $fob
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fob
      * @return string
      */
-    public function renderSelectForFlag(array $PA, t3lib_TCEforms $fob)
+    public function renderSelectForFlag(array $PA, \TYPO3\CMS\Backend\Form\FormEngine $fob)
     {
         $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
 
@@ -136,9 +136,9 @@ class Tx_FeatureFlag_System_Typo3_TCA
      * @param array $incomingFieldArray
      * @param string $table
      * @param integer $id
-     * @param t3lib_tcemain $tceMain
+     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
      */
-    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, t3lib_TCEmain &$tceMain)
+    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$tceMain)
     {
         if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG, $incomingFieldArray)) {
             $pid = $tceMain->getPID($table, $id);
@@ -166,7 +166,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
             return;
         }
         $mappings = $this->getMappingRepository()->findAllByForeignTableNameAndUid($id, $table);
-        if (false === is_array($mappings) && false === ($mappings instanceof Tx_Extbase_Persistence_QueryResultInterface)) {
+        if (false === is_array($mappings) && false === ($mappings instanceof \TYPO3\CMS\Extbase\Persistence\QueryResultInterface)) {
             return;
         }
         foreach ($mappings as $mapping) {
@@ -282,23 +282,23 @@ class Tx_FeatureFlag_System_Typo3_TCA
     }
 
     /**
-     * @return Tx_Extbase_Object_ObjectManager
+     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     protected function getObjectManager()
     {
-        if (false === ($this->objectManager instanceof Tx_Extbase_Object_ObjectManager)) {
-            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Extbase_Object_ObjectManager');
+        if (false === ($this->objectManager instanceof \TYPO3\CMS\Extbase\Object\ObjectManager)) {
+            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         }
         return $this->objectManager;
     }
 
     /**
-     * @return Tx_Extbase_Persistence_Manager
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
      */
     protected function getPersistenceManager()
     {
-        if (false === ($this->persistenceManager instanceof Tx_Extbase_Persistence_Manager)) {
-            $this->persistenceManager = $this->getObjectManager()->get('Tx_Extbase_Persistence_Manager');
+        if (false === ($this->persistenceManager instanceof \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager)) {
+            $this->persistenceManager = $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
         }
         return $this->persistenceManager;
     }

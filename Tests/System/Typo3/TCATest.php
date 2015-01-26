@@ -80,7 +80,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_BaseTest
         $PA['itemFormElID'] = 'itemFormElID';
         $PA['itemFormElName'] = 'itemFormElName';
 
-        $content = $this->tca->renderSelectForFlag($PA, $this->getMock('t3lib_TCEforms'));
+        $content = $this->tca->renderSelectForFlag($PA, $this->getMock('TYPO3\\CMS\\Backend\\Form\\FormEngine'));
 
         $this->assertContains('<option value="0"></option>', $content);
         $this->assertContains('<option value="111">flag 1</option>', $content);
@@ -104,7 +104,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_BaseTest
         $this->tca->expects($this->once())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
         $this->tca->expects($this->never())->method('getFeatureFlagByUid');
 
-        $tceMainMock = $this->getMock('t3lib_TCEmain');
+        $tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
         $incomingFieldArray = array(
             'tx_featureflag_flag' => '0',
             'tx_featureflag_behavior' => '0',
@@ -128,7 +128,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_BaseTest
         $this->tca->expects($this->never())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
         $this->tca->expects($this->never())->method('getFeatureFlagByUid');
 
-        $tceMainMock = $this->getMock('t3lib_TCEmain');
+        $tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
         $incomingFieldArray = array(
             'hidden' => '0',
         );
@@ -150,7 +150,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_BaseTest
         $mappingRepository->expects($this->once())->method('update');
         $this->tca->expects($this->any())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
 
-        $tceMainMock = $this->getMock('t3lib_TCEmain');
+        $tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
         $incomingFieldArray = array(
             'tx_featureflag_flag' => '0',
             'tx_featureflag_behavior' => '0',
@@ -176,7 +176,7 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_BaseTest
         $this->tca->expects($this->any())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
         $this->tca->expects($this->any())->method('getFeatureFlagByUid')->will($this->returnValue($featureFlag));
 
-        $tceMainMock = $this->getMock('t3lib_TCEmain');
+        $tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
         $incomingFieldArray = array(
             'tx_featureflag_flag' => '4711',
             'tx_featureflag_behavior' => '0',
