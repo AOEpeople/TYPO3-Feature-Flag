@@ -66,7 +66,8 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_BaseTest
         $featureFlag->expects($this->any())->method('getUid')->will($this->returnValue(4711));
         $mapping = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping', array('getFeatureFlag'));
         $mapping->expects($this->any())->method('getFeatureFlag')->will($this->returnValue($featureFlag));
-        $mappingRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('findOneByForeignTableNameAndUid'));
+        $mappingRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping',
+            array('findOneByForeignTableNameAndUid'));
         $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->will($this->returnValue($mapping));
         $featureFlagRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findAll'));
         $featureFlagRepository->expects($this->once())->method('findAll')->will($this->returnValue($this->getListOfFeatureFlags()));

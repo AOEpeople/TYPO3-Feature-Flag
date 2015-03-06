@@ -51,7 +51,7 @@ class Tx_FeatureFlag_System_Db_SqlFactory
     {
         $escaptedTable = mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table);
 
-        $sql  = 'SELECT ' . $escaptedTable . '.uid';
+        $sql = 'SELECT ' . $escaptedTable . '.uid';
         $sql .= ' FROM ' . $escaptedTable . ',' . self::TABLE_MAPPING . ',' . self::TABLE_FLAGS;
         $sql .= ' WHERE ' . self::TABLE_MAPPING . '.feature_flag=' . self::TABLE_FLAGS . '.uid';
         $sql .= ' AND ' . $escaptedTable . '.uid=' . self::TABLE_MAPPING . '.foreign_table_uid';
@@ -72,7 +72,7 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getUpdateStatementForContentElements($table, array $uids, $isVisible)
     {
-        $sql  = 'UPDATE ' . mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table);
+        $sql = 'UPDATE ' . mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table);
         $sql .= ' SET hidden = ' . ($isVisible === true ? 0 : 1);
         $sql .= ' WHERE uid IN (' . implode(',', $uids) . ');';
         return $sql;

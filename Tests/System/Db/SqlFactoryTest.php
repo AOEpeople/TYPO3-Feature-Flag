@@ -69,7 +69,7 @@ class Tx_FeatureFlag_System_Db_SqlFactoryTest extends Tx_FeatureFlag_Tests_BaseT
     public function canCreateUpdateStatementForVisibleContentElements()
     {
         $expected = 'UPDATE my_table SET hidden = 0 WHERE uid IN (1,2);';
-        $actual = $this->sqlFactory->getUpdateStatementForContentElements('my_table', array(1,2), true);
+        $actual = $this->sqlFactory->getUpdateStatementForContentElements('my_table', array(1, 2), true);
         $this->assertEquals($expected, $actual);
     }
 
@@ -79,7 +79,7 @@ class Tx_FeatureFlag_System_Db_SqlFactoryTest extends Tx_FeatureFlag_Tests_BaseT
     public function canCreateUpdateStatementForInVisibleContentElements()
     {
         $expected = 'UPDATE my_table SET hidden = 1 WHERE uid IN (3,4);';
-        $actual = $this->sqlFactory->getUpdateStatementForContentElements('my_table', array(3,4), false);
+        $actual = $this->sqlFactory->getUpdateStatementForContentElements('my_table', array(3, 4), false);
         $this->assertEquals($expected, $actual);
     }
 }

@@ -36,8 +36,17 @@ class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_FeatureFlag_Tests_
      */
     public function findOneByForeignTableNameAndUid()
     {
-        $query = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query', array('execute', 'matching', 'logicalAnd', 'equals'));
-        $result = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('getFirst'), array($query), '', true);
+        $query = $this->getMock(
+            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query',
+            array('execute', 'matching', 'logicalAnd', 'equals')
+        );
+        $result = $this->getMock(
+            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
+            array('getFirst'),
+            array($query),
+            '',
+            true
+        );
         $result->expects($this->once())->method('getFirst');
         $query->expects($this->once())->method('execute')->will($this->returnValue($result));
         $query->expects($this->once())->method('matching');
@@ -59,10 +68,37 @@ class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_FeatureFlag_Tests_
     /**
      * @test
      */
+    public function shouldInitializeTypo3QuerySettings()
+    {
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
+        $defaultQuerySettings = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $defaultQuerySettings->setRespectStoragePage(false);
+        $defaultQuerySettings->setRespectSysLanguage(false);
+        $defaultQuerySettings->setIgnoreEnableFields(false)->setIncludeDeleted(false);
+        $repository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('setDefaultQuerySettings'));
+        $repository->expects($this->once())->method('setDefaultQuerySettings')->with($defaultQuerySettings);
+        /** @var Tx_FeatureFlag_Domain_Repository_Mapping $repository */
+        $repository->initializeObject();
+    }
+
+    /**
+     * @test
+     */
     public function findAllByForeignTableNameAndUid()
     {
-        $query = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query', array('execute', 'matching', 'logicalAnd', 'equals'));
-        $result = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('getFirst'), array($query), '', true);
+        $query = $this->getMock(
+            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query',
+            array('execute', 'matching', 'logicalAnd', 'equals')
+        );
+        $result = $this->getMock(
+            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
+            array('getFirst'),
+            array($query),
+            '',
+            true
+        );
         $result->expects($this->never())->method('getFirst');
         $query->expects($this->once())->method('execute')->will($this->returnValue($result));
         $query->expects($this->once())->method('matching');
@@ -79,5 +115,39 @@ class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_FeatureFlag_Tests_
         $repository->expects($this->once())->method('createQuery')->will($this->returnValue($query));
         /** @var Tx_FeatureFlag_Domain_Repository_Mapping $repository */
         $repository->findAllByForeignTableNameAndUid(4711, 'pages');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetHashedMappings()
+    {
+        $query = $this->getMock(
+            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query',
+            array('execute')
+        );
+        $query->expects($this->once())->method('execute')->will(
+            $this->returnValue(
+                array(
+                    array('foreign_table_uid' => 4711, 'foreign_table_name' => 4712),
+                    array('foreign_table_uid' => 4713, 'foreign_table_name' => 4714)
+                )
+            )
+        );
+        $repository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('createQuery'));
+        $repository->expects($this->once())->method('createQuery')->will($this->returnValue($query));
+
+        /** @var Tx_FeatureFlag_Domain_Repository_Mapping $repository */
+        $hashedMappings = $repository->getHashedMappings();
+
+        $this->assertCount(2, $hashedMappings);
+        $this->assertEquals(
+            '298c221dbf438dd5f1edab15fa791cbab1334c73',
+            $hashedMappings['298c221dbf438dd5f1edab15fa791cbab1334c73']
+        );
+        $this->assertEquals(
+            '7ef4f9c2d61ccca30b318cf97c1d0fdfe9d68645',
+            $hashedMappings['7ef4f9c2d61ccca30b318cf97c1d0fdfe9d68645']
+        );
     }
 }

@@ -109,4 +109,13 @@ class Tx_FeatureFlag_Domain_Model_MappingTest extends Tx_FeatureFlag_Tests_BaseT
         $this->mapping->setForeignTableUid(4711);
         $this->assertEquals($this->mapping->getForeignTableUid(), 4711);
     }
+
+    /**
+     * @test
+     */
+    public function behavior()
+    {
+        $this->mapping->setBehavior('foo');
+        $this->assertEquals($this->mapping->getBehavior(), 'foo');
+    }
 }

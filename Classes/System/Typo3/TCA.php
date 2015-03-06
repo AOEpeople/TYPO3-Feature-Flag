@@ -68,7 +68,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderSelectForFlag(array $PA, \TYPO3\CMS\Backend\Form\FormEngine $fob)
     {
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'],
+            $PA['table']);
 
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
@@ -109,7 +110,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
         // check, which behavior is selected
         $isBehaviorHideSelected = false;
         $isBehaviorShowSelected = false;
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'],
+            $PA['table']);
         if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
             if ($activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_HIDE) {
                 $isBehaviorHideSelected = true;
@@ -121,10 +123,10 @@ class Tx_FeatureFlag_System_Typo3_TCA
         // build select-box
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
-        $html .= '<option value="'.Tx_FeatureFlag_Service::BEHAVIOR_HIDE.'"'. ($isBehaviorHideSelected ? ' selected="selected"' : '') .'>';
+        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '"' . ($isBehaviorHideSelected ? ' selected="selected"' : '') . '>';
         $html .= $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide');
         $html .= '</option>';
-        $html .= '<option value="'.Tx_FeatureFlag_Service::BEHAVIOR_SHOW.'"'. ($isBehaviorShowSelected ? ' selected="selected"' : '') .'>';
+        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '"' . ($isBehaviorShowSelected ? ' selected="selected"' : '') . '>';
         $html .= $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show');
         $html .= '</option>';
         $html .= '</select>';
@@ -138,9 +140,15 @@ class Tx_FeatureFlag_System_Typo3_TCA
      * @param integer $id
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
      */
-    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$tceMain)
-    {
-        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG, $incomingFieldArray)) {
+    public function processDatamap_preProcessFieldArray(
+        &$incomingFieldArray,
+        $table,
+        $id,
+        \TYPO3\CMS\Core\DataHandling\DataHandler &$tceMain
+    ) {
+        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG,
+                $incomingFieldArray)
+        ) {
             $pid = $tceMain->getPID($table, $id);
             $this->updateMapping(
                 $table,
@@ -260,7 +268,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
         /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
         $featureFlag = $this->getFeatureFlagRepository()->findByUid($uid);
         if (false === ($featureFlag instanceof Tx_FeatureFlag_Domain_Model_FeatureFlag)) {
-            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found by uid: "' . $uid . '"', 1384340431);
+            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found by uid: "' . $uid . '"',
+                1384340431);
         }
         return $featureFlag;
     }
