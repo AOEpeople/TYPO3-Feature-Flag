@@ -36,32 +36,20 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends \TYPO3\CMS\Scheduler\
      */
     public function execute()
     {
-        foreach ($this->getConfiguration()->getTables() as $table) {
-            $this->getFeatureFlagRepository()->updateFeatureFlagStatusForTable($table);
+        /** @var Tx_FeatureFlag_Domain_Repository_FeatureFlag $repository */
+        $repository = $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
+        /** @var Tx_FeatureFlag_System_Typo3_Configuration $configuration */
+        $configuration = $this->getObjectManager()->get('Tx_FeatureFlag_System_Typo3_Configuration');
+        foreach ($configuration->getTables() as $table) {
+            $repository->updateFeatureFlagStatusForTable($table);
         }
         return true;
     }
 
     /**
-     * @return Tx_FeatureFlag_Domain_Repository_FeatureFlag
+     * @return \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
      */
-    protected function getFeatureFlagRepository()
-    {
-        return $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
-    }
-
-    /**
-     * @return Tx_FeatureFlag_System_Typo3_Configuration
-     */
-    protected function getConfiguration()
-    {
-        return $this->getObjectManager()->get('Tx_FeatureFlag_System_Typo3_Configuration');
-    }
-
-    /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    private function getObjectManager()
+    protected function getObjectManager()
     {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
     }

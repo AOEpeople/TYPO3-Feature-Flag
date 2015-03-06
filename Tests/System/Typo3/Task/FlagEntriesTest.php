@@ -32,20 +32,6 @@
 class Tx_FeatureFlag_System_Typo3_Task_FlagEntriesTest extends Tx_FeatureFlag_Tests_BaseTest
 {
     /**
-     * @var Tx_FeatureFlag_System_Typo3_Task_FlagEntries
-     */
-    protected $flagEntries;
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
-    protected function tearDown()
-    {
-        $this->flagEntries = null;
-    }
-
-    /**
      * @test
      */
     public function execute()
@@ -57,6 +43,7 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntriesTest extends Tx_FeatureFlag_Te
         $mockRepository->expects($this->exactly(2))->method('updateFeatureFlagStatusForTable')->with(
             $this->stringStartsWith('table')
         );
+
         $mockConfiguration = $this->getMock('Tx_FeatureFlag_System_Typo3_Configuration', array('getTables'));
         $mockConfiguration->expects($this->once())->method('getTables')->will(
             $this->returnValue(
@@ -66,16 +53,36 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntriesTest extends Tx_FeatureFlag_Te
                 )
             )
         );
-        $this->flagEntries = $this->getMock(
+
+        $flagEntries = $this->getMock(
             'Tx_FeatureFlag_System_Typo3_Task_FlagEntries',
-            array('getFeatureFlagRepository', 'getConfiguration')
+            array('getObjectManager')
         );
-        $this->flagEntries->expects($this->any())->method('getFeatureFlagRepository')->will(
-            $this->returnValue($mockRepository)
+
+        $objectManager = $this->getMock('\\TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager->expects($this->at(0))->method('get')->will($this->returnValue($mockRepository));
+        $objectManager->expects($this->at(1))->method('get')->will($this->returnValue($mockConfiguration));
+
+        $flagEntries->expects($this->any())->method('getObjectManager')->will(
+            $this->returnValue($objectManager)
         );
-        $this->flagEntries->expects($this->any())->method('getConfiguration')->will(
-            $this->returnValue($mockConfiguration)
+
+        /** @var Tx_FeatureFlag_System_Typo3_Task_FlagEntries $flagEntries */
+        $this->assertTrue($flagEntries->execute());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateObjectManager()
+    {
+        $flagEntries = new Tx_FeatureFlag_System_Typo3_Task_FlagEntries();
+        $reflection = new ReflectionClass($flagEntries);
+        $methodGetObjectManager = $reflection->getMethod('getObjectManager');
+        $methodGetObjectManager->setAccessible(true);
+        $this->assertInstanceOf(
+            '\\TYPO3\\CMS\\Extbase\\Object\\ObjectManager',
+            $methodGetObjectManager->invoke($flagEntries)
         );
-        $this->assertTrue($this->flagEntries->execute());
     }
 }
