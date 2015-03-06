@@ -115,7 +115,7 @@ class Tx_FeatureFlag_Domain_Model_MappingTest extends Tx_FeatureFlag_Tests_BaseT
      */
     public function behavior()
     {
-        $this->mapping->setBehavior('foo');
-        $this->assertEquals($this->mapping->getBehavior(), 'foo');
+        $this->mapping->setBehavior(1);
+        $this->assertEquals($this->mapping->getBehavior(), 1);
     }
 }
