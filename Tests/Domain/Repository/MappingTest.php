@@ -32,55 +32,63 @@
 class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_FeatureFlag_Tests_BaseTest
 {
     /**
-     * @test
+     * @var Tx_Phpunit_Framework
      */
-    public function findOneByForeignTableNameAndUid()
+    protected $testingFramework;
+
+    /**
+     * @var Tx_FeatureFlag_Domain_Repository_Mapping
+     */
+    protected $mappingRepository;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected $objectManager;
+
+    /**
+     * Set up testing framework
+     */
+    public function setUp()
     {
-        $query = $this->getMock(
-            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query',
-            array('execute', 'matching', 'logicalAnd', 'equals')
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            'TYPO3\CMS\Extbase\Object\ObjectManager'
         );
-        $result = $this->getMock(
-            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
-            array('getFirst'),
-            array($query),
-            '',
-            true
-        );
-        $result->expects($this->once())->method('getFirst');
-        $query->expects($this->once())->method('execute')->will($this->returnValue($result));
-        $query->expects($this->once())->method('matching');
-        $query->expects($this->once())->method('logicalAnd');
-        $query->expects($this->at(0))->method('equals')->with(
-            $this->equalTo('foreign_table_uid'),
-            $this->equalTo(4711)
-        );
-        $query->expects($this->at(1))->method('equals')->with(
-            $this->equalTo('foreign_table_name'),
-            $this->equalTo('pages')
-        );
-        $repository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('createQuery'));
-        $repository->expects($this->once())->method('createQuery')->will($this->returnValue($query));
-        /** @var Tx_FeatureFlag_Domain_Repository_Mapping $repository */
-        $repository->findOneByForeignTableNameAndUid(4711, 'pages');
+        $this->testingFramework = new Tx_Phpunit_Framework('tx_featureflag');
+        $this->mappingRepository = $this->objectManager->get('Tx_FeatureFlag_Domain_Repository_Mapping');
+    }
+
+    /**
+     * Clean up testing framework
+     */
+    public function tearDown()
+    {
+        $this->testingFramework->cleanUp();
     }
 
     /**
      * @test
      */
-    public function shouldInitializeTypo3QuerySettings()
+    public function findOneByForeignTableNameAndUid()
     {
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $defaultQuerySettings = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-        $defaultQuerySettings->setRespectStoragePage(false);
-        $defaultQuerySettings->setRespectSysLanguage(false);
-        $defaultQuerySettings->setIgnoreEnableFields(false)->setIncludeDeleted(false);
-        $repository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('setDefaultQuerySettings'));
-        $repository->expects($this->once())->method('setDefaultQuerySettings')->with($defaultQuerySettings);
-        /** @var Tx_FeatureFlag_Domain_Repository_Mapping $repository */
-        $repository->initializeObject();
+        $featureFlagId = $this->testingFramework->createRecord('tx_featureflag_domain_model_featureflag', array(
+            'description' => 'lorem ipsum',
+            'flag' => 'shouldHideElementForBehaviorHideAndEnabledFeatureFlag',
+            'enabled' => '0',
+        ));
+
+        $contentElementId = $this->testingFramework->createContentElement(0, array('hidden' => 0));
+
+        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
+            'feature_flag' => $featureFlagId,
+            'foreign_table_uid' => $contentElementId,
+            'foreign_table_name' => 'tt_content',
+            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
+        ));
+
+        $mapping = $this->mappingRepository->findOneByForeignTableNameAndUid($contentElementId, 'tt_content');
+
+        $this->assertInstanceOf('Tx_FeatureFlag_Domain_Model_Mapping', $mapping);
     }
 
     /**
@@ -88,33 +96,23 @@ class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_FeatureFlag_Tests_
      */
     public function findAllByForeignTableNameAndUid()
     {
-        $query = $this->getMock(
-            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query',
-            array('execute', 'matching', 'logicalAnd', 'equals')
-        );
-        $result = $this->getMock(
-            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult',
-            array('getFirst'),
-            array($query),
-            '',
-            true
-        );
-        $result->expects($this->never())->method('getFirst');
-        $query->expects($this->once())->method('execute')->will($this->returnValue($result));
-        $query->expects($this->once())->method('matching');
-        $query->expects($this->once())->method('logicalAnd');
-        $query->expects($this->at(0))->method('equals')->with(
-            $this->equalTo('foreign_table_uid'),
-            $this->equalTo(4711)
-        );
-        $query->expects($this->at(1))->method('equals')->with(
-            $this->equalTo('foreign_table_name'),
-            $this->equalTo('pages')
-        );
-        $repository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('createQuery'));
-        $repository->expects($this->once())->method('createQuery')->will($this->returnValue($query));
-        /** @var Tx_FeatureFlag_Domain_Repository_Mapping $repository */
-        $repository->findAllByForeignTableNameAndUid(4711, 'pages');
+        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
+            'feature_flag' => 4711,
+            'foreign_table_uid' => 4711,
+            'foreign_table_name' => 'tt_content',
+            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
+        ));
+
+        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
+            'feature_flag' => 4712,
+            'foreign_table_uid' => 4711,
+            'foreign_table_name' => 'tt_content',
+            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
+        ));
+
+        $mapping = $this->mappingRepository->findAllByForeignTableNameAndUid(4711, 'tt_content');
+
+        $this->assertCount(2, $mapping);
     }
 
     /**
@@ -122,32 +120,29 @@ class Tx_FeatureFlag_Domain_Repository_MappingTest extends Tx_FeatureFlag_Tests_
      */
     public function shouldGetHashedMappings()
     {
-        $query = $this->getMock(
-            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query',
-            array('execute')
-        );
-        $query->expects($this->once())->method('execute')->will(
-            $this->returnValue(
-                array(
-                    array('foreign_table_uid' => 4711, 'foreign_table_name' => 4712),
-                    array('foreign_table_uid' => 4713, 'foreign_table_name' => 4714)
-                )
-            )
-        );
-        $repository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping', array('createQuery'));
-        $repository->expects($this->once())->method('createQuery')->will($this->returnValue($query));
+        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
+            'feature_flag' => 4711,
+            'foreign_table_uid' => 4711,
+            'foreign_table_name' => 'tt_content',
+            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
+        ));
 
-        /** @var Tx_FeatureFlag_Domain_Repository_Mapping $repository */
-        $hashedMappings = $repository->getHashedMappings();
+        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
+            'feature_flag' => 4712,
+            'foreign_table_uid' => 4712,
+            'foreign_table_name' => 'tt_content',
+            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
+        ));
 
-        $this->assertCount(2, $hashedMappings);
+        $hashedMappings = $this->mappingRepository->getHashedMappings();
+
         $this->assertEquals(
-            '298c221dbf438dd5f1edab15fa791cbab1334c73',
-            $hashedMappings['298c221dbf438dd5f1edab15fa791cbab1334c73']
+            '35d83e54054892288a31e71e40d8394e76032697',
+            $hashedMappings['35d83e54054892288a31e71e40d8394e76032697']
         );
         $this->assertEquals(
-            '7ef4f9c2d61ccca30b318cf97c1d0fdfe9d68645',
-            $hashedMappings['7ef4f9c2d61ccca30b318cf97c1d0fdfe9d68645']
+            '39ecd17e510c064c9ea06162aaf58753b071177d',
+            $hashedMappings['39ecd17e510c064c9ea06162aaf58753b071177d']
         );
     }
 }

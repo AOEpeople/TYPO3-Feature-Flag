@@ -33,12 +33,6 @@
 class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     /**
-     * @var Tx_FeatureFlag_System_Db_SqlFactory
-     * @inject
-     */
-    private $sqlFactory;
-
-    /**
      *
      */
     public function __construct()
