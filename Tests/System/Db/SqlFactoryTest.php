@@ -58,15 +58,15 @@ class Tx_FeatureFlag_System_Db_SqlFactoryTest extends Tx_FeatureFlag_Tests_BaseT
      */
     public function canCreateSelectStatementForContentElements()
     {
-        $expected = 'SELECT my_table.uid 
-        FROM my_table,tx_featureflag_domain_model_mapping,tx_featureflag_domain_model_featureflag 
-        WHERE tx_featureflag_domain_model_mapping.feature_flag=tx_featureflag_domain_model_featureflag.uid 
-        AND my_table.uid=tx_featureflag_domain_model_mapping.foreign_table_uid 
-        AND tx_featureflag_domain_model_featureflag.enabled=1 
-        AND tx_featureflag_domain_model_featureflag.deleted=0 
-        AND tx_featureflag_domain_model_featureflag.hidden=0 
-        AND tx_featureflag_domain_model_mapping.foreign_table_name="my_table" 
-        AND tx_featureflag_domain_model_mapping.behavior=0';
+        $expected = 'SELECT my_table.uid '.
+            'FROM my_table,tx_featureflag_domain_model_mapping,tx_featureflag_domain_model_featureflag '.
+        'WHERE tx_featureflag_domain_model_mapping.feature_flag=tx_featureflag_domain_model_featureflag.uid '.
+        'AND my_table.uid=tx_featureflag_domain_model_mapping.foreign_table_uid '.
+        'AND tx_featureflag_domain_model_featureflag.enabled=1 '.
+        'AND tx_featureflag_domain_model_featureflag.deleted=0 '.
+        'AND tx_featureflag_domain_model_featureflag.hidden=0 '.
+        'AND tx_featureflag_domain_model_mapping.foreign_table_name="my_table" '.
+        'AND tx_featureflag_domain_model_mapping.behavior=0';
         $actual = $this->sqlFactory->getSelectStatementForContentElements('my_table', '0', '1');
         $this->assertEquals($expected, $actual);
     }
