@@ -198,4 +198,3 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlagTest extends Tx_FeatureFlag_Te
         return Tx_Phpunit_Service_Database::select('uid,hidden', 'tt_content', 'uid = ' . $id);
     }
 }
-
