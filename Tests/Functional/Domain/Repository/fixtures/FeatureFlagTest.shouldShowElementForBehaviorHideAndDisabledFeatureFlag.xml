@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<tx_featureflag_domain_model_featureflag>
+		<uid>4711</uid>
+		<description>lorem ipsum</description>
+		<flag>shouldHideElementForBehaviorHideAndEnabledFeatureFlag</flag>
+		<enabled>0</enabled>
+	</tx_featureflag_domain_model_featureflag>
+
+	<tt_content>
+		<uid>4712</uid>
+		<pid>lorem ipsum</pid>
+		<hidden>1</hidden>
+	</tt_content>
+
+	<tx_featureflag_domain_model_mapping>
+		<feature_flag>4711</feature_flag>
+		<foreign_table_uid>4712</foreign_table_uid>
+		<foreign_table_name>tt_content</foreign_table_name>
+		<behavior>0</behavior>
+	</tx_featureflag_domain_model_mapping>
+</dataset>

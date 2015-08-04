@@ -1,6 +1,6 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-    die ('Access denied.');
+    die('Access denied.');
 }
 
 $TCA['tx_featureflag_domain_model_featureflag'] = array(
@@ -17,7 +17,8 @@ $TCA['tx_featureflag_domain_model_featureflag'] = array(
     'columns' => array(
         'description' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_featureflag.description',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/'
+                . 'locallang_db.xml:tx_featureflag_domain_model_featureflag.description',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -26,7 +27,8 @@ $TCA['tx_featureflag_domain_model_featureflag'] = array(
         ),
         'flag' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_featureflag.flag',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
+                'locallang_db.xml:tx_featureflag_domain_model_featureflag.flag',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -35,7 +37,8 @@ $TCA['tx_featureflag_domain_model_featureflag'] = array(
         ),
         'enabled' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_featureflag.enabled',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
+                'locallang_db.xml:tx_featureflag_domain_model_featureflag.enabled',
             'config' => array(
                 'type' => 'check',
             ),

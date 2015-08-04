@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,9 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-if (!defined('TYPO3_cliMode')) {
-    die ('Access denied: CLI only.');
-}
 
 /**
  * @package FeatureFlag
@@ -54,6 +50,9 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
     public function __construct()
     {
         parent::__construct();
+        if (!defined('TYPO3_cliMode')) {
+            die('Access denied: CLI only.');
+        }
         $this->cli_options = array_merge($this->cli_options, array());
         $this->cli_help = array_merge(
             $this->cli_help,
@@ -72,7 +71,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
      * @param $argv
      * @return int
      */
-    public function cli_main($argv)
+    public function main($argv)
     {
         $this->init();
         try {
@@ -87,6 +86,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
         } catch (Exception $e) {
             return 1;
         }
+
         return 0;
     }
 
@@ -137,7 +137,9 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
                     if ($scheduler->isValidTaskObject($task)) {
                         $scheduler->executeTask($task);
                     } else {
-                        throw new RuntimeException('task-object of feature-flag-task with uid "' . $row['uid'] . '" is not valid!');
+                        throw new RuntimeException(
+                            'task-object of feature-flag-task with uid "' . $row['uid'] . '" is not valid!'
+                        );
                     }
                 }
             }
@@ -147,4 +149,4 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
 
 /** @var Tx_FeatureFlag_System_Typo3_Cli $cli */
 $cli = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_FeatureFlag_System_Typo3_Cli');
-exit($cli->cli_main($_SERVER['argv']));
+exit($cli->main($_SERVER['argv']));

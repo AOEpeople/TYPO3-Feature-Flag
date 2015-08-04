@@ -29,8 +29,15 @@
  * @subpackage Tests_System_Db
  * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_System_Db_SqlFactoryTest extends Tx_FeatureFlag_Tests_BaseTest
+class Tx_FeatureFlag_Tests_Unit_System_Db_SqlFactoryTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 {
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = array(
+        'typo3conf/ext/feature_flag'
+    );
+
     /**
      * @var Tx_FeatureFlag_System_Db_SqlFactory
      */
@@ -39,8 +46,9 @@ class Tx_FeatureFlag_System_Db_SqlFactoryTest extends Tx_FeatureFlag_Tests_BaseT
     /**
      * Set up
      */
-    protected function setUp()
+    public function setUp()
     {
+        parent::setUp();
         $this->sqlFactory = new Tx_FeatureFlag_System_Db_SqlFactory();
     }
 
@@ -50,6 +58,7 @@ class Tx_FeatureFlag_System_Db_SqlFactoryTest extends Tx_FeatureFlag_Tests_BaseT
      */
     protected function tearDown()
     {
+        parent::tearDown();
         unset($this->sqlFactory);
     }
 

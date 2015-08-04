@@ -29,7 +29,7 @@
  * @subpackage Tests_Domain_Model
  * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_Domain_Model_MappingTest extends Tx_FeatureFlag_Tests_BaseTest
+class Tx_FeatureFlag_Tests_Unit_Domain_Model_MappingTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
 {
     /**
      * @var Tx_FeatureFlag_Domain_Model_Mapping
