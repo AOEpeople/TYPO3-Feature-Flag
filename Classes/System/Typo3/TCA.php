@@ -151,6 +151,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      * @param string $table
      * @param integer $id
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
+     * @codingStandardsIgnoreStart
      */
     public function processDatamap_preProcessFieldArray(
         &$incomingFieldArray,
@@ -158,6 +159,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
         $id,
         \TYPO3\CMS\Core\DataHandling\DataHandler &$tceMain
     ) {
+        // @codingStandardsIgnoreEnd
         if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) &&
             array_key_exists(self::FIELD_FLAG, $incomingFieldArray)
         ) {
@@ -179,9 +181,11 @@ class Tx_FeatureFlag_System_Typo3_TCA
      * @param string $command
      * @param string $table
      * @param integer $id
+     * @codingStandardsIgnoreStart
      */
     public function processCmdmap_postProcess($command, $table, $id)
     {
+        // @codingStandardsIgnoreEnd
         if ($command !== 'delete') {
             return;
         }
