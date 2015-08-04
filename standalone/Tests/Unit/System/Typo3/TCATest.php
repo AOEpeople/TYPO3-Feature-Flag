@@ -29,7 +29,7 @@
  * @subpackage Tests_System_Typo3
  * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_BaseTest
+class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_Unit_BaseTest
 {
     /**
      * @var PHPUnit_Framework_MockObject_MockObject
@@ -44,8 +44,13 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_BaseTest
     {
         $this->tca = $this->getMock(
             'Tx_FeatureFlag_System_Typo3_TCA',
-            array('getMappingRepository', 'getFeatureFlagRepository', 'getFeatureFlagByUid')
+            array('getMappingRepository', 'getFeatureFlagRepository', 'getFeatureFlagByUid', 'getPersistenceManager')
         );
+        $persistenceManager = $this->getMockBuilder('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager')
+            ->disableOriginalConstructor()
+            ->setMethods(array('persistAll'))
+            ->getMock();
+        $this->tca->expects($this->any())->method('getPersistenceManager')->will($this->returnValue($persistenceManager));
     }
 
     /**
@@ -81,7 +86,10 @@ class Tx_FeatureFlag_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_BaseTest
         $PA['itemFormElID'] = 'itemFormElID';
         $PA['itemFormElName'] = 'itemFormElName';
 
-        $content = $this->tca->renderSelectForFlag($PA, $this->getMock('TYPO3\\CMS\\Backend\\Form\\FormEngine'));
+        $formEngine = $this->getMockBuilder('TYPO3\\CMS\\Backend\\Form\\FormEngine')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $content = $this->tca->renderSelectForFlag($PA, $formEngine);
 
         $this->assertContains('<option value="0"></option>', $content);
         $this->assertContains('<option value="111">flag 1</option>', $content);
