@@ -29,7 +29,7 @@
  * @subpackage Tests
  * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_ServiceTest extends Tx_FeatureFlag_Tests_BaseTest
+class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
 {
     /**
      * @var Tx_FeatureFlag_Service

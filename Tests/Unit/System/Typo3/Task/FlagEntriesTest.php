@@ -29,7 +29,7 @@
  * @subpackage Tests_System_Typo3_Task
  * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_System_Typo3_Task_FlagEntriesTest extends Tx_FeatureFlag_Tests_BaseTest
+class Tx_FeatureFlag_Tests_Unit_System_Typo3_Task_FlagEntriesTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
 {
     /**
      * @test
@@ -56,7 +56,10 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntriesTest extends Tx_FeatureFlag_Te
 
         $flagEntries = $this->getMock(
             'Tx_FeatureFlag_System_Typo3_Task_FlagEntries',
-            array('getObjectManager')
+            array('getObjectManager'),
+            array(),
+            '',
+            false
         );
 
         $objectManager = $this->getMock('\\TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
@@ -76,7 +79,10 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntriesTest extends Tx_FeatureFlag_Te
      */
     public function shouldCreateObjectManager()
     {
-        $flagEntries = new Tx_FeatureFlag_System_Typo3_Task_FlagEntries();
+        /** @var Tx_FeatureFlag_System_Typo3_Task_FlagEntries $flagEntries */
+        $flagEntries = $this->getMockBuilder('Tx_FeatureFlag_System_Typo3_Task_FlagEntries')
+            ->disableOriginalConstructor()
+            ->getMock();
         $reflection = new ReflectionClass($flagEntries);
         $methodGetObjectManager = $reflection->getMethod('getObjectManager');
         $methodGetObjectManager->setAccessible(true);

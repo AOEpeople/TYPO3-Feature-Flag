@@ -1,9 +1,8 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2014 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -26,24 +25,22 @@
 
 /**
  * @package FeatureFlag
- * @subpackage Tests_Domain_Model
- * @author Kevin Schu <kevin.schu@aoe.com>
+ * @subpackage Tests
  */
-class Tx_FeatureFlag_Domain_Model_FeatureFlagTest extends Tx_FeatureFlag_Tests_BaseTest
+abstract class Tx_FeatureFlag_Tests_Unit_BaseTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var Tx_FeatureFlag_Domain_Model_FeatureFlag
+     * Whether global variables should be backed up
+     *
+     * Don't backup globals, otherwise other unittests will fail
+     *
+     * Why can other unittests fail, if we backup global variables?
+     * If variable $GLOBALS['TYPO3_DB'] will be backup-ed (object will be serialized and unserialized), than
+     * the object loose it's properties (e.g. the variable \TYPO3\CMS\Core\Database\DatabaseConnection->link)
+     *
+     * @var boolean
      */
-    private $featureFlag;
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
-     */
-    protected function setUp()
-    {
-        $this->featureFlag = new Tx_FeatureFlag_Domain_Model_FeatureFlag();
-    }
+    protected $backupGlobals = false;
 
     /**
      * (non-PHPdoc)
@@ -51,19 +48,12 @@ class Tx_FeatureFlag_Domain_Model_FeatureFlagTest extends Tx_FeatureFlag_Tests_B
      */
     protected function tearDown()
     {
-        $this->featureFlag = null;
-    }
-
-    /**
-     * @test
-     */
-    public function checkProperties()
-    {
-        $this->featureFlag->setDescription('This is a test description');
-        $this->featureFlag->setEnabled(true);
-        $this->featureFlag->setFlag('my_new_feature_flag');
-        $this->assertTrue($this->featureFlag->isEnabled());
-        $this->assertEquals($this->featureFlag->getDescription(), 'This is a test description');
-        $this->assertEquals($this->featureFlag->getFlag(), 'my_new_feature_flag');
+        /**
+         * Don't call parent method, otherwise other unittests will fail
+         *
+         * Why can other unittests fail, if we call parent method?
+         * If we call parent method, than a strange PHP-fatal-error in Test-Class Tx_FeatureFlag_Tests_Unit_System_Db_SqlFactoryTest occurs!
+         * The PHP-fatal-error occurs, because than $GLOBALS['TYPO3_DB'] is NULL!
+         */
     }
 }
