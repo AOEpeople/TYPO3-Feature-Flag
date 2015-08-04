@@ -29,12 +29,14 @@
  * @subpackage Tests_Domain_Repository
  * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_Tests_Unit_Domain_Repository_MappingTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
+class Tx_FeatureFlag_Tests_Unit_Domain_Repository_MappingTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 {
     /**
-     * @var Tx_Phpunit_Framework
+     * @var array
      */
-    protected $testingFramework;
+    protected $testExtensionsToLoad = array(
+        'typo3conf/ext/feature_flag'
+    );
 
     /**
      * @var Tx_FeatureFlag_Domain_Repository_Mapping
@@ -51,19 +53,11 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_MappingTest extends Tx_Feature
      */
     public function setUp()
     {
+        parent::setUp();
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'TYPO3\CMS\Extbase\Object\ObjectManager'
         );
-        $this->testingFramework = new Tx_Phpunit_Framework('tx_featureflag');
         $this->mappingRepository = $this->objectManager->get('Tx_FeatureFlag_Domain_Repository_Mapping');
-    }
-
-    /**
-     * Clean up testing framework
-     */
-    public function tearDown()
-    {
-        $this->testingFramework->cleanUp();
     }
 
     /**
@@ -71,22 +65,12 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_MappingTest extends Tx_Feature
      */
     public function findOneByForeignTableNameAndUid()
     {
-        $featureFlagId = $this->testingFramework->createRecord('tx_featureflag_domain_model_featureflag', array(
-            'description' => 'lorem ipsum',
-            'flag' => 'shouldHideElementForBehaviorHideAndEnabledFeatureFlag',
-            'enabled' => '0',
-        ));
+        $this->importDataSet(
+            dirname(__FILE__) .
+            '/fixtures/MappingTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.xml'
+        );
 
-        $contentElementId = $this->testingFramework->createContentElement(0, array('hidden' => 0));
-
-        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
-            'feature_flag' => $featureFlagId,
-            'foreign_table_uid' => $contentElementId,
-            'foreign_table_name' => 'tt_content',
-            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
-        ));
-
-        $mapping = $this->mappingRepository->findOneByForeignTableNameAndUid($contentElementId, 'tt_content');
+        $mapping = $this->mappingRepository->findOneByForeignTableNameAndUid(4712, 'tt_content');
 
         $this->assertInstanceOf('Tx_FeatureFlag_Domain_Model_Mapping', $mapping);
     }
@@ -96,19 +80,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_MappingTest extends Tx_Feature
      */
     public function findAllByForeignTableNameAndUid()
     {
-        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
-            'feature_flag' => 4711,
-            'foreign_table_uid' => 4711,
-            'foreign_table_name' => 'tt_content',
-            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
-        ));
-
-        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
-            'feature_flag' => 4712,
-            'foreign_table_uid' => 4711,
-            'foreign_table_name' => 'tt_content',
-            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
-        ));
+        $this->importDataSet(dirname(__FILE__) . '/fixtures/MappingTest.findAllByForeignTableNameAndUid.xml');
 
         $mapping = $this->mappingRepository->findAllByForeignTableNameAndUid(4711, 'tt_content');
 
@@ -120,19 +92,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_MappingTest extends Tx_Feature
      */
     public function shouldGetHashedMappings()
     {
-        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
-            'feature_flag' => 4711,
-            'foreign_table_uid' => 4711,
-            'foreign_table_name' => 'tt_content',
-            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
-        ));
-
-        $this->testingFramework->createRecord('tx_featureflag_domain_model_mapping', array(
-            'feature_flag' => 4712,
-            'foreign_table_uid' => 4712,
-            'foreign_table_name' => 'tt_content',
-            'behavior' => Tx_FeatureFlag_Service::BEHAVIOR_HIDE,
-        ));
+        $this->importDataSet(dirname(__FILE__) . '/fixtures/MappingTest.shouldGetHashedMappings.xml');
 
         $hashedMappings = $this->mappingRepository->getHashedMappings();
 
