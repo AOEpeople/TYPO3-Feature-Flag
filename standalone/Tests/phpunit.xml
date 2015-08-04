@@ -1,0 +1,15 @@
+<phpunit strict="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true">
+    <testsuites>
+        <testsuite name="feature_flag">
+            <directory suffix="Test.php">./</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../Classes</directory>
+        </whitelist>
+    </filter>
+</phpunit>
