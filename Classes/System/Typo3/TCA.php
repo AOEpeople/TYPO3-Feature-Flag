@@ -68,8 +68,10 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderSelectForFlag(array $PA, \TYPO3\CMS\Backend\Form\FormEngine $fob)
     {
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'],
-            $PA['table']);
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid(
+            $PA['row']['uid'],
+            $PA['table']
+        );
 
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
@@ -87,6 +89,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
             $html .= '<option value="' . $value . '"' . $selected . '>' . $label . '</option>';
         }
         $html .= '</select>';
+
         return $html;
     }
 
@@ -110,8 +113,10 @@ class Tx_FeatureFlag_System_Typo3_TCA
         // check, which behavior is selected
         $isBehaviorHideSelected = false;
         $isBehaviorShowSelected = false;
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'],
-            $PA['table']);
+        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid(
+            $PA['row']['uid'],
+            $PA['table']
+        );
         if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
             if ($activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_HIDE) {
                 $isBehaviorHideSelected = true;
@@ -123,13 +128,20 @@ class Tx_FeatureFlag_System_Typo3_TCA
         // build select-box
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
-        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '"' . ($isBehaviorHideSelected ? ' selected="selected"' : '') . '>';
-        $html .= $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide');
+        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '"' .
+            ($isBehaviorHideSelected ? ' selected="selected"' : '') . '>';
+        $html .= $fob->sL(
+            'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide'
+        );
         $html .= '</option>';
-        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '"' . ($isBehaviorShowSelected ? ' selected="selected"' : '') . '>';
-        $html .= $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show');
+        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '"' .
+            ($isBehaviorShowSelected ? ' selected="selected"' : '') . '>';
+        $html .= $fob->sL(
+            'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show'
+        );
         $html .= '</option>';
         $html .= '</select>';
+
         return $html;
     }
 
@@ -146,8 +158,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
         $id,
         \TYPO3\CMS\Core\DataHandling\DataHandler &$tceMain
     ) {
-        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG,
-                $incomingFieldArray)
+        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) &&
+            array_key_exists(self::FIELD_FLAG, $incomingFieldArray)
         ) {
             $pid = $tceMain->getPID($table, $id);
             $this->updateMapping(
@@ -174,7 +186,9 @@ class Tx_FeatureFlag_System_Typo3_TCA
             return;
         }
         $mappings = $this->getMappingRepository()->findAllByForeignTableNameAndUid($id, $table);
-        if (false === is_array($mappings) && false === ($mappings instanceof \TYPO3\CMS\Extbase\Persistence\QueryResultInterface)) {
+        if (false === is_array($mappings) &&
+            false === ($mappings instanceof \TYPO3\CMS\Extbase\Persistence\QueryResultInterface)
+        ) {
             return;
         }
         foreach ($mappings as $mapping) {
@@ -255,6 +269,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
         if (array_key_exists($identifier, self::$hashedMappings)) {
             return true;
         }
+
         return false;
     }
 
@@ -268,9 +283,12 @@ class Tx_FeatureFlag_System_Typo3_TCA
         /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
         $featureFlag = $this->getFeatureFlagRepository()->findByUid($uid);
         if (false === ($featureFlag instanceof Tx_FeatureFlag_Domain_Model_FeatureFlag)) {
-            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found by uid: "' . $uid . '"',
-                1384340431);
+            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound(
+                'Feature Flag not found by uid: "' . $uid . '"',
+                1384340431
+            );
         }
+
         return $featureFlag;
     }
 
@@ -296,8 +314,11 @@ class Tx_FeatureFlag_System_Typo3_TCA
     protected function getObjectManager()
     {
         if (false === ($this->objectManager instanceof \TYPO3\CMS\Extbase\Object\ObjectManager)) {
-            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+            );
         }
+
         return $this->objectManager;
     }
 
@@ -306,9 +327,12 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     protected function getPersistenceManager()
     {
-        if (false === ($this->persistenceManager instanceof \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager)) {
-            $this->persistenceManager = $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+        if (false === $this->persistenceManager instanceof \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager) {
+            $this->persistenceManager = $this->getObjectManager()->get(
+                'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'
+            );
         }
+
         return $this->persistenceManager;
     }
 }

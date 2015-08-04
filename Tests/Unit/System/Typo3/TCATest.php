@@ -50,7 +50,9 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
             ->disableOriginalConstructor()
             ->setMethods(array('persistAll'))
             ->getMock();
-        $this->tca->expects($this->any())->method('getPersistenceManager')->will($this->returnValue($persistenceManager));
+        $this->tca->expects($this->any())->method('getPersistenceManager')->will(
+            $this->returnValue($persistenceManager)
+        );
     }
 
     /**
@@ -71,13 +73,23 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
         $featureFlag->expects($this->any())->method('getUid')->will($this->returnValue(4711));
         $mapping = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping', array('getFeatureFlag'));
         $mapping->expects($this->any())->method('getFeatureFlag')->will($this->returnValue($featureFlag));
-        $mappingRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_Mapping',
-            array('findOneByForeignTableNameAndUid'));
-        $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->will($this->returnValue($mapping));
+        $mappingRepository = $this->getMock(
+            'Tx_FeatureFlag_Domain_Repository_Mapping',
+            array('findOneByForeignTableNameAndUid')
+        );
+        $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->will(
+            $this->returnValue($mapping)
+        );
         $featureFlagRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findAll'));
-        $featureFlagRepository->expects($this->once())->method('findAll')->will($this->returnValue($this->getListOfFeatureFlags()));
-        $this->tca->expects($this->once())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
-        $this->tca->expects($this->once())->method('getFeatureFlagRepository')->will($this->returnValue($featureFlagRepository));
+        $featureFlagRepository->expects($this->once())->method('findAll')->will($this->returnValue(
+            $this->getListOfFeatureFlags()
+        ));
+        $this->tca->expects($this->once())->method('getMappingRepository')->will(
+            $this->returnValue($mappingRepository)
+        );
+        $this->tca->expects($this->once())->method('getFeatureFlagRepository')->will(
+            $this->returnValue($featureFlagRepository)
+        );
 
         $PA = array();
         $PA['row'] = array();
@@ -106,11 +118,15 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
             'Tx_FeatureFlag_Domain_Repository_Mapping',
             array('findOneByForeignTableNameAndUid', 'add', 'remove', 'update')
         );
-        $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->will($this->returnValue(null));
+        $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->will(
+            $this->returnValue(null)
+        );
         $mappingRepository->expects($this->never())->method('add');
         $mappingRepository->expects($this->never())->method('remove');
         $mappingRepository->expects($this->never())->method('update');
-        $this->tca->expects($this->once())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
+        $this->tca->expects($this->once())->method('getMappingRepository')->will(
+            $this->returnValue($mappingRepository)
+        );
         $this->tca->expects($this->never())->method('getFeatureFlagByUid');
 
         $tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
@@ -130,11 +146,15 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
             'Tx_FeatureFlag_Domain_Repository_Mapping',
             array('findOneByForeignTableNameAndUid', 'add', 'remove', 'update')
         );
-        $mappingRepository->expects($this->never())->method('findOneByForeignTableNameAndUid')->will($this->returnValue(null));
+        $mappingRepository->expects($this->never())->method('findOneByForeignTableNameAndUid')->will(
+            $this->returnValue(null)
+        );
         $mappingRepository->expects($this->never())->method('add');
         $mappingRepository->expects($this->never())->method('remove');
         $mappingRepository->expects($this->never())->method('update');
-        $this->tca->expects($this->never())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
+        $this->tca->expects($this->never())->method('getMappingRepository')->will(
+            $this->returnValue($mappingRepository)
+        );
         $this->tca->expects($this->never())->method('getFeatureFlagByUid');
 
         $tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
@@ -154,7 +174,9 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
             'Tx_FeatureFlag_Domain_Repository_Mapping',
             array('findOneByForeignTableNameAndUid', 'remove', 'update')
         );
-        $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->will($this->returnValue($mapping));
+        $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->will(
+            $this->returnValue($mapping)
+        );
         $mappingRepository->expects($this->once())->method('remove');
         $mappingRepository->expects($this->once())->method('update');
         $this->tca->expects($this->any())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
@@ -179,7 +201,9 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
             'Tx_FeatureFlag_Domain_Repository_Mapping',
             array('findOneByForeignTableNameAndUid', 'add')
         );
-        $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->will($this->returnValue(null));
+        $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->will(
+            $this->returnValue(null)
+        );
         $mappingRepository->expects($this->once())->method('add');
 
         $this->tca->expects($this->any())->method('getMappingRepository')->will($this->returnValue($mappingRepository));
@@ -228,6 +252,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
         $mapping1 = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping');
         $mapping2 = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping');
         $mapping3 = $this->getMock('stdClass');
+
         return array($mapping1, $mapping2, $mapping3);
     }
 
@@ -245,6 +270,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
         $featureFlag3 = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', array('getUid', 'getDescription'));
         $featureFlag3->expects($this->any())->method('getDescription')->will($this->returnValue('flag 3'));
         $featureFlag3->expects($this->any())->method('getUid')->will($this->returnValue(222));
+
         return array($featureFlag1, $featureFlag2, $featureFlag3);
     }
 }

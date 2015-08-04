@@ -52,7 +52,9 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
     public function initializeObject()
     {
         /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $defaultQuerySettings = $this->objectManager->get(
+            'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings'
+        );
         $defaultQuerySettings->setRespectStoragePage(false);
         $defaultQuerySettings->setRespectSysLanguage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
@@ -68,6 +70,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->matching($query->equals('flag', $flag));
+
         return $query->execute()->getFirst();
     }
 
@@ -134,6 +137,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
         foreach ($rows as $row) {
             $uids[] = $row['uid'];
         }
+
         return $uids;
     }
 }

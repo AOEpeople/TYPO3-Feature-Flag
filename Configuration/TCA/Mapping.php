@@ -1,6 +1,6 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-    die ('Access denied.');
+    die('Access denied.');
 }
 
 $TCA['tx_featureflag_domain_model_mapping'] = array(
@@ -17,7 +17,8 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
     'columns' => array(
         'uid' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.uid',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
+                'locallang_db.xml:tx_featureflag_domain_model_mapping.uid',
             'config' => array(
                 'type' => 'passthrough',
             )
@@ -31,7 +32,8 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'tstamp' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.tstamp',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
+                'locallang_db.xml:tx_featureflag_domain_model_mapping.tstamp',
             'config' => array(
                 'type' => 'text',
                 'size' => 10,
@@ -42,7 +44,8 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'crdate' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.crdate',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
+                'locallang_db.xml:tx_featureflag_domain_model_mapping.crdate',
             'config' => array(
                 'type' => 'text',
                 'size' => 10,
@@ -53,7 +56,8 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'feature_flag' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.feature_flag',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
+                'locallang_db.xml:tx_featureflag_domain_model_mapping.feature_flag',
             'config' => array(
                 'type' => 'select',
                 'foreign_table' => 'tx_featureflag_domain_model_featureflag',
@@ -65,7 +69,8 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'foreign_table_uid' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_uid',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
+                'locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_uid',
             'config' => array(
                 'type' => 'text',
                 'size' => 10,
@@ -74,7 +79,8 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'foreign_table_name' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_name',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
+                'locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_name',
             'config' => array(
                 'type' => 'text',
                 'size' => 10,
@@ -83,7 +89,8 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'behavior' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.behavior',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
+                'locallang_db.xml:tx_featureflag_domain_model_mapping.behavior',
             'config' => array(
                 'type' => 'text',
                 'size' => 10,

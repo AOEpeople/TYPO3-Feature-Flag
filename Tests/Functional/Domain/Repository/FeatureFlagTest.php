@@ -144,6 +144,6 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_FeatureFlagTest extends \TYPO3
      */
     private function getContentElement($id)
     {
-        return $this->getDatabaseConnection()->exec_SELECTgetRows('uid,hidden','tt_content','uid=' . $id);
+        return $this->getDatabaseConnection()->exec_SELECTgetRows('uid,hidden', 'tt_content', 'uid=' . $id);
     }
 }
