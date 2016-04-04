@@ -82,6 +82,19 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     }
 
     /**
+     * @param $featureFlagId
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findAllByFeatureFlag($featureFlagId)
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->matching($query->equals('feature_flag', $featureFlagId));
+        return $query->execute();
+    }
+
+    /**
      * @return array
      */
     public function getHashedMappings()
