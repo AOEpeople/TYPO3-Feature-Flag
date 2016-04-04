@@ -46,24 +46,51 @@ class Tx_FeatureFlag_Service
     private $featureFlagRepository;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+     */
+    private $persistenceManager;
+
+    /**
+     * @var Tx_FeatureFlag_Domain_Repository_Mapping
+     */
+    private $mappingRepository;
+
+    /**
+     * @var Tx_FeatureFlag_System_Typo3_Configuration
+     */
+    private $configuration;
+
+    /**
      * @var array
      */
     private $cachedFlags = array();
 
     /**
+     * Tx_FeatureFlag_Service constructor.
      * @param Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository
+     * @param Tx_FeatureFlag_Domain_Repository_Mapping $mappingRepository
+     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      */
-    public function injectFeatureFlagRepository(Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository)
+    public function __construct(
+        Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository,
+        Tx_FeatureFlag_Domain_Repository_Mapping $mappingRepository,
+        \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager,
+        Tx_FeatureFlag_System_Typo3_Configuration $configuration
+    )
     {
         $this->featureFlagRepository = $featureFlagRepository;
+        $this->mappingRepository = $mappingRepository;
+        $this->persistenceManager = $persistenceManager;
+        $this->configuration = $configuration;
     }
 
     /**
-     * @param string $flag
+     * @param $flag
+     * @return Tx_FeatureFlag_Domain_Model_FeatureFlag
      * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
      * @return boolean
      */
-    public function isFeatureEnabled($flag)
+    protected function getFeatureFlag($flag)
     {
         if (false === array_key_exists($flag, $this->cachedFlags)) {
             $flagModel = $this->featureFlagRepository->findByFlag($flag);
@@ -74,8 +101,57 @@ class Tx_FeatureFlag_Service
                 );
             }
             $isEnabled = $flagModel->isEnabled();
-            $this->cachedFlags[$flag] = $isEnabled;
+            $this->cachedFlags[$flag] = $flagModel;
         }
         return $this->cachedFlags[$flag];
+    }
+
+    /**
+     * @param $flag
+     * @return bool
+     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     */
+    public function isFeatureEnabled($flag)
+    {
+        return $this->getFeatureFlag($flag)->isEnabled();
+    }
+
+
+    /**
+     * Updates a featureFlag and sets its enabled property
+     *
+     * @param $flag
+     * @param $enabled
+     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     */
+    public function updateFeatureFlag($flag, $enabled)
+    {
+        $flagModel = $this->getFeatureFlag($flag);
+        $flagModel->setEnabled($enabled);
+
+        // update entry in db
+        $this->featureFlagRepository->update($flagModel);
+        $this->persistenceManager->persistAll();
+
+        $this->mappingRepository->findByUid($flagModel->getUid());
+
+        $mappings = [];
+        foreach ($this->configuration->getTables() as $table) {
+            $mapping = $this->mappingRepository->findAllByFeatureFlag($flagModel->getUid());
+            foreach ($mappings as $mapping) {
+                if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+                    $this->getMappingRepository()->remove($mapping);
+                }
+            }
+        }
+
+        $t = 1;
+    }
+
+    private function clearPageCache(array $pids)
+    {
+        $tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+
     }
 }

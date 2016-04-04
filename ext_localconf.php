@@ -17,3 +17,5 @@ if (TYPO3_MODE == 'BE') {
         '_CLI_feature_flag'
     );
 }
+
+$TYPO3_CONF_VARS['FE']['eID_include']['featureflag'] = 'EXT:' . $_EXTKEY . '/Classes/Service/Eid.php';
