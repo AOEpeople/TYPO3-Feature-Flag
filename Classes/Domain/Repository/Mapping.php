@@ -32,6 +32,12 @@
  */
 class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
+
+    /**
+     * @var Tx_FeatureFlag_System_Typo3_Configuration
+     */
+    private $configuration;
+
     /**
      *
      */
@@ -39,6 +45,8 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     {
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         parent::__construct($objectManager);
+
+        $this->configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_FeatureFlag_System_Typo3_Configuration');
     }
 
     /**
@@ -92,6 +100,27 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->matching($query->equals('feature_flag', $featureFlagId));
         return $query->execute();
+    }
+
+    /**
+     * Get all mapping pIDs by given feature flag
+     *
+     * @param $featureFlagId
+     * @return array
+     */
+    public function findAllMappingPidsByFeatureFlag($featureFlagId)
+    {
+        $pids = array();
+        foreach ($this->configuration->getTables() as $table) {
+            $mappings = $this->findAllByFeatureFlag($featureFlagId);
+            foreach ($mappings as $mapping) {
+                if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+                    $pids[] = $mapping->getPid();
+                }
+            }
+        }
+
+        return array_unique($pids);
     }
 
     /**

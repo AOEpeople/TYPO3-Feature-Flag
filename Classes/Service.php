@@ -41,6 +41,11 @@ class Tx_FeatureFlag_Service
     const BEHAVIOR_SHOW = 1;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
      */
     private $featureFlagRepository;
@@ -56,11 +61,6 @@ class Tx_FeatureFlag_Service
     private $mappingRepository;
 
     /**
-     * @var Tx_FeatureFlag_System_Typo3_Configuration
-     */
-    private $configuration;
-
-    /**
      * @var array
      */
     private $cachedFlags = array();
@@ -72,16 +72,16 @@ class Tx_FeatureFlag_Service
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      */
     public function __construct(
+        \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager,
         Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository,
         Tx_FeatureFlag_Domain_Repository_Mapping $mappingRepository,
-        \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager,
-        Tx_FeatureFlag_System_Typo3_Configuration $configuration
+        \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
     )
     {
+        $this->objectManager = $objectManager;
         $this->featureFlagRepository = $featureFlagRepository;
         $this->mappingRepository = $mappingRepository;
         $this->persistenceManager = $persistenceManager;
-        $this->configuration = $configuration;
     }
 
     /**
@@ -100,10 +100,23 @@ class Tx_FeatureFlag_Service
                     1383842028
                 );
             }
-            $isEnabled = $flagModel->isEnabled();
             $this->cachedFlags[$flag] = $flagModel;
         }
         return $this->cachedFlags[$flag];
+    }
+
+    /**
+     * @param array $pids
+     */
+    protected function clearPageCache(array $pids)
+    {
+        /** @var TYPO3\CMS\Core\DataHandling\DataHandler $tce */
+        $tce = $this->objectManager->get(TYPO3\CMS\Core\DataHandling\DataHandler::class);
+
+        $tce->start(array(), array());
+        foreach ($pids as $pid) {
+            $tce->clear_cacheCmd($pid);
+        }
     }
 
     /**
@@ -115,7 +128,6 @@ class Tx_FeatureFlag_Service
     {
         return $this->getFeatureFlag($flag)->isEnabled();
     }
-
 
     /**
      * Updates a featureFlag and sets its enabled property
@@ -134,24 +146,10 @@ class Tx_FeatureFlag_Service
         $this->featureFlagRepository->update($flagModel);
         $this->persistenceManager->persistAll();
 
-        $this->mappingRepository->findByUid($flagModel->getUid());
+        // get all affected pages
+        $mappingPids = $this->mappingRepository->findAllMappingPidsByFeatureFlag($flagModel->getUid());
 
-        $mappings = [];
-        foreach ($this->configuration->getTables() as $table) {
-            $mapping = $this->mappingRepository->findAllByFeatureFlag($flagModel->getUid());
-            foreach ($mappings as $mapping) {
-                if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
-                    $this->getMappingRepository()->remove($mapping);
-                }
-            }
-        }
-
-        $t = 1;
-    }
-
-    private function clearPageCache(array $pids)
-    {
-        $tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-
+        // clear cache of affected pages
+        $this->clearPageCache($mappingPids);
     }
 }
