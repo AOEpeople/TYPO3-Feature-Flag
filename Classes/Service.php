@@ -41,9 +41,9 @@ class Tx_FeatureFlag_Service
     const BEHAVIOR_SHOW = 1;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var Tx_FeatureFlag_System_Typo3_CacheManager
      */
-    private $objectManager;
+    private $cacheManager;
 
     /**
      * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
@@ -72,13 +72,13 @@ class Tx_FeatureFlag_Service
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      */
     public function __construct(
-        \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager,
+        Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager,
         Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository,
         Tx_FeatureFlag_Domain_Repository_Mapping $mappingRepository,
         \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
     )
     {
-        $this->objectManager = $objectManager;
+        $this->cacheManager = $cacheManager;
         $this->featureFlagRepository = $featureFlagRepository;
         $this->mappingRepository = $mappingRepository;
         $this->persistenceManager = $persistenceManager;
@@ -103,20 +103,6 @@ class Tx_FeatureFlag_Service
             $this->cachedFlags[$flag] = $flagModel;
         }
         return $this->cachedFlags[$flag];
-    }
-
-    /**
-     * @param array $pids
-     */
-    protected function clearPageCache(array $pids)
-    {
-        /** @var TYPO3\CMS\Core\DataHandling\DataHandler $tce */
-        $tce = $this->objectManager->get(TYPO3\CMS\Core\DataHandling\DataHandler::class);
-
-        $tce->start(array(), array());
-        foreach ($pids as $pid) {
-            $tce->clear_cacheCmd($pid);
-        }
     }
 
     /**
@@ -147,9 +133,9 @@ class Tx_FeatureFlag_Service
         $this->persistenceManager->persistAll();
 
         // get all affected pages
-        $mappingPids = $this->mappingRepository->findAllMappingPidsByFeatureFlag($flagModel->getUid());
+        $mappingPids = $this->mappingRepository->findAllContentElementPidsByFeatureFlag($flagModel->getUid());
 
         // clear cache of affected pages
-        $this->clearPageCache($mappingPids);
+        $this->cacheManager->clearPageCache($mappingPids);
     }
 }

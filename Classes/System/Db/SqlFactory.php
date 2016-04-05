@@ -76,4 +76,20 @@ class Tx_FeatureFlag_System_Db_SqlFactory
         $sql .= ' WHERE uid IN (' . implode(',', $uids) . ');';
         return $sql;
     }
+
+    /**
+     *
+     * @param $table
+     * @param $uid
+     * @return string
+     */
+    public function getSelectStatementForContentElementPids($table, $uid)
+    {
+        $escaptedTable = mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table);
+        $sql = 'SELECT ' . $escaptedTable . '.pid';
+        $sql .= ' FROM ' . $escaptedTable;
+        $sql .= ' WHERE ' . $escaptedTable . '.uid=' . $uid;
+
+        return $sql;
+    }
 }
