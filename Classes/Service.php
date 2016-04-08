@@ -56,11 +56,6 @@ class Tx_FeatureFlag_Service
     private $persistenceManager;
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_Mapping
-     */
-    private $mappingRepository;
-
-    /**
      * @var array
      */
     private $cachedFlags = array();
@@ -74,13 +69,11 @@ class Tx_FeatureFlag_Service
     public function __construct(
         Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager,
         Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository,
-        Tx_FeatureFlag_Domain_Repository_Mapping $mappingRepository,
         \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
     )
     {
         $this->cacheManager = $cacheManager;
         $this->featureFlagRepository = $featureFlagRepository;
-        $this->mappingRepository = $mappingRepository;
         $this->persistenceManager = $persistenceManager;
     }
 
@@ -131,11 +124,5 @@ class Tx_FeatureFlag_Service
         // update entry in db
         $this->featureFlagRepository->update($flagModel);
         $this->persistenceManager->persistAll();
-
-        // get all affected pages
-        $mappingPids = $this->mappingRepository->findAllContentElementPidsByFeatureFlag($flagModel->getUid());
-
-        // clear cache of affected pages
-        $this->cacheManager->clearPageCache($mappingPids);
     }
 }

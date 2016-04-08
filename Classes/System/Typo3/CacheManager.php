@@ -33,16 +33,14 @@ class Tx_FeatureFlag_System_Typo3_CacheManager
     }
 
     /**
-     * @param array $pids
+     * clears cache for all pages
      */
-    public function clearPageCache(array $pids)
+    public function clearPageCache()
     {
         /** @var TYPO3\CMS\Core\DataHandling\DataHandler $tce */
         $tce = $this->objectManager->get(TYPO3\CMS\Core\DataHandling\DataHandler::class);
 
         $tce->start(array(), array());
-        foreach ($pids as $pid) {
-            $tce->clear_cacheCmd($pid);
-        }
+        $tce->clear_cacheCmd('all');
     }
 }

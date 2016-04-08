@@ -32,17 +32,6 @@
  */
 class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-
-    /**
-     * @var Tx_FeatureFlag_System_Typo3_Configuration
-     */
-    private $configuration;
-
-    /**
-     * @var Tx_FeatureFlag_System_Db_SqlFactory
-     */
-    private $sqlFactory;
-
     /**
      *
      */
@@ -50,9 +39,6 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     {
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         parent::__construct($objectManager);
-
-        $this->configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_FeatureFlag_System_Typo3_Configuration');
-        $this->sqlFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_FeatureFlag_System_Db_SqlFactory');
     }
 
     /**
@@ -86,8 +72,12 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     public function findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
     {
         $query = $this->createQuery();
-        $query->matching($query->logicalAnd($query->equals('foreign_table_uid', $foreignTableUid),
-            $query->equals('foreign_table_name', $foreignTableName)));
+        $query->matching(
+            $query->logicalAnd(
+                $query->equals('foreign_table_uid', $foreignTableUid),
+                $query->equals('foreign_table_name', $foreignTableName)
+            )
+        );
         return $query->execute();
     }
 
@@ -102,51 +92,6 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->matching($query->equals('feature_flag', $featureFlagId));
         return $query->execute();
-    }
-
-    /**
-     * @param $foreignTableName
-     * @param $foreignTableUid
-     * @return array
-     */
-    public function findContentElementPidsByForeignTableNameAndUid($foreignTableName, $foreignTableUid)
-    {
-        $pids = array();
-        $statement = $this->sqlFactory->getSelectStatementForContentElementPids($foreignTableName, $foreignTableUid);
-
-        $query = $this->createQuery();
-        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
-        $query->statement($statement);
-
-        $rows = $query->execute(true);
-        foreach ($rows as $row) {
-            $pids[] = $row['pid'];
-        }
-
-        return $pids;
-    }
-
-    /**
-     * Get all mapping pIDs by given feature flag
-     *
-     * @param $featureFlagId
-     * @return array
-     */
-    public function findAllContentElementPidsByFeatureFlag($featureFlagId)
-    {
-        $pids = array();
-
-        $mappings = $this->findAllByFeatureFlag($featureFlagId);
-        foreach ($mappings as $mapping) {
-            if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
-                $pids = array_merge($pids, $this->findContentElementPidsByForeignTableNameAndUid(
-                    $mapping->getForeignTableName(),
-                    $mapping->getForeignTableUid()
-                ));
-            }
-        }
-
-        return array_unique($pids);
     }
 
     /**
