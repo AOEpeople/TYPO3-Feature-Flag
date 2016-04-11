@@ -26,5 +26,6 @@
     </filter>
     <php>
         <env name="TYPO3_PATH_WEB" value="../../../.."/>
+        <const name="PHPUNIT_ACTIVE" value="true"/>
     </php>
 </phpunit>

@@ -21,4 +21,5 @@ return array(
     'tx_featureflag_system_typo3_task_flagentriestest' => $extensionPath . 'Tests/System/Typo3/Task/FlagEntriesTest.php',
     'tx_featureflag_system_typo3_tcatest' => $extensionPath . 'Tests/System/Typo3/TCATest.php',
     'tx_featureflag_servicetest' => $extensionPath . 'Tests/ServiceTest.php',
+    'tx_featureflag_tests_unit_service_eidtest' => $extensionPath . 'Tests/Service/EidTest.php',
 );

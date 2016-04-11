@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2016 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -37,12 +37,40 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
     private $service;
 
     /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
+     * @param Tx_FeatureFlag_Domain_Repository_FeatureFlag $mockRepository
      */
-    protected function setUp()
+    protected function setService(Tx_FeatureFlag_Domain_Repository_FeatureFlag $mockRepository)
     {
-        $this->service = new Tx_FeatureFlag_Service();
+        $mockPersistenceManager = $this->getMock('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface', array());
+
+        $this->service = new Tx_FeatureFlag_Service($mockRepository, $mockPersistenceManager);
+    }
+
+    /**
+     * @param $isEnabled
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getMockModel($isEnabled)
+    {
+        $mockModel = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')
+            ->setMockClassName('Tx_FeatureFlag_Domain_Model_FeatureFlag_Mock')->setMethods(array('setEnabled', 'isEnabled'))->getMock();
+
+        $mockModel->expects($this->any())->method('isEnabled')->will($this->returnValue($isEnabled));
+
+        return $mockModel;
+    }
+
+    /**
+     * @param boolean $isEnabled
+     */
+    private function getMockRepository($isEnabled)
+    {
+        $mockModel = $this->getMockModel($isEnabled);
+        $mockRepository = $this->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')
+            ->setMockClassName('Tx_FeatureFlag_Domain_Repository_FeatureFlag_Mock')->getMock();
+        $mockRepository->expects($this->any())->method('findByFlag')->will($this->returnValue($mockModel));
+
+        return $mockRepository;
     }
 
     /**
@@ -59,7 +87,7 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
      */
     public function shouldReturnTrueForEnabledFeature()
     {
-        $this->injectMockRepository(true);
+        $this->setService($this->getMockRepository(true));
         $result = $this->service->isFeatureEnabled('my_cool_feature');
         $this->assertTrue($result);
     }
@@ -69,7 +97,7 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
      */
     public function shouldReturnFalseForDisabledFeature()
     {
-        $this->injectMockRepository(false);
+        $this->setService($this->getMockRepository(false));
         $result = $this->service->isFeatureEnabled('my_cool_feature');
         $this->assertFalse($result);
     }
@@ -81,20 +109,33 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
     {
         $mockRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findByFlag'));
         $mockRepository->expects($this->once())->method('findByFlag')->will($this->returnValue(null));
-        $this->service->injectFeatureFlagRepository($mockRepository);
+        $this->setService($mockRepository);
         $this->setExpectedException('Tx_FeatureFlag_Service_Exception_FeatureNotFound');
         $this->service->isFeatureEnabled('my_cool_feature');
     }
 
     /**
-     * @param boolean $isEnabled
+     * @test
      */
-    private function injectMockRepository($isEnabled)
+    public function shouldUpdateFeatureFlag()
     {
-        $mockModel = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', array('isEnabled'));
-        $mockModel->expects($this->once())->method('isEnabled')->will($this->returnValue($isEnabled));
-        $mockRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findByFlag'));
-        $mockRepository->expects($this->once())->method('findByFlag')->will($this->returnValue($mockModel));
-        $this->service->injectFeatureFlagRepository($mockRepository);
+        $mockModel = $this->getMockModel(false);
+
+        $mockRepository = $this->getMockRepository(false);
+        $mockRepository->expects($this->once())->method('update')->with($mockModel);
+
+        $mockPersistenceManager = $this->getMock('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface', array());
+        $mockPersistenceManager->expects($this->once())->method('persistAll');
+
+        $serviceMock = $this->getMockBuilder('Tx_FeatureFlag_Service')->setConstructorArgs(array(
+            $mockRepository,
+            $mockPersistenceManager
+        ))->setMethods(array('getFeatureFlag'))->getMock();
+        $serviceMock->expects($this->any())->method('getFeatureFlag')->will($this->returnValue($mockModel));
+
+        $serviceMock->expects($this->once())->method('getFeatureFlag')->with('mockFlag');
+        $serviceMock->expects($this->once())->method('getFeatureFlag')->with('mockFlag');
+
+        $serviceMock->updateFeatureFlag('mockFlag', true);
     }
 }

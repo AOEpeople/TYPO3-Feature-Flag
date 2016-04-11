@@ -42,7 +42,6 @@ class Tx_FeatureFlag_Service_Eid {
         \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
     }
 
-
     /**
      * Process request
      * @throws Tx_FeatureFlag_Service_Exception_ActionNotFound
@@ -54,11 +53,9 @@ class Tx_FeatureFlag_Service_Eid {
         switch ($action) {
             case 'activate':
                 $this->featureFlagService->updateFeatureFlag($featureName, true);
-                $this->cacheManager->clearPageCache();
                 break;
             case 'deactivate':
                 $this->featureFlagService->updateFeatureFlag($featureName, false);
-                $this->cacheManager->clearPageCache();
                 break;
             default:
                 throw new Tx_FeatureFlag_Service_Exception_ActionNotFound('Action not found');
@@ -68,8 +65,10 @@ class Tx_FeatureFlag_Service_Eid {
     }
 }
 
-/** @var Tx_FeatureFlag_Service_Eid $featureFlagServiceEid */
-$featureFlagServiceEid = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-    \TYPO3\CMS\Extbase\Object\ObjectManager::class)->get(Tx_FeatureFlag_Service_Eid::class);
+if (false === defined('PHPUNIT_ACTIVE')) {
+    /** @var Tx_FeatureFlag_Service_Eid $featureFlagServiceEid */
+    $featureFlagServiceEid = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \TYPO3\CMS\Extbase\Object\ObjectManager::class)->get(Tx_FeatureFlag_Service_Eid::class);
 
-$featureFlagServiceEid->processRequest();
+    $featureFlagServiceEid->processRequest();
+}

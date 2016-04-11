@@ -41,11 +41,6 @@ class Tx_FeatureFlag_Service
     const BEHAVIOR_SHOW = 1;
 
     /**
-     * @var Tx_FeatureFlag_System_Typo3_CacheManager
-     */
-    private $cacheManager;
-
-    /**
      * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
      */
     private $featureFlagRepository;
@@ -63,16 +58,13 @@ class Tx_FeatureFlag_Service
     /**
      * Tx_FeatureFlag_Service constructor.
      * @param Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository
-     * @param Tx_FeatureFlag_Domain_Repository_Mapping $mappingRepository
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      */
     public function __construct(
-        Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager,
         Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository,
         \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
     )
     {
-        $this->cacheManager = $cacheManager;
         $this->featureFlagRepository = $featureFlagRepository;
         $this->persistenceManager = $persistenceManager;
     }
@@ -124,5 +116,7 @@ class Tx_FeatureFlag_Service
         // update entry in db
         $this->featureFlagRepository->update($flagModel);
         $this->persistenceManager->persistAll();
+
+        $this->cachedFlags[$flag] = $flagModel;
     }
 }
