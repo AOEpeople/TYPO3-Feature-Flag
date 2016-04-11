@@ -17,7 +17,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Roland Beisel <roland.beisel@aoe.com>
  */
-class Tx_FeatureFlag_Service_Eid {
+class Tx_FeatureFlag_Service_Eid
+{
 
     /**
      * @var Tx_FeatureFlag_Service
@@ -46,7 +47,8 @@ class Tx_FeatureFlag_Service_Eid {
      * Process request
      * @throws Tx_FeatureFlag_Service_Exception_ActionNotFound
      */
-    public function processRequest() {
+    public function processRequest()
+    {
         $action = GeneralUtility::_GP('action');
         $featureName = GeneralUtility::_GP('feature');
 
@@ -67,8 +69,8 @@ class Tx_FeatureFlag_Service_Eid {
 
 if (false === defined('PHPUNIT_ACTIVE')) {
     /** @var Tx_FeatureFlag_Service_Eid $featureFlagServiceEid */
-    $featureFlagServiceEid = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-        \TYPO3\CMS\Extbase\Object\ObjectManager::class)->get(Tx_FeatureFlag_Service_Eid::class);
+    $featureFlagServiceEid = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
+        ->get(Tx_FeatureFlag_Service_Eid::class);
 
     $featureFlagServiceEid->processRequest();
 }

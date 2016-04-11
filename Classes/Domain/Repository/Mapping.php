@@ -72,12 +72,8 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     public function findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
     {
         $query = $this->createQuery();
-        $query->matching(
-            $query->logicalAnd(
-                $query->equals('foreign_table_uid', $foreignTableUid),
-                $query->equals('foreign_table_name', $foreignTableName)
-            )
-        );
+        $query->matching($query->logicalAnd($query->equals('foreign_table_uid', $foreignTableUid),
+            $query->equals('foreign_table_name', $foreignTableName)));
         return $query->execute();
     }
 

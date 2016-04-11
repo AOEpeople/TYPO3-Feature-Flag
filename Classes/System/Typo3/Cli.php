@@ -54,16 +54,13 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
             die('Access denied: CLI only.');
         }
         $this->cli_options = array_merge($this->cli_options, array());
-        $this->cli_help = array_merge(
-            $this->cli_help,
-            array(
+        $this->cli_help = array_merge($this->cli_help, array(
                 'name' => $this->prefixId,
                 'synopsis' => $this->extKey . ' command',
                 'description' => 'This script can flag all configured tables by feature flags.',
                 'examples' => 'typo3/cli_dispatch.phpsh ' . $this->extKey . ' [flagEntries]',
                 'author' => '(c) 2013 AOE GmbH <dev@aoe.com>',
-            )
-        );
+            ));
         $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
     }
 
@@ -125,11 +122,8 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
             /* @var $scheduler \TYPO3\CMS\Scheduler\Scheduler */
             $scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
 
-            $result = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-                'uid',
-                'tx_scheduler_task',
-                'classname = "Tx_FeatureFlag_System_Typo3_Task_FlagEntries"'
-            );
+            $result = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'tx_scheduler_task',
+                'classname = "Tx_FeatureFlag_System_Typo3_Task_FlagEntries"');
 
             if (is_array($result)) {
                 foreach ($result as $row) {
@@ -137,9 +131,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
                     if ($scheduler->isValidTaskObject($task)) {
                         $scheduler->executeTask($task);
                     } else {
-                        throw new RuntimeException(
-                            'task-object of feature-flag-task with uid "' . $row['uid'] . '" is not valid!'
-                        );
+                        throw new RuntimeException('task-object of feature-flag-task with uid "' . $row['uid'] . '" is not valid!');
                     }
                 }
             }
