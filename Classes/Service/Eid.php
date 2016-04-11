@@ -26,20 +26,12 @@ class Tx_FeatureFlag_Service_Eid
     protected $featureFlagService;
 
     /**
-     * @var Tx_FeatureFlag_System_Typo3_CacheManager
-     */
-    protected $cacheManager;
-
-    /**
      * Tx_FeatureFlag_Service_Eid constructor.
      * @param Tx_FeatureFlag_Service $service
-     * @param Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager
      */
-    public function __construct(Tx_FeatureFlag_Service $service, Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager)
+    public function __construct(Tx_FeatureFlag_Service $service)
     {
         $this->featureFlagService = $service;
-        $this->cacheManager = $cacheManager;
-
         \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
     }
 
@@ -52,18 +44,22 @@ class Tx_FeatureFlag_Service_Eid
         $action = GeneralUtility::_GP('action');
         $featureName = GeneralUtility::_GP('feature');
 
+        $status = false;
+
         switch ($action) {
             case 'activate':
                 $this->featureFlagService->updateFeatureFlag($featureName, true);
+                $status = true;
                 break;
             case 'deactivate':
                 $this->featureFlagService->updateFeatureFlag($featureName, false);
+                $status = true;
                 break;
             default:
                 throw new Tx_FeatureFlag_Service_Exception_ActionNotFound('Action not found');
         }
 
-        $this->cacheManager->clearPageCache();
+        echo json_encode(array('status' => $status));
     }
 }
 

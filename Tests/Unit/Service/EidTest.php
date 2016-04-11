@@ -29,16 +29,6 @@ class Tx_FeatureFlag_Tests_Unit_Service_EidTest extends Tx_FeatureFlag_Tests_Uni
     /**
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    private function getCacheManagerMock()
-    {
-        return $this->getMock(
-            'Tx_FeatureFlag_System_Typo3_CacheManager', array('clearPageCache'), array(), '', false
-        );
-    }
-
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject
-     */
     private function getServiceMock()
     {
         return $this->getMock(
@@ -65,15 +55,12 @@ class Tx_FeatureFlag_Tests_Unit_Service_EidTest extends Tx_FeatureFlag_Tests_Uni
     {
         $_GET = array('action' => $action, 'feature' => $feature);
 
-        $cacheManagerMock = $this->getCacheManagerMock();
-        $cacheManagerMock->expects($this->once())->method('clearPageCache');
-
         $serviceMock = $this->getServiceMock();
         $serviceMock->expects($this->once())
             ->method('updateFeatureFlag')
             ->with($this->equalTo($feature), $this->equalTo($expected));
 
-        $eid = new Tx_FeatureFlag_Service_Eid($serviceMock, $cacheManagerMock);
+        $eid = new Tx_FeatureFlag_Service_Eid($serviceMock);
         $eid->processRequest();
     }
 
@@ -83,7 +70,7 @@ class Tx_FeatureFlag_Tests_Unit_Service_EidTest extends Tx_FeatureFlag_Tests_Uni
     public function shouldThrowExceptionTest()
     {
         $_GET = array('action' => '', 'feature' => 'testfeature');
-        $eid = new Tx_FeatureFlag_Service_Eid($this->getServiceMock(), $this->getCacheManagerMock());
+        $eid = new Tx_FeatureFlag_Service_Eid($this->getServiceMock());
 
         $this->setExpectedException(Tx_FeatureFlag_Service_Exception_ActionNotFound::class);
         $eid->processRequest();
