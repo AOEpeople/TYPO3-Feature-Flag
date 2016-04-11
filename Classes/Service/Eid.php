@@ -44,22 +44,18 @@ class Tx_FeatureFlag_Service_Eid
         $action = GeneralUtility::_GP('action');
         $featureName = GeneralUtility::_GP('feature');
 
-        $status = false;
-
         switch ($action) {
             case 'activate':
                 $this->featureFlagService->updateFeatureFlag($featureName, true);
-                $status = true;
                 break;
             case 'deactivate':
                 $this->featureFlagService->updateFeatureFlag($featureName, false);
-                $status = true;
                 break;
             default:
                 throw new Tx_FeatureFlag_Service_Exception_ActionNotFound('Action not found');
         }
 
-        echo json_encode(array('status' => $status));
+        echo json_encode(array('status' => 200));
     }
 }
 
