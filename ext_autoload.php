@@ -13,6 +13,7 @@ return array(
     'tx_featureflag_system_typo3_tca' => $extensionClassesPath . 'System/Typo3/TCA.php',
     'tx_featureflag_system_typo3_cli' => $extensionClassesPath . 'System/Typo3/Cli.php',
     'tx_featureflag_system_db_sqlfactory' => $extensionClassesPath . 'System/Db/SqlFactory.php',
+    'tx_featureflag_system_typo3_cachemanager' => $extensionClassesPath . 'System/Typo3/CacheManager.php',
     'tx_featureflag_domain_model_featureflagtest' => $extensionPath . 'Tests/Domain/Model/FeatureFlagTest.php',
     'tx_featureflag_domain_model_mappingtest' => $extensionPath . 'Tests/Domain/Model/MappingTest.php',
     'tx_featureflag_domain_repository_featureflagtest' => $extensionPath . 'Tests/Domain/Repository/FeatureFlagTest.php',

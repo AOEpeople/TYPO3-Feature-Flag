@@ -76,6 +76,9 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
                 case 'flagEntries':
                     $this->flagEntries();
                     break;
+                case 'clearCache':
+                    $this->clearPageCaches();
+                    break;
                 default:
                     $this->cli_help();
                     break;
@@ -136,6 +139,17 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
                 }
             }
         }
+    }
+
+    /**
+     * Clear all page caches
+     */
+    private function clearPageCaches()
+    {
+        /** @var Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager */
+        $cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
+            ->get(Tx_FeatureFlag_System_Typo3_CacheManager::class);
+        $cacheManager->clearPageCache();
     }
 }
 
