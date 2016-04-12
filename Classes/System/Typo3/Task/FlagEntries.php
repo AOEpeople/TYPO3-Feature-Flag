@@ -46,6 +46,7 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends \TYPO3\CMS\Scheduler\
      */
     protected function getFeatureFlagService()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_FeatureFlag_Service');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
+            ->get(Tx_FeatureFlag_Service::class);
     }
 }

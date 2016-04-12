@@ -46,14 +46,15 @@ class Tx_FeatureFlag_System_Typo3_CacheManager
     }
 
     /**
-     * clears cache for all pages
+     * Clear all caches. Therefor it is necessary to login a BE_USER. You have to prevent
+     * this function to run on live systems!!!
      */
-    public function clearPageCache()
+    public function clearAllCaches()
     {
         /** @var TYPO3\CMS\Core\DataHandling\DataHandler $tce */
         $tce = $this->objectManager->get(TYPO3\CMS\Core\DataHandling\DataHandler::class);
-        $tce->admin = 1;
         $tce->start(array(), array());
+        $tce->admin = 1;
         $tce->clear_cacheCmd('all');
     }
 }

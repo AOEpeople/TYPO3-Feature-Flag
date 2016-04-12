@@ -32,19 +32,29 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Tx_FeatureFlag_Service_Eid
 {
-
     /**
      * @var Tx_FeatureFlag_Service
      */
     protected $featureFlagService;
 
     /**
+     * @var Tx_FeatureFlag_System_Typo3_CacheManager
+     */
+    protected $cacheManager;
+
+    /**
      * Tx_FeatureFlag_Service_Eid constructor.
      * @param Tx_FeatureFlag_Service $service
      */
-    public function __construct(Tx_FeatureFlag_Service $service)
+    public function __construct(Tx_FeatureFlag_Service $service, Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager)
     {
+        $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+
+        #var_dump($confArray);
+        #die;
         $this->featureFlagService = $service;
+        $this->cacheManager = $cacheManager;
+
         \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
     }
 
@@ -57,6 +67,7 @@ class Tx_FeatureFlag_Service_Eid
         $action = GeneralUtility::_GP('action');
         $featureName = GeneralUtility::_GP('feature');
 
+        $response = null;
         switch ($action) {
             case 'activate':
                 $this->featureFlagService->updateFeatureFlag($featureName, true);
@@ -64,11 +75,21 @@ class Tx_FeatureFlag_Service_Eid
             case 'deactivate':
                 $this->featureFlagService->updateFeatureFlag($featureName, false);
                 break;
+            case 'flushcaches':
+                $this->cacheManager->clearAllCaches();
+                break;
+            case 'flagentries':
+                $this->featureFlagService->flagEntries();
+                break;
+            case 'status':
+                $response = $this->featureFlagService->isFeatureEnabled($featureName);
+                break;
             default:
                 throw new Tx_FeatureFlag_Service_Exception_ActionNotFound('Action not found');
+                break;
         }
 
-        echo json_encode(array('status' => 200));
+        echo json_encode(array('status' => 200, 'response' => $response));
     }
 }
 

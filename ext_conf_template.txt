@@ -1,2 +1,3 @@
 # cat=basic; type=input; label=Enable Feature Flags for tables
 tables = tt_content,pages,sys_template
+enableEidMode = 0

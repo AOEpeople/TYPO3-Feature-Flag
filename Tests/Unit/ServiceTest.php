@@ -42,8 +42,7 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
     protected function setService(Tx_FeatureFlag_Domain_Repository_FeatureFlag $mockRepository)
     {
         $mockPersistenceManager = $this->getMock('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface', array());
-
-        $this->service = new Tx_FeatureFlag_Service($mockRepository, $mockPersistenceManager);
+        $this->service = new Tx_FeatureFlag_Service($mockRepository, $mockPersistenceManager, $this->getMockConfiguration());
     }
 
     /**
@@ -55,7 +54,7 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
         $mockModel = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')
             ->setMockClassName('Tx_FeatureFlag_Domain_Model_FeatureFlag_Mock')->setMethods(array('setEnabled', 'isEnabled'))->getMock();
 
-        $mockModel->expects($this->any())->method('isEnabled')->will($this->returnValue($isEnabled));
+        $mockModel->expects($this->any())->method('isEnabled')->willReturn($isEnabled);
 
         return $mockModel;
     }
@@ -71,6 +70,17 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
         $mockRepository->expects($this->any())->method('findByFlag')->will($this->returnValue($mockModel));
 
         return $mockRepository;
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getMockConfiguration()
+    {
+        $mockConfiguration = $this->getMock('Tx_FeatureFlag_System_Typo3_Configuration', array('getTables'));
+        $mockConfiguration->expects($this->any())->method('getTables')->willReturn('pages');
+
+        return $mockConfiguration;
     }
 
     /**
@@ -129,7 +139,8 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
 
         $serviceMock = $this->getMockBuilder('Tx_FeatureFlag_Service')->setConstructorArgs(array(
             $mockRepository,
-            $mockPersistenceManager
+            $mockPersistenceManager,
+            $this->getMockConfiguration()
         ))->setMethods(array('getFeatureFlag'))->getMock();
         $serviceMock->expects($this->any())->method('getFeatureFlag')->will($this->returnValue($mockModel));
 

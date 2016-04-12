@@ -44,6 +44,8 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_Task_FlagEntriesTest extends Tx_Fea
             $this->stringStartsWith('table')
         );
 
+        $mockPersistenceManager = $this->getMock('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface', array());
+
         $mockConfiguration = $this->getMock('Tx_FeatureFlag_System_Typo3_Configuration', array('getTables'));
         $mockConfiguration->expects($this->once())->method('getTables')->will(
             $this->returnValue(
@@ -56,39 +58,23 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_Task_FlagEntriesTest extends Tx_Fea
 
         $flagEntries = $this->getMock(
             'Tx_FeatureFlag_System_Typo3_Task_FlagEntries',
-            array('getObjectManager'),
+            array('getFeatureFlagService'),
             array(),
             '',
             false
         );
 
-        $objectManager = $this->getMock('\\TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $objectManager->expects($this->at(0))->method('get')->will($this->returnValue($mockRepository));
-        $objectManager->expects($this->at(1))->method('get')->will($this->returnValue($mockConfiguration));
+        $serviceMock = $this->getMockBuilder('Tx_FeatureFlag_Service')->setConstructorArgs(array(
+            $mockRepository,
+            $mockPersistenceManager,
+            $mockConfiguration
+        ))->setMethods(array('getFeatureFlagService'))->getMock();
 
-        $flagEntries->expects($this->any())->method('getObjectManager')->will(
-            $this->returnValue($objectManager)
+        $flagEntries->expects($this->any())->method('getFeatureFlagService')->will(
+            $this->returnValue($serviceMock)
         );
 
         /** @var Tx_FeatureFlag_System_Typo3_Task_FlagEntries $flagEntries */
         $this->assertTrue($flagEntries->execute());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldCreateObjectManager()
-    {
-        /** @var Tx_FeatureFlag_System_Typo3_Task_FlagEntries $flagEntries */
-        $flagEntries = $this->getMockBuilder('Tx_FeatureFlag_System_Typo3_Task_FlagEntries')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $reflection = new ReflectionClass($flagEntries);
-        $methodGetObjectManager = $reflection->getMethod('getObjectManager');
-        $methodGetObjectManager->setAccessible(true);
-        $this->assertInstanceOf(
-            '\\TYPO3\\CMS\\Extbase\\Object\\ObjectManager',
-            $methodGetObjectManager->invoke($flagEntries)
-        );
     }
 }

@@ -52,6 +52,11 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
     protected $scheduler;
 
     /**
+     * @var Tx_FeatureFlag_Service
+     */
+    protected $service;
+
+    /**
      * constructor
      */
     public function __construct()
@@ -69,7 +74,11 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
             'author' => '(c) 2013 AOE GmbH <dev@aoe.com>',
         ));
         $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+
         $this->scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
+
+        $this->service = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
+            ->get(Tx_FeatureFlag_Service::class);
     }
 
     /**
@@ -81,11 +90,17 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
         $this->init();
         try {
             switch ($this->getAction()) {
+                case 'activate':
+                    $this->setFeatureStatus($this->getArgument(), true);
+                    break;
+                case 'deactivate':
+                    $this->setFeatureStatus($this->getArgument(), false);
+                    break;
                 case 'flagEntries':
                     $this->flagEntries();
                     break;
-                case 'clearCache':
-                    $this->clearPageCaches();
+                case 'flushCaches':
+                    $this->flushCaches();
                     break;
                 default:
                     $this->cli_help();
@@ -104,6 +119,14 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
     private function getAction()
     {
         return (string)$this->cli_args['_DEFAULT'][1];
+    }
+
+    /**
+     * @return string
+     */
+    private function getArgument()
+    {
+        return (string)$this->cli_args['_DEFAULT'][2];
     }
 
     /**
@@ -138,7 +161,6 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
         if (null === $taskUid) {
             throw new RuntimeException('scheduler task for feature_flag was not found');
         }
-
         return $taskUid;
     }
 
@@ -160,14 +182,28 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
     }
 
     /**
+     * Enable or disable features. $features can be a comma-separated list of feature names
+     * @param String $features
+     */
+    private function setFeatureStatus($features, $enabled)
+    {
+        $features = array_map('trim', explode(',', $features));
+        foreach ($features as $feature) {
+            echo $feature;
+            $this->service->updateFeatureFlag($feature, $enabled);
+        }
+        $this->service->flagEntries();
+    }
+
+    /**
      * Clear all page caches
      */
-    private function clearPageCaches()
+    private function flushCaches()
     {
         /** @var Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager */
         $cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
             ->get(Tx_FeatureFlag_System_Typo3_CacheManager::class);
-        $cacheManager->clearPageCache();
+        $cacheManager->clearAllCaches();
     }
 }
 
