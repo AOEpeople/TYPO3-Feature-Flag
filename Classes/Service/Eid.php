@@ -75,9 +75,6 @@ class Tx_FeatureFlag_Service_Eid
             case 'deactivate':
                 $this->featureFlagService->updateFeatureFlag($featureName, false);
                 break;
-            case 'flushcaches':
-                $this->cacheManager->clearAllCaches();
-                break;
             case 'flagentries':
                 $this->featureFlagService->flagEntries();
                 break;
