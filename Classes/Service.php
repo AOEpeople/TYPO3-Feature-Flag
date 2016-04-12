@@ -27,6 +27,7 @@
 /**
  * @package FeatureFlag
  * @author Kevin Schu <kevin.schu@aoe.com>
+ * @author Roland Beisel <roland.beisel@aoe.com>
  */
 class Tx_FeatureFlag_Service
 {
@@ -51,6 +52,11 @@ class Tx_FeatureFlag_Service
     private $persistenceManager;
 
     /**
+     * @var Tx_FeatureFlag_System_Typo3_Configuration
+     */
+    private $configuration;
+
+    /**
      * @var array
      */
     private $cachedFlags = array();
@@ -59,13 +65,16 @@ class Tx_FeatureFlag_Service
      * Tx_FeatureFlag_Service constructor.
      * @param Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+     * @param Tx_FeatureFlag_System_Typo3_Configuration $configuration
      */
     public function __construct(
         Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository,
-        \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+        \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager,
+        Tx_FeatureFlag_System_Typo3_Configuration $configuration
     ) {
         $this->featureFlagRepository = $featureFlagRepository;
         $this->persistenceManager = $persistenceManager;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -97,8 +106,6 @@ class Tx_FeatureFlag_Service
     }
 
     /**
-     * Updates a featureFlag and sets its enabled property
-     *
      * @param $flag
      * @param $enabled
      * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
@@ -109,10 +116,19 @@ class Tx_FeatureFlag_Service
         $flagModel = $this->getFeatureFlag($flag);
         $flagModel->setEnabled($enabled);
 
-        // update entry in db
         $this->featureFlagRepository->update($flagModel);
         $this->persistenceManager->persistAll();
 
         $this->cachedFlags[$flag] = $flagModel;
+    }
+
+    /**
+     * Flags entries in database
+     */
+    public function flagEntries()
+    {
+        foreach ($this->configuration->getTables() as $table) {
+            $this->featureFlagRepository->updateFeatureFlagStatusForTable($table);
+        }
     }
 }

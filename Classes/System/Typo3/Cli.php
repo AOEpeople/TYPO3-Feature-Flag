@@ -1,8 +1,9 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2016 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -28,6 +29,7 @@
  * @package FeatureFlag
  * @subpackage System_Typo3
  * @author Kevin Schu <kevin.schu@aoe.com>
+ * @author Roland Beisel <roland.beisel@aoe.com>
  */
 class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
 {
@@ -43,6 +45,11 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
      * @var string
      */
     protected $scriptRelPath = 'Classes/System/Typo3/Cli.php';
+
+    /**
+     * @var TYPO3\CMS\Scheduler\Scheduler
+     */
+    protected $scheduler;
 
     /**
      * constructor
@@ -62,6 +69,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
                 'author' => '(c) 2013 AOE GmbH <dev@aoe.com>',
             ));
         $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        $this->scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
     }
 
     /**
@@ -117,26 +125,36 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
     }
 
     /**
+     * @return int
+     */
+    private function getSchedulerTaskUid()
+    {
+        foreach($this->scheduler->fetchTasksWithCondition() as $task) {
+            if ($task instanceof Tx_FeatureFlag_System_Typo3_Task_FlagEntries) {
+                $taskUid = $task->getTaskUid();
+            }
+        }
+
+        if (null === $taskUid) {
+            throw new RuntimeException('scheduler task for feature_flag was not found');
+        }
+
+        return $taskUid;
+    }
+
+    /**
      * @throws RuntimeException
      */
     private function flagEntries()
     {
         if ($this->isSchedulerInstalled()) {
-            /* @var $scheduler \TYPO3\CMS\Scheduler\Scheduler */
-            $scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
+            $taskUid = $this->getSchedulerTaskUid();
+            $task = $this->scheduler->fetchTask($taskUid);
 
-            $result = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'tx_scheduler_task',
-                'classname = "Tx_FeatureFlag_System_Typo3_Task_FlagEntries"');
-
-            if (is_array($result)) {
-                foreach ($result as $row) {
-                    $task = $scheduler->fetchTask($row['uid']);
-                    if ($scheduler->isValidTaskObject($task)) {
-                        $scheduler->executeTask($task);
-                    } else {
-                        throw new RuntimeException('task-object of feature-flag-task with uid "' . $row['uid'] . '" is not valid!');
-                    }
-                }
+            if ($this->scheduler->isValidTaskObject($task)) {
+                $this->scheduler->executeTask($task);
+            } else {
+                throw new RuntimeException('task-object of feature-flag-task is not valid!');
             }
         }
     }
