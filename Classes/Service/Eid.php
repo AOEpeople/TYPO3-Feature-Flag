@@ -48,10 +48,6 @@ class Tx_FeatureFlag_Service_Eid
      */
     public function __construct(Tx_FeatureFlag_Service $service, Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager)
     {
-        $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
-
-        #var_dump($confArray);
-        #die;
         $this->featureFlagService = $service;
         $this->cacheManager = $cacheManager;
 

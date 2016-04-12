@@ -18,4 +18,8 @@ if (TYPO3_MODE == 'BE') {
     );
 }
 
-$TYPO3_CONF_VARS['FE']['eID_include']['featureflag'] = 'EXT:' . $_EXTKEY . '/Classes/Service/Eid.php';
+$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+
+if ($confArray['enableEidMode'] == true) {
+    $TYPO3_CONF_VARS['FE']['eID_include']['featureflag'] = 'EXT:' . $_EXTKEY . '/Classes/Service/Eid.php';
+}
