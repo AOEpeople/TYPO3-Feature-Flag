@@ -16,32 +16,13 @@ Der Redakteur kann beliebige Elemente im TYPO3 mittels des Feature Flag ein und 
 Der Entwickler kann in der Anwendung den Zustand des Feature Flag abfragen und unterschiedliche Verhalten
 implementieren.
 
-Anwendungsbeispiele
--------------------
-
-Verdeutlicht wird die Funktionsweise der Feature Flags durch folgende Beispiele.
-
-Frauddetection
-~~~~~~~~~~~~~~
+Anwendungsbeispiel: Frauddetection
+----------------------------------
 
 Diese versucht anhand der Browser- und Hardware Konfiguration des Käufers eine vorgelagerte Frauddetection durchzuführen.
 Hierfür müssen wir, aufgrund von Datenschutzbestimmungen, eine zusätzliche "Permission" von den Käufern abfragen.
 Sollte sich abzeichen, dass die Verkaufszahlen hierdurch beinflusst werden, möchte congstar die Möglichkeit haben
 dieses Feature, inklusive Permission-Checkbox, ohne Hotfix, zu deaktiveren.
-
-Docsis
-~~~~~~
-
-Im Zuge von Columbus soll ein Absprung von congo auf columbus gesetzt werden. Dieser soll nur auf der DEV und TUADEV
-angezeigt werden und nicht auf der TUAPRE und WIRK solange das Feature nicht aktiviert ist (Livegang Columbus).
-
-Voraussetzungen und Hinweise
-----------------------------
-
-Zuweisungen von Datensätzen zu Feature Flags können nur auf WIRK oder Deploy vorgenommen werden!
-
-Das initiale Anlegen und der Zustand eines Feature Flags (aktiv/inaktiv) wird intern von AOE gepflegt.
-Änderungen werden automatisch nach einem Deployment übernommen oder können manuell von AOE angestoßen werden (Ticket).
 
 Verwendung
 ==========
