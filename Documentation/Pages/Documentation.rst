@@ -6,152 +6,135 @@
 .. include:: ../Includes.txt
 
 
-Allgemeine Informationen
-================
+General Information
+===================
 
-Im Typo3 System können sogenannte *Feature Flags* definiert werden.
-Diese können umgebungsabhängig (WIRK, TUA) oder manuell aktiviert oder deaktiviert werden, um damit verknüpfte
-Funktionalität an- oder auszuschalten.
-Der Redakteur kann beliebige Elemente im TYPO3 mittels des Feature Flag ein und ausblenden.
-Der Entwickler kann in der Anwendung den Zustand des Feature Flag abfragen und unterschiedliche Verhalten
-implementieren.
+So called *feature flags* can be defined in the TYPO3 system.
+They can be activated or deactivated either manually or dependant on the environment to enable or disable a feature
+connected to it.
+An editor can connect any content element with a feature flag to show or hide it when the flag is enabled or disabled.
+A developer can query the state of a flag in the application and implement different behavior for each state.
 
-Anwendungsbeispiel: Frauddetection
-----------------------------------
+Usage
+=====
 
-Diese versucht anhand der Browser- und Hardware Konfiguration des Käufers eine vorgelagerte Frauddetection durchzuführen.
-Hierfür müssen wir, aufgrund von Datenschutzbestimmungen, eine zusätzliche "Permission" von den Käufern abfragen.
-Sollte sich abzeichen, dass die Verkaufszahlen hierdurch beinflusst werden, möchte congstar die Möglichkeit haben
-dieses Feature, inklusive Permission-Checkbox, ohne Hotfix, zu deaktiveren.
+This chapter explains the usage of feature flags from a backend users, developers and admin users perspective.
 
-Verwendung
-==========
+Controlling content with feature flags
+--------------------------------------
 
-Die Verwendung der Feature Flags aus Backend User-, Entwickler- und Admin Usersicht wird im Folgenden gezeigt.
+In the 'edit' view of a record (e.g. a page or content element) in the 'Feature Flag' tab it is possible to
+configure an element to either show or hide, when a feature flag is active.
 
-Inhalte mit Feature Flag steuern
---------------------------------
+**Hide a record**
+    If the feature flag is selected under 'Hide this content element on Feature Flag', the record will be hidden
+    when the feature flag is active.
 
-**Datensatz ausblenden**
-    In der "Bearbeiten"-Maske eines Datensatzes (z.B. Seite oder Inhaltselement) kann im Reiter "Feature Flag"
-    konfiguriert werden, ob der Datensatz für ein aktives Feature Flag angezeigt oder ausgeblendet werden soll.
-    Wird das Feature Flag unter "Hide this content element on Feature Flag" ausgewählt, so wird der Datensatz bei
-    aktivem Feature Flag ausgeblendet.
-
-**Datensatz einblenden**
-    Wird das Feature Flag unter "Show this content element on Feature Flag" ausgewählt, so wird der Datensatz bei
-    aktivem Feature Flag angezeigt.
+**Show a record**
+    If the feature flag is selected under 'Show this content element on Feature Flag', the record will be shown
+    when the feature flag is active.
 
 .. image:: /Images/Documentation/resized_flag.png
 
-Durch grüne (sichtbar) bzw. rote (versteckt) Sterne wird im Seitenbaum der Status eines Datensatzes mit hinterlegtem Feature Flag visualisiert.
+Record sthat are connected to a feature flag have a star icon in the page tree. A green star means the element is
+visible, while hidden elements have a red star.
 
 .. image:: /Images/Documentation/feature_flag_stars.png
 
-Entwickler
+Developers
 ----------
 
-Folgende Informationen sind für Entwickler relevant.
+The following information is relevant for developers.
 
-Anwendung mit Feature Flag steuern
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Controlling the application with a feature flag
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Für die Funktionalität ist eine eigene TYPO3 Extension zuständig (feature_flag - im TYPO3-Forge zu finden).
-Um im EFT Quellcode auf Flags zugreifen zu können, wurde diese Extension in der Klasse tx_eft_system_featureFlag
-gekapselt.
-Diese Klasse kann per Dependency Injection geladen werden.
-
-Feature Flag Abfrage::
+Feature flag query example::
 
     if ($this->featureFlag->isFeatureEnabled('frauddetection')){
         $this->addCheckboxForFraudDetection( $contextObj );
     }
 
-Features umgebunsspezifisch steuern
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+eID Access
+~~~~~~~~~~
 
-Im Xataface gibt es extra für das FeatureFlag einen neuen SettingType: "updateByFieldAndSetValue".
+Access via a eID script is disabled by default and can be enabled using the extension configuration in the BE.
 
-.. image:: /Images/Documentation/xataface.png
+**This should never be done on live systems!**
 
-eID Zugriff
-~~~~~~~~~~~
-
-Der Zugriff über ein eID Script ist standardmäßig deaktiviert und kann über die Extension Konfiguration im BE oder
-über XATAFACE aktiviert werden.
-
-**Dies sollte niemals für Live-Systeme gemacht werden!**
-
-Folgende Aktionen sind möglich über ein eID Script:
+Following actions are possible with an eID script:
 
 - **activate**
-    Ermöglicht das Aktivieren von Features.
-    Beispiel: ``{BASEURL}/index.php?eID=featureflag&action=activate&feature=test_feature``
+    Activates a feature.
+    Example: ``{BASEURL}/index.php?eID=featureflag&action=activate&feature=test_feature``
 - **deactivate**
-    Ermöglicht das Deaktivieren von Features.
-    Beispiel: ``{BASEURL}/index.php?eID=featureflag&action=deactivate&feature=test_feature``
+    Deactivates a feature.
+    Example: ``{BASEURL}/index.php?eID=featureflag&action=deactivate&feature=test_feature``
 - **flagentries**
-    Setzt die mit dem Feature Flag referenzierten Content-Elemente auf visible oder invisible.
-    Beispiel: ``{BASEURL}/index.php?eID=featureflag&action=flagentries``
+    Updates the visibility of content elements connected to the feature flag.
+    Example: ``{BASEURL}/index.php?eID=featureflag&action=flagentries``
 - **status**
-    Gibt zurück, ob ein Feature Flag aktiviert oder deaktiviert ist.
-    Beispiel: ``{BASEURL}/index.php?eID=featureflag&action=status&feature=test_feature``
+    Returns, whether a feature flag is activated or not.
+    Example: ``{BASEURL}/index.php?eID=featureflag&action=status&feature=test_feature``
 
-Eine beispielhafte Aktivierung eines Features würde dann folgende Aufrufe benötigen:
+Activating a feature can be done in two calls:
 
 ``activate`` => ``flagentries``
 
+**After that, the crawler needs to crawl the page tree again**
+
 **Anschließend muss allerdings der Crawler noch den Seitenbaum neu durchlaufen.**
 
-Die Response des eID-Scripts ist immer ein JSON Objekt, dass im Normalfall als status 200 zurückgibt.
-Bei einer Statusabfrage eines Features wird als response der Aktivierungsstatus angegeben.
+The eID script always returns a JSON object. This is usually returnes with a status 200.
+When querying for a flags status, the response is the activation status.
 
-CLI Zugriff
-~~~~~~~~~~~
+CLI Access
+~~~~~~~~~~
 
-Damit ein der Zugriff über CLI funktioniert, muss ein entsprechender User **_cli_feature_flag** existieren.
+A user **_cli_feature_flag** must exist for CLI access to work.
 
-Folgende Aktionen sind möglich über den cli_dispatcher:
+Following actions are possible via the cli_dispatcher:
 
 - **activate**
-    Ermöglicht das Aktivieren von Features.
+    Activates a feature.
     ``./typo3/cli_dispatch.phpsh feature_flag activate test_feature``
 - **deactivate**
-    Ermöglicht das Deaktivieren von Features.
+    Deactivates a feature.
     ``./typo3/cli_dispatch.phpsh feature_flag deactivate test_feature``
 - **flushcaches**
-    Löscht alle FE Caches.
-    Diese Funktionalität ist ausschließlich in der CLI Variante verfügbar, da sie einen eingeloggten BE User benötigt.
+    Flushes all FE caches.
+    This needs a logged in BE user.
     ``./typo3/cli_dispatch.phpsh feature_flag flushCaches``
 - **flagentries**
-    Setzt die mit dem Feature Flag referenzierten Content-Elemente auf visible oder invisible.
+    Updates the visibility of content elements connected to the feature flag.
     ``./typo3/cli_dispatch.phpsh feature_flag flagEntries``
 
 Admin User
 ----------
 
-Folgende Informationen sind für Admin User relevant.
+Following information is relevant for admin users.
 
-Allen verfügbaren Features auflisten
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Die Flags befinden sich auf oberster Ebene im Seitebaum.
+List all available features
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The feature flags can be found on the page tree root.
 
 .. image:: /Images/Documentation/flags.jpg
 
-Features aktivieren oder deaktivieren
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Activate or deactivate features
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Datensatz bearbeiten
-2. Checkbox "Aktiv" aktivieren oder deaktiviern
-3. Sheduler Task feature_flag ausführen
-4. Seiten Cache löschen
+1. Edit record
+2. Check or uncheck the 'active' checkbox
+3. Run sheduler task 'feature_flag'
+4. Clear page cache
 
-Feature Flags mit den Google Tag Manager verknüpfen
----------------------------------------------------
+Connect feature flags with Google Tag Manager
+---------------------------------------------
 
-Hierfür bedienen wir uns dem GTM-TYPO3-Plugin.
+For this, the GTM-TYPO3-Plugin is used.
 
 .. image:: /Images/Documentation/gtm-feature.png
 
-Wir legen auf den relevanten Seiten das GTM-Plugin an und lassen dieses anhand des FeatureFlags ein oder ausblenden.
-Auf den DataLayer-Wert können wir dann wie gewohnt im GTM zugreifen (Defaultwert von DataLayer-Variablen beachten!)
+On relevant pages, the GTM plugin can be added and shown or hidden using the feature flag. The DataLayer value can be
+accessed as usual in GTM. (Pay attention to the default value of DataLayer variables!)

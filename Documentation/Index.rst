@@ -21,10 +21,10 @@ Feature Flag
 		|release|
 
 	:Language:
-		de
+		en
 
 	:Description:
-		Mit Feature Flags können einzelne Features umgebungsabhängig ein- und ausgeschaltet werden.
+		Feature flags can switch features (including content elements and code) on or off. This also makes different behavior in different environments possible.
 
 	:Keywords:
 		feature, flag
