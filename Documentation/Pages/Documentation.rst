@@ -81,9 +81,7 @@ Activating a feature can be done in two calls:
 
 ``activate`` => ``flagentries``
 
-**After that, the crawler needs to crawl the page tree again**
-
-**Anschließend muss allerdings der Crawler noch den Seitenbaum neu durchlaufen.**
+**After that, the crawler needs to crawl the page tree again.**
 
 The eID script always returns a JSON object. This is usually returnes with a status 200.
 When querying for a flags status, the response is the activation status.
