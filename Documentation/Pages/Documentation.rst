@@ -34,12 +34,8 @@ configure an element to either show or hide, when a feature flag is active.
     If the feature flag is selected under 'Show this content element on Feature Flag', the record will be shown
     when the feature flag is active.
 
-.. image:: /Images/Documentation/resized_flag.png
-
 Record sthat are connected to a feature flag have a star icon in the page tree. A green star means the element is
 visible, while hidden elements have a red star.
-
-.. image:: /Images/Documentation/feature_flag_stars.png
 
 Developers
 ----------
@@ -117,8 +113,6 @@ List all available features
 
 The feature flags can be found on the page tree root.
 
-.. image:: /Images/Documentation/flags.jpg
-
 Activate or deactivate features
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -131,8 +125,6 @@ Connect feature flags with Google Tag Manager
 ---------------------------------------------
 
 For this, the GTM-TYPO3-Plugin is used.
-
-.. image:: /Images/Documentation/gtm-feature.png
 
 On relevant pages, the GTM plugin can be added and shown or hidden using the feature flag. The DataLayer value can be
 accessed as usual in GTM. (Pay attention to the default value of DataLayer variables!)
