@@ -149,8 +149,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
         $table,
         $id,
         \TYPO3\CMS\Core\DataHandling\DataHandler &$tceMain
-    )
-    {
+    ) {
         // @codingStandardsIgnoreEnd
         if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG, $incomingFieldArray)) {
             $pid = $tceMain->getPID($table, $id);
