@@ -64,10 +64,9 @@ class Tx_FeatureFlag_System_Typo3_TCA
 
     /**
      * @param array $PA
-     * @param TYPO3\CMS\Backend\Form\Element\UserElement $fob
      * @return string
      */
-    public function renderSelectForFlag(array $PA, TYPO3\CMS\Backend\Form\Element\UserElement $fob)
+    public function renderSelectForFlag(array $PA)
     {
         $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
 
@@ -93,20 +92,18 @@ class Tx_FeatureFlag_System_Typo3_TCA
 
     /**
      * @param array $PA
-     * @param TYPO3\CMS\Backend\Form\Element\UserElement $fob
      * @return string
      */
-    public function renderInfo(array $PA, TYPO3\CMS\Backend\Form\Element\UserElement $fob)
+    public function renderInfo(array $PA)
     {
         return $this->getLanguageService()->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text');
     }
 
     /**
      * @param array $PA
-     * @param TYPO3\CMS\Backend\Form\Element\UserElement $fob
      * @return string
      */
-    public function renderSelectForBehavior(array $PA, TYPO3\CMS\Backend\Form\Element\UserElement $fob)
+    public function renderSelectForBehavior(array $PA)
     {
         // check, which behavior is selected
         $isBehaviorHideSelected = false;

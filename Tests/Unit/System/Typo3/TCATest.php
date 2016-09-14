@@ -108,10 +108,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
         $PA['itemFormElID'] = 'itemFormElID';
         $PA['itemFormElName'] = 'itemFormElName';
 
-        $formEngine = $this->getMockBuilder('TYPO3\\CMS\\Backend\\Form\\FormEngine')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $content = $this->tca->renderSelectForFlag($PA, $formEngine);
+        $content = $this->tca->renderSelectForFlag($PA);
 
         $this->assertContains('<option value="0"></option>', $content);
         $this->assertContains('<option value="111">flag 1</option>', $content);
