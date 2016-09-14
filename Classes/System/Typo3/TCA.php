@@ -96,7 +96,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderInfo(array $PA)
     {
-        return $this->getLanguageService()->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text');
+        $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text';
+        return $this->getLanguageService()->sL($langField);
     }
 
     /**
@@ -122,11 +123,13 @@ class Tx_FeatureFlag_System_Typo3_TCA
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '"' . ($isBehaviorHideSelected ? ' selected="selected"' : '') .
             '>';
-        $html .= $this->getLanguageService()->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide');
+        $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide';
+        $html .= $this->getLanguageService()->sL($langField);
         $html .= '</option>';
         $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '"' . ($isBehaviorShowSelected ? ' selected="selected"' : '') .
             '>';
-        $html .= $this->getLanguageService()->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show');
+        $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show';
+        $html .= $this->getLanguageService()->sL($langField);
         $html .= '</option>';
         $html .= '</select>';
 
@@ -146,7 +149,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
         $table,
         $id,
         \TYPO3\CMS\Core\DataHandling\DataHandler &$tceMain
-    ) {
+    )
+    {
         // @codingStandardsIgnoreEnd
         if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG, $incomingFieldArray)) {
             $pid = $tceMain->getPID($table, $id);
