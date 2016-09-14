@@ -61,12 +61,13 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     protected static $hashedMappings;
 
+
     /**
      * @param array $PA
-     * @param \TYPO3\CMS\Backend\Form\FormEngine $fob
+     * @param TYPO3\CMS\Backend\Form\Element\UserElement $fob
      * @return string
      */
-    public function renderSelectForFlag(array $PA, \TYPO3\CMS\Backend\Form\FormEngine $fob)
+    public function renderSelectForFlag(array $PA, TYPO3\CMS\Backend\Form\Element\UserElement $fob)
     {
         $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
 
@@ -92,20 +93,20 @@ class Tx_FeatureFlag_System_Typo3_TCA
 
     /**
      * @param array $PA
-     * @param \TYPO3\CMS\Backend\Form\FormEngine $fob
+     * @param TYPO3\CMS\Backend\Form\Element\UserElement $fob
      * @return string
      */
-    public function renderInfo(array $PA, \TYPO3\CMS\Backend\Form\FormEngine $fob)
+    public function renderInfo(array $PA, TYPO3\CMS\Backend\Form\Element\UserElement $fob)
     {
-        return $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text');
+        return $GLOBALS['LANG']->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text');
     }
 
     /**
      * @param array $PA
-     * @param \TYPO3\CMS\Backend\Form\FormEngine $fob
+     * @param TYPO3\CMS\Backend\Form\Element\UserElement $fob
      * @return string
      */
-    public function renderSelectForBehavior(array $PA, \TYPO3\CMS\Backend\Form\FormEngine $fob)
+    public function renderSelectForBehavior(array $PA, TYPO3\CMS\Backend\Form\Element\UserElement $fob)
     {
         // check, which behavior is selected
         $isBehaviorHideSelected = false;
@@ -124,11 +125,11 @@ class Tx_FeatureFlag_System_Typo3_TCA
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '"' . ($isBehaviorHideSelected ? ' selected="selected"' : '') .
             '>';
-        $html .= $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide');
+        $html .= $GLOBALS['LANG']->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide');
         $html .= '</option>';
         $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '"' . ($isBehaviorShowSelected ? ' selected="selected"' : '') .
             '>';
-        $html .= $fob->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show');
+        $html .= $GLOBALS['LANG']->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show');
         $html .= '</option>';
         $html .= '</select>';
 
