@@ -44,14 +44,24 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
     {
         $this->tca = $this->getMock(
             'Tx_FeatureFlag_System_Typo3_TCA',
-            array('getMappingRepository', 'getFeatureFlagRepository', 'getFeatureFlagByUid', 'getPersistenceManager')
+            array('getMappingRepository', 'getFeatureFlagRepository', 'getFeatureFlagByUid', 'getPersistenceManager', 'getLanguageService')
         );
         $persistenceManager = $this->getMockBuilder('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager')
             ->disableOriginalConstructor()
             ->setMethods(array('persistAll'))
             ->getMock();
+
+        $languageService = $this->getMockBuilder('TYPO3\\CMS\\Lang\\LanguageService')
+            ->disableOriginalConstructor()
+            ->setMethods(array('sL'))
+            ->getMock();
+
         $this->tca->expects($this->any())->method('getPersistenceManager')->will(
             $this->returnValue($persistenceManager)
+        );
+
+        $this->tca->expects($this->any())->method('getLanguageService')->will(
+            $this->returnValue($languageService)
         );
     }
 

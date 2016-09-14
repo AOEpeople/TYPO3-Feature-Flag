@@ -98,7 +98,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     public function renderInfo(array $PA, TYPO3\CMS\Backend\Form\Element\UserElement $fob)
     {
-        return $GLOBALS['LANG']->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text');
+        return $this->getLanguageService()->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text');
     }
 
     /**
@@ -125,11 +125,11 @@ class Tx_FeatureFlag_System_Typo3_TCA
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '"' . ($isBehaviorHideSelected ? ' selected="selected"' : '') .
             '>';
-        $html .= $GLOBALS['LANG']->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide');
+        $html .= $this->getLanguageService()->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide');
         $html .= '</option>';
         $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '"' . ($isBehaviorShowSelected ? ' selected="selected"' : '') .
             '>';
-        $html .= $GLOBALS['LANG']->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show');
+        $html .= $this->getLanguageService()->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show');
         $html .= '</option>';
         $html .= '</select>';
 
@@ -312,5 +312,13 @@ class Tx_FeatureFlag_System_Typo3_TCA
         }
 
         return $this->persistenceManager;
+    }
+
+    /**
+     * @return TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }
