@@ -30,8 +30,10 @@
         "sebastian/phpcpd": "2.0.*",
         "phpmd/phpmd": "2.2.*"
     },
-    "replace": {
-        "feature_flag": "*"
+    "autoload": {
+        "classmap": [
+            "Classes/"
+        ]
     },
     "keywords": [
         "TYPO3",
