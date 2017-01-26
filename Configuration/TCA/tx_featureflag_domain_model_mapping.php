@@ -3,22 +3,27 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-$TCA['tx_featureflag_domain_model_mapping'] = array(
-    'ctrl' => $TCA['tx_featureflag_domain_model_mapping']['ctrl'],
+return array(
+    'ctrl' => array(
+        'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping',
+        'label' => 'uid',
+        'label_alt' => 'foreign_table_uid,foreign_table_name,foreign_table_column',
+        'label_alt_force' => 1,
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'dividers2tabs' => true,
+        'delete' => 'deleted',
+        'enablecolumns' => array(),
+        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('feature_flag') .
+            'Resources/Public/Icons/TCA/Mapping.gif'
+    ),
     'interface' => array(
         'showRecordFieldList' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior',
-    ),
-    'types' => array(
-        '1' => array('showitem' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior'),
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => ''),
     ),
     'columns' => array(
         'uid' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-                'locallang_db.xml:tx_featureflag_domain_model_mapping.uid',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.uid',
             'config' => array(
                 'type' => 'passthrough',
             )
@@ -32,8 +37,7 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'tstamp' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-                'locallang_db.xml:tx_featureflag_domain_model_mapping.tstamp',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.tstamp',
             'config' => array(
                 'type' => 'text',
                 'size' => 10,
@@ -44,8 +48,7 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'crdate' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-                'locallang_db.xml:tx_featureflag_domain_model_mapping.crdate',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.crdate',
             'config' => array(
                 'type' => 'text',
                 'size' => 10,
@@ -56,8 +59,7 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'feature_flag' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-                'locallang_db.xml:tx_featureflag_domain_model_mapping.feature_flag',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.feature_flag',
             'config' => array(
                 'type' => 'select',
                 'foreign_table' => 'tx_featureflag_domain_model_featureflag',
@@ -89,8 +91,7 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
         ),
         'behavior' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-                'locallang_db.xml:tx_featureflag_domain_model_mapping.behavior',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.behavior',
             'config' => array(
                 'type' => 'text',
                 'size' => 10,
@@ -98,4 +99,10 @@ $TCA['tx_featureflag_domain_model_mapping'] = array(
             ),
         ),
     ),
+    'types' => array(
+        '1' => array('showitem' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior'),
+    ),
+    'palettes' => array(
+        '1' => array('showitem' => ''),
+    )
 );

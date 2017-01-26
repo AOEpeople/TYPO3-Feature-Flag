@@ -47,49 +47,8 @@ if (isset($config['tables'])) {
     }
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages(
-    'tx_featureflag_domain_model_featureflag'
-);
-$TCA['tx_featureflag_domain_model_featureflag'] = array(
-    'ctrl' => array(
-        'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-            'locallang_db.xml:tx_featureflag_domain_model_featureflag',
-        'label' => 'description',
-        'tstamp' => 'tstamp',
-        'crdate' => 'crdate',
-        'dividers2tabs' => true,
-        'searchFields' => 'description,flag,',
-        'delete' => 'deleted',
-        'enablecolumns' => array(
-            'disabled' => 'hidden'
-        ),
-        'rootLevel' => 1,
-        'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) .
-            'Configuration/TCA/FeatureFlag.php',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) .
-            'Resources/Public/Icons/TCA/FeatureFlag.gif'
-    ),
-);
-
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_featureflag_domain_model_featureflag');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_featureflag_domain_model_mapping');
-$TCA['tx_featureflag_domain_model_mapping'] = array(
-    'ctrl' => array(
-        'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-            'locallang_db.xml:tx_featureflag_domain_model_mapping',
-        'label' => 'uid',
-        'label_alt' => 'foreign_table_uid,foreign_table_name,foreign_table_column',
-        'label_alt_force' => 1,
-        'tstamp' => 'tstamp',
-        'crdate' => 'crdate',
-        'dividers2tabs' => true,
-        'delete' => 'deleted',
-        'enablecolumns' => array(),
-        'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) .
-            'Configuration/TCA/Mapping.php',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) .
-            'Resources/Public/Icons/TCA/Mapping.gif'
-    ),
-);
 
 $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] =
     'EXT:feature_flag/Classes/System/Typo3/TCA.php:Tx_FeatureFlag_System_Typo3_TCA';
