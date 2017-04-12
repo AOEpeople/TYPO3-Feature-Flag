@@ -18,21 +18,29 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "typo3/cms-core": "*",
+        "typo3/cms-core": ">=6.2.0, <=7.6.99",
         "typo3/cms-extbase": "*",
         "typo3/cms-scheduler": "*"
     },
     "require-dev": {
-        "typo3/cms": "6.2.*",
+        "typo3/cms": "^6.2",
         "phpunit/phpunit": "4.8.*",
         "phpunit/phpcov": "2.0.*",
         "squizlabs/php_codesniffer": "2.3.*",
         "sebastian/phpcpd": "2.0.*",
         "phpmd/phpmd": "2.2.*"
     },
+    "replace": {
+        "feature_flag": "*"
+    },
     "autoload": {
         "classmap": [
             "Classes/"
+        ]
+    },
+    "autoload-dev": {
+        "classmap": [
+            "Tests"
         ]
     },
     "keywords": [
