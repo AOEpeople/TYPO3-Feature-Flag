@@ -62,6 +62,7 @@ return array(
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.feature_flag',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_featureflag_domain_model_featureflag',
                 'size' => 1,
                 'minitems' => 1,
