@@ -35,7 +35,7 @@ CREATE TABLE tx_featureflag_domain_model_mapping (
 
   feature_flag int(11) DEFAULT '0' NOT NULL,
   foreign_table_uid int(11) DEFAULT '0' NOT NULL,
-  foreign_table_name varchar(30) DEFAULT '' NOT NULL,
+  foreign_table_name varchar(255) DEFAULT '' NOT NULL,
   behavior int(11) DEFAULT '0' NOT NULL,
 
   is_dummy_record tinyint(3) DEFAULT '0' NOT NULL,
