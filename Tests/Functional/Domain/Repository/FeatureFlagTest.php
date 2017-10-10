@@ -84,7 +84,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_FeatureFlagTest extends \TYPO3
 
         $contentElement = $this->getContentElement(4712);
 
-        $this->assertEquals('1', $contentElement[0]['hidden']);
+        $this->assertEquals('1', $contentElement['hidden']);
     }
 
     /**
@@ -101,7 +101,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_FeatureFlagTest extends \TYPO3
 
         $contentElement = $this->getContentElement(4712);
 
-        $this->assertEquals('1', $contentElement[0]['hidden']);
+        $this->assertEquals('1', $contentElement['hidden']);
     }
 
     /**
@@ -118,7 +118,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_FeatureFlagTest extends \TYPO3
 
         $contentElement = $this->getContentElement(4712);
 
-        $this->assertEquals('0', $contentElement[0]['hidden']);
+        $this->assertEquals('0', $contentElement['hidden']);
     }
 
     /**
@@ -135,7 +135,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_FeatureFlagTest extends \TYPO3
 
         $contentElement = $this->getContentElement(4712);
 
-        $this->assertEquals('0', $contentElement[0]['hidden']);
+        $this->assertEquals('0', $contentElement['hidden']);
     }
 
     /**
@@ -144,6 +144,6 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Repository_FeatureFlagTest extends \TYPO3
      */
     private function getContentElement($id)
     {
-        return $this->getDatabaseConnection()->exec_SELECTgetRows('uid,hidden', 'tt_content', 'uid=' . $id);
+        return $this->getDatabaseConnection()->selectSingleRow('uid,hidden', 'tt_content', 'uid=' . $id);
     }
 }

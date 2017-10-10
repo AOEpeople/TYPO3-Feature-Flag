@@ -9,7 +9,8 @@
 
 	<tt_content>
 		<uid>4712</uid>
-		<pid>lorem ipsum</pid>
+		<bodytext>lorem ipsum</bodytext>
+		<filelink_sorting></filelink_sorting>
 		<hidden>0</hidden>
 	</tt_content>
 
