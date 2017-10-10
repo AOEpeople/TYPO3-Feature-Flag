@@ -1,0 +1,10 @@
+# IDE
+.idea
+
+# PHP Dependencies + Dev
+/composer.lock
+/index.php
+/typo3
+/typo3_src
+/typo3conf
+/vendor

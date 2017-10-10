@@ -6,5 +6,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_ob
     'options' => array()
 );
 
-\TYPO3\CMS\Core\Cache\Cache::flagCachingFrameworkForReinitialization();
-\TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework();
+$typo3Version = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(
+    \TYPO3\CMS\Core\Utility\VersionNumberUtility::getNumericTypo3Version()
+);
+
+if ($typo3Version < 7006000) {
+    \TYPO3\CMS\Core\Cache\Cache::flagCachingFrameworkForReinitialization();
+    \TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework();
+} else {
+    \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeCachingFramework();
+}
