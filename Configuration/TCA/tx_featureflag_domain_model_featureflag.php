@@ -9,15 +9,13 @@ return array(
         'label' => 'description',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'dividers2tabs' => true,
         'searchFields' => 'description,flag,',
         'delete' => 'deleted',
         'enablecolumns' => array(
             'disabled' => 'hidden'
         ),
         'rootLevel' => 1,
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('feature_flag') .
-            'Resources/Public/Icons/TCA/FeatureFlag.gif'
+        'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/FeatureFlag.gif'
     ),
     'interface' => array(
         'showRecordFieldList' => 'description,flag,enabled',

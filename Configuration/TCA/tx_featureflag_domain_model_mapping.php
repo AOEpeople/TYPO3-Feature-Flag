@@ -11,11 +11,9 @@ return array(
         'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'dividers2tabs' => true,
         'delete' => 'deleted',
         'enablecolumns' => array(),
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('feature_flag') .
-            'Resources/Public/Icons/TCA/Mapping.gif'
+        'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/Mapping.gif'
     ),
     'interface' => array(
         'showRecordFieldList' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior',
