@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_FeatureFlag_System_Typo3_Task_FlagEntries'] = array(
-    'extension' => $_EXTKEY,
+    'extension' => 'feature_flag',
     'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
         'locallang_db.xml:tx_featureflag_system_typo3_task_flagentries.title',
     'description' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
@@ -12,14 +12,22 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_FeatureFlag_
 );
 
 if (TYPO3_MODE == 'BE') {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array(
-        'EXT:' . $_EXTKEY . '/Classes/System/Typo3/Cli.php',
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['feature_flag'] = array(
+        'EXT:feature_flag/Classes/System/Typo3/Cli.php',
         '_CLI_feature_flag'
     );
 }
 
 $confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
-
 if ($confArray['enableEidMode'] == true) {
-    $TYPO3_CONF_VARS['FE']['eID_include']['featureflag'] = 'EXT:' . $_EXTKEY . '/Classes/Service/Eid.php';
+    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['featureflag'] = 'EXT:feature_flag/Classes/Service/Eid.php';
 }
+
+/** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+$signalSlotDispatcher->connect(
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class,
+    'tcaIsBeingBuilt',
+    \Tx_FeatureFlag_TcaPostProcessor::class,
+    'postProcessTca'
+);
