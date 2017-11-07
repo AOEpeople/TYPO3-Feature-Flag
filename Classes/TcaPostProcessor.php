@@ -24,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 /**
  * @package FeatureFlag
  */
@@ -40,7 +42,7 @@ class Tx_FeatureFlag_TcaPostProcessor
         $GLOBALS['TCA'] = $tca;
 
         foreach ($this->getTcaTablesWithFeatureFlagSupport() as $table) {
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+            ExtensionManagementUtility::addTCAcolumns(
                 $table,
                 [
                     'tx_featureflag_info' => [
@@ -70,7 +72,7 @@ class Tx_FeatureFlag_TcaPostProcessor
                 ]
             );
             $GLOBALS['TCA'][$table]['palettes']['tx_featureflag'] = ['showitem' => 'tx_featureflag_flag,tx_featureflag_behavior'];
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+            ExtensionManagementUtility::addToAllTCAtypes(
                 $table,
                 '--div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,tx_featureflag_info,--palette--;;tx_featureflag'
             );
