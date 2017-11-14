@@ -188,22 +188,27 @@ class Tx_FeatureFlag_System_Typo3_TCA
      * @param string $table
      * @param array $row
      * @param string $status
+     * @param string $iconName
+     * @return string
      */
-    public function overrideIconOverlay($table, $row, &$status)
+    public function postOverlayPriorityLookup($table, $row, &$status, $iconName)
     {
         if ($this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
             $mapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($row['uid'], $table);
             if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
-                $status['feature_flag_hidden'] = ($row['hidden'] === '1') ? true : false;
-                $status['feature_flag'] = true;
-            } else {
-                $status['feature_flag_hidden'] = false;
-                $status['feature_flag'] = false;
+                if ($row['hidden'] === '1') {
+                    return 'record-has-feature-flag-which-is-hidden';
+                }
+                if ($iconName !== '') {
+                    // if record is e.g. hidden or protected by FE-group, than show that (e.g. 'hidden' or 'fe_group'-)overlay as default
+                    return $iconName;
+                }
+                return 'record-has-feature-flag-which-is-visible';
             }
-        } else {
-            $status['feature_flag_hidden'] = false;
-            $status['feature_flag'] = false;
         }
+
+        // return given icon-name as fall-back
+        return $iconName;
     }
 
     /**

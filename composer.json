@@ -18,12 +18,12 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "typo3/cms-core": ">=6.2.0, <=7.6.99",
+        "typo3/cms-core": ">=7.6.0",
         "typo3/cms-extbase": "*",
         "typo3/cms-scheduler": "*"
     },
     "require-dev": {
-        "typo3/cms": "^6.2",
+        "typo3/cms": "^7.6",
         "nimut/testing-framework": "2.0.0",
         "phpunit/phpcov": "2.0.*",
         "squizlabs/php_codesniffer": "2.3.*",
