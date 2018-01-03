@@ -18,8 +18,6 @@ before_script:
   # Restore composer.json
   - git checkout composer.json
 
-  - export TYPO3_PATH_WEB="$(pwd)/.Build/Web"
-
 script:
   - echo "Running unit tests";
   - OPT_COVERAGE=$([[ $COVERAGE == "1" ]] && echo "--coverage-clover=ut-coverage.clover" || echo;)

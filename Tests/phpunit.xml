@@ -25,6 +25,7 @@
         </whitelist>
     </filter>
     <php>
+        <env name="TYPO3_PATH_WEB" value="../.Build/Web"/>
         <const name="PHPUNIT_ACTIVE" value="true"/>
     </php>
 </phpunit>
