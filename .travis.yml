@@ -22,30 +22,23 @@ before_script:
 
 script:
   - echo "Running unit tests";
-  - >
-    if [[ "$COVERAGE" == "1" ]]; then
-      .Build/bin/phpunit --coverage-clover=unittest-coverage.clover -c Tests/phpunit.xml
-
-      echo "Uploading code coverage results";
-      wget https://scrutinizer-ci.com/ocular.phar
-      php ocular.phar code-coverage:upload --format=php-clover unittest-coverage.clover
-    else
-      .Build/bin/phpunit -c Tests/phpunit.xml
-    fi
+  - [[ $COVERAGE == "1" ]] && OPT_COVERAGE="--coverage-clover=ut-coverage.clover" || OPT_COVERAGE=""
+  - .Build/bin/phpunit -c Tests/phpunit.xml $OPT_COVERAGE
 
   - echo "Running functional tests";
+  - [[ $COVERAGE == "1" ]] && OPT_COVERAGE="--coverage-clover=ft-{}-coverage.clover" || OPT_COVERAGE=""
   - >
     export typo3DatabaseName="typo3";
     export typo3DatabaseHost="localhost";
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
 
-    if [[ "$COVERAGE" == "1" ]]; then
-      find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit -c Tests/functional.xml  --coverage-clover=ft-{}-coverage.clover --bootstrap=.Build/Web/typo3/sysext/core/Build/FunctionalTestsBootstrap.php {}'
+    find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo "Running functional test suite {}"; .Build/bin/phpunit -c Tests/functional.xml $OPT_COVERAGE {}'
 
+  # Upload code coverage data, if enabled
+  ->
+    if [[ "$COVERAGE" == "1" ]]; then
       echo "Uploading code coverage results";
       wget https://scrutinizer-ci.com/ocular.phar
       find . -wholename '*-coverage.clover' -o -name '*-coverage.clover' | xargs -i php ocular.phar code-coverage:upload --format=php-clover {}
-    else
-      find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit -c Tests/functional.xml --bootstrap=.Build/Web/typo3/sysext/core/Build/FunctionalTestsBootstrap.php {}'
     fi
