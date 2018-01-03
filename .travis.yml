@@ -22,11 +22,11 @@ before_script:
 
 script:
   - echo "Running unit tests";
-  - [[ $COVERAGE == "1" ]] && OPT_COVERAGE="--coverage-clover=ut-coverage.clover" || OPT_COVERAGE=""
+  - OPT_COVERAGE=$([[ $COVERAGE == "1" ]] && echo "--coverage-clover=ut-coverage.clover" || echo;)
   - .Build/bin/phpunit -c Tests/phpunit.xml $OPT_COVERAGE
 
   - echo "Running functional tests";
-  - [[ $COVERAGE == "1" ]] && OPT_COVERAGE="--coverage-clover=ft-{}-coverage.clover" || OPT_COVERAGE=""
+  - OPT_COVERAGE=$([[ $COVERAGE == "1" ]] && echo "--coverage-clover=ft-{}-coverage.clover" || echo;)
   - >
     export typo3DatabaseName="typo3";
     export typo3DatabaseHost="localhost";
@@ -36,7 +36,7 @@ script:
     find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo "Running functional test suite {}"; .Build/bin/phpunit -c Tests/functional.xml $OPT_COVERAGE {}'
 
   # Upload code coverage data, if enabled
-  ->
+  - >
     if [[ "$COVERAGE" == "1" ]]; then
       echo "Uploading code coverage results";
       wget https://scrutinizer-ci.com/ocular.phar
