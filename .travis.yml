@@ -39,4 +39,13 @@ script:
     export typo3DatabaseHost="localhost";
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
-    find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit -c Tests/functional.xml --bootstrap=.Build/Web/typo3/sysext/core/Build/FunctionalTestsBootstrap.php {}'
+
+    if [[ "$COVERAGE" == "1" ]]; then
+      find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit -c Tests/functional.xml  --coverage-clover=ft-{}-coverage.clover --bootstrap=.Build/Web/typo3/sysext/core/Build/FunctionalTestsBootstrap.php {}'
+
+      echo "Uploading code coverage results";
+      wget https://scrutinizer-ci.com/ocular.phar
+      find . -wholename '*-coverage.clover' -o -name '*-coverage.clover' | php ocular.phar code-coverage:upload --format=php-clover {}
+    else
+      find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit -c Tests/functional.xml --bootstrap=.Build/Web/typo3/sysext/core/Build/FunctionalTestsBootstrap.php {}'
+    fi
