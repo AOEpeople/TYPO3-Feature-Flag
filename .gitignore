@@ -1,6 +1,9 @@
 # IDE
 .idea
 
+# Build folder
+.Build
+
 # PHP Dependencies + Dev
 /composer.lock
 /index.php

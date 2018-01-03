@@ -1,8 +1,7 @@
 <phpunit
         backupGlobals="true"
         backupStaticAttributes="false"
-        bootstrap="../../../../typo3/sysext/core/Build/FunctionalTestsBootstrap.php"
-        colors="false"
+        colors="true"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
@@ -25,6 +24,5 @@
         </whitelist>
     </filter>
     <php>
-        <env name="TYPO3_PATH_WEB" value="../../../.."/>
     </php>
 </phpunit>
