@@ -7,10 +7,6 @@ php:
 env:
   - TYPO3_VERSION=^7.6 COVERAGE=1
 
-branches:
-  only:
-    - travis-configuration
-
 addons:
   apt:
     packages:
