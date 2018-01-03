@@ -7,18 +7,10 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Matthias Gutjahr, Kevin Schu',
     'author_email' => 'dev@aoe.com',
     'author_company' => 'AOE GmbH',
-    'shy' => '',
-    'dependencies' => 'extbase',
-    'conflicts' => '',
-    'priority' => '',
-    'module' => '',
     'state' => 'stable',
-    'internal' => '',
     'uploadfolder' => 0,
     'createDirs' => '',
-    'modify_tables' => '',
     'clearCacheOnLoad' => 0,
-    'lockType' => '',
     'version' => '4.0.2',
     'constraints' => [
         'depends' => [
@@ -27,5 +19,4 @@ $EM_CONF[$_EXTKEY] = [
         'conflicts' => [],
         'suggests' => [],
     ],
-    'suggests' => [],
 ];
