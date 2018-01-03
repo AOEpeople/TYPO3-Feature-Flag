@@ -17,6 +17,7 @@ before_script:
   - composer require --dev typo3/cms="$TYPO3_VERSION"
   # Restore composer.json
   - git checkout composer.json
+  - export TYPO3_PATH_WEB="$(pwd)/.Build/Web"
 
 script:
   - echo "Running unit tests";

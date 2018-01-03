@@ -24,7 +24,4 @@
             <directory suffix=".php">../Classes</directory>
         </whitelist>
     </filter>
-    <php>
-        <env name="TYPO3_PATH_WEB" value="../.Build/Web"/>
-    </php>
 </phpunit>
