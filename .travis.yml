@@ -24,7 +24,7 @@ before_script:
   - export TYPO3_PATH_WEB="$(pwd)/.Build/Web"
   # Create extension symlink in typo3conf/ext folder
   - mkdir -p .Build/Web/typo3conf/ext
-  - [ -L .Build/Web/typo3conf/ext/feature_flag ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/feature_flag
+  - ln -snvf ../../../../. .Build/Web/typo3conf/ext/feature_flag
 
 script:
   - echo "Running unit tests";
