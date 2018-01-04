@@ -14,6 +14,10 @@ addons:
 
 before_script:
   - composer self-update
+  - export COMPOSER_VENDOR_DIR=".Build/vendor"
+  - export COMPOSER_BIN_DIR=".Build/bin"
+  - composer config extra.typo3/cms.web-dir ".Build/Web"
+  - composer config extra.typo3/cms.cms-package-dir "${COMPOSER_VENDOR_DIR}/typo3/cms"
   - composer require --dev typo3/cms="$TYPO3_VERSION"
   # Restore composer.json
   - git checkout composer.json
