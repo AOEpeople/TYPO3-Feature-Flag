@@ -5,7 +5,7 @@ php:
   - 5.6
 
 env:
-  - TYPO3_VERSION=^7.6 COVERAGE=1
+  - TYPO3_VERSION=^7.6 COVERAGE=0
 
 addons:
   apt:
@@ -21,11 +21,11 @@ before_script:
 
 script:
   - echo "Running unit tests";
-  - OPT_COVERAGE=$([[ $COVERAGE == "1" ]] && echo "--coverage-clover=ut-coverage.clover" || echo;)
+  - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ut-coverage.clover" || echo;)
   - .Build/bin/phpunit -c Tests/phpunit.xml $OPT_COVERAGE
 
   - echo "Running functional tests";
-  - OPT_COVERAGE=$([[ $COVERAGE == "1" ]] && echo "--coverage-clover=ft-{}-coverage.clover" || echo;)
+  - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ft-{}-coverage.clover" || echo;)
   - >
     export typo3DatabaseName="typo3";
     export typo3DatabaseHost="localhost";
