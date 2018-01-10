@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2018 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,12 +24,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+
 /**
  * @package FeatureFlag
  * @subpackage Tests_System_Typo3
  * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Tests_Unit_BaseTest
+class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTestCase
 {
     /**
      * @var PHPUnit_Framework_MockObject_MockObject
@@ -40,8 +42,10 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
      * (non-PHPdoc)
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    public function setUp()
     {
+        parent::setUp();
+
         $this->tca = $this->getMock(
             'Tx_FeatureFlag_System_Typo3_TCA',
             array('getMappingRepository', 'getFeatureFlagRepository', 'getFeatureFlagByUid', 'getPersistenceManager', 'getLanguageService')
@@ -67,6 +71,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_TCATest extends Tx_FeatureFlag_Test
     protected function tearDown()
     {
         unset($this->tca);
+        parent::tearDown();
     }
 
     /**
