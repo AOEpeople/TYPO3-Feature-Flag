@@ -143,6 +143,6 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
      */
     private function getContentElement($id)
     {
-        return $this->getDatabaseConnection()->selectSingleRow('uid,hidden', 'tt_content', 'uid=' . $id);
+        return $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,hidden', 'tt_content', 'uid=' . $id);
     }
 }
