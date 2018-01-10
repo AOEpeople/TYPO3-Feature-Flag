@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2018 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,19 +24,18 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+
 /**
  * @package FeatureFlag
  * @subpackage Tests_Domain_Repository
- * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_Tests_Unit_Domain_Repository_MappingTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends FunctionalTestCase
 {
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
-        'typo3conf/ext/feature_flag'
-    );
+    protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
      * @var Tx_FeatureFlag_Domain_Repository_Mapping
