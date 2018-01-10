@@ -3,9 +3,36 @@ language: php
 php:
   - 5.5
   - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
 
 env:
-  - TYPO3_VERSION=^7.6 COVERAGE=0
+  - TYPO3_VERSION=^7.6 COVERAGE=0 FUNCTIONAL=0
+  - TYPO3_VERSION=^8.7 COVERAGE=0 FUNCTIONAL=0
+  - TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
+
+matrix:
+  exclude:
+    - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
+      php: 5.5
+    - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
+      php: 5.6
+    - env: TYPO3_VERSION=^8.7 COVERAGE=0 FUNCTIONAL=0
+      php: 5.5
+    - env: TYPO3_VERSION=^8.7 COVERAGE=0 FUNCTIONAL=0
+      php: 5.6
+  include:
+    - env: TYPO3_VERSION=^7.6 COVERAGE=1 FUNCTIONAL=1
+      php: 7.1
+    - env: TYPO3_VERSION=^8.7 COVERAGE=0 FUNCTIONAL=1
+      php: 7.1
+    - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=1
+      php: 7.1
+  allow_failures:
+    - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=1
+    - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
+    - php: 7.2
 
 addons:
   apt:
@@ -48,3 +75,7 @@ script:
       wget https://scrutinizer-ci.com/ocular.phar
       find . -wholename '*-coverage.clover' -o -name '*-coverage.clover' | xargs -i php ocular.phar code-coverage:upload --format=php-clover {}
     fi
+
+  - >
+    echo "Running php lint";
+    find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
