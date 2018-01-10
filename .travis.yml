@@ -48,6 +48,8 @@ before_script:
   - composer require --dev typo3/cms="$TYPO3_VERSION"
   # Restore composer.json
   - git checkout composer.json
+  - export UNIT_BOOTSTRAP='.Build/vendor/nimut/testing-framework/res/Configuration/UnitTestsBootstrap.php'
+  - export FUNCTIONAL_XML='.Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml'
   - export TYPO3_PATH_WEB="$(pwd)/.Build/Web"
   # Create extension symlink in typo3conf/ext folder
   - mkdir -p .Build/Web/typo3conf/ext
@@ -56,7 +58,7 @@ before_script:
 script:
   - echo "Running unit tests";
   - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ut-coverage.clover" || echo;)
-  - .Build/bin/phpunit -c Tests/phpunit.xml $OPT_COVERAGE
+  - .Build/bin/phpunit --bootstrap "$UNIT_BOOTSTRAP" -c Tests/phpunit.xml $OPT_COVERAGE
 
   - echo "Running functional tests";
   - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ft-{}-coverage.clover" || echo;)
@@ -66,7 +68,7 @@ script:
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
 
-    find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo "Running functional test suite {}"; .Build/bin/phpunit -c Tests/functional.xml $OPT_COVERAGE --bootstrap .Build/Web/typo3/sysext/core/Build/FunctionalTestsBootstrap.php {}'
+    find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo "Running functional test suite {}"; .Build/bin/phpunit -c $FUNCTIONAL_XML $OPT_COVERAGE {}'
 
   # Upload code coverage data, if enabled
   - >
