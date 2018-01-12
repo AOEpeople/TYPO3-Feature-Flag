@@ -1,7 +1,7 @@
 <phpunit
+        bootstrap="../../../../vendor/nimut/testing-framework/res/Configuration/UnitTestsBootstrap.php"
         backupGlobals="true"
         backupStaticAttributes="false"
-        bootstrap="../../../../typo3/sysext/core/Build/UnitTestsBootstrap.php"
         colors="true"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
@@ -24,7 +24,4 @@
             <directory suffix=".php">../Classes</directory>
         </whitelist>
     </filter>
-    <php>
-        <const name="PHPUNIT_ACTIVE" value="true"/>
-    </php>
 </phpunit>
