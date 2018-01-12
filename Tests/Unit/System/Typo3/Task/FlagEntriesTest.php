@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2018 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -27,7 +27,6 @@
 /**
  * @package FeatureFlag
  * @subpackage Tests_System_Typo3_Task
- * @author Kevin Schu <kevin.schu@aoe.com>
  */
 class Tx_FeatureFlag_Tests_Unit_System_Typo3_Task_FlagEntriesTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
 {
