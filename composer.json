@@ -31,16 +31,42 @@
         "phpmd/phpmd": "2.2.*"
     },
     "replace": {
-        "feature_flag": "*"
+        "feature_flag": "self.version"
     },
     "autoload": {
         "classmap": [
             "Classes/"
-        ]
+        ],
+        "psr-4": {
+            "Aoe\\FeatureFlag\\": "Classes/"
+        }
     },
     "autoload-dev": {
         "classmap": [
             "Tests"
+        ]
+    },
+    "scripts": {
+        "test:unit": [
+            "[ -e 'vendor/bin/phpunit' ] || composer cleanupdate",
+            "vendor/bin/phpunit --colors -v -c vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit"
+        ],
+        "test:functional": [
+            "[ -e 'vendor/bin/phpunit' ] || composer cleanupdate",
+            "mkdir -p typo3conf/ext",
+            "ln -snvf ../../. typo3conf/ext/feature_flag",
+            "vendor/bin/phpunit --colors -v -c vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional"
+        ],
+        "test:params": [
+            "echo typo3DatabaseName=${typo3DatabaseName}",
+            "echo typo3DatabaseUsername=${typo3DatabaseUsername}",
+            "echo typo3DatabasePassword=${typo3DatabasePassword}"
+        ],
+        "cleanupdate": [
+            "rm -rf ./typo3conf ./vendor ./uploads ./typo3_src ./typo3temp",
+            "if [ -L 'index.php' ]; then unlink ./index.php; fi",
+            "if [ -L 'typo3' ]; then unlink ./typo3; fi",
+            "composer update"
         ]
     },
     "keywords": [
