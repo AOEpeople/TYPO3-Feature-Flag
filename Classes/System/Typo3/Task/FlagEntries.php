@@ -27,8 +27,6 @@
 /**
  * @package FeatureFlag
  * @subpackage System_Typo3_Task
- * @author Kevin Schu <kevin.schu@aoe.com>
- * @author Roland Beisel <roland.beisel@aoe.com>
  */
 class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {

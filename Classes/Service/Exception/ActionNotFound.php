@@ -27,9 +27,7 @@
 /**
  * @package FeatureFlag
  * @subpackage Service_Exception
- * @author Roland Beisel <roland.beisel@aoe.com>
  */
 class Tx_FeatureFlag_Service_Exception_ActionNotFound extends Exception
 {
-
 }

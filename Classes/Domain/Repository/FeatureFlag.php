@@ -27,7 +27,6 @@
 /**
  * @package FeatureFlag
  * @subpackage Domain_Repository
- * @author Kevin Schu <kevin.schu@aoe.com>
  */
 class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Persistence\Repository
 {

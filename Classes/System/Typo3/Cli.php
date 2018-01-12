@@ -28,8 +28,6 @@
 /**
  * @package FeatureFlag
  * @subpackage System_Typo3
- * @author Kevin Schu <kevin.schu@aoe.com>
- * @author Roland Beisel <roland.beisel@aoe.com>
  */
 class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
 {

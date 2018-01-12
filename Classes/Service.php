@@ -26,8 +26,6 @@
 
 /**
  * @package FeatureFlag
- * @author Kevin Schu <kevin.schu@aoe.com>
- * @author Roland Beisel <roland.beisel@aoe.com>
  */
 class Tx_FeatureFlag_Service
 {

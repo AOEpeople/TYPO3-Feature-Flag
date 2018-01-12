@@ -27,7 +27,6 @@
 /**
  * @package FeatureFlag
  * @subpackage System_Db
- * @author Kevin Schu <kevin.schu@aoe.com>
  */
 class Tx_FeatureFlag_System_Db_SqlFactory
 {
