@@ -57,11 +57,6 @@
             "ln -snvf ../../. typo3conf/ext/feature_flag",
             "vendor/bin/phpunit --colors -v -c vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional"
         ],
-        "test:params": [
-            "echo typo3DatabaseName=${typo3DatabaseName}",
-            "echo typo3DatabaseUsername=${typo3DatabaseUsername}",
-            "echo typo3DatabasePassword=${typo3DatabasePassword}"
-        ],
         "cleanupdate": [
             "rm -rf ./typo3conf ./vendor ./uploads ./typo3_src ./typo3temp",
             "if [ -L 'index.php' ]; then unlink ./index.php; fi",
