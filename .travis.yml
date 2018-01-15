@@ -48,7 +48,7 @@ before_script:
   - composer require --dev typo3/cms="$TYPO3_VERSION"
   # Restore composer.json
   - git checkout composer.json
-  - export UNIT_BOOTSTRAP='.Build/vendor/nimut/testing-framework/res/Configuration/UnitTestsBootstrap.php'
+  - export UNIT_XML='.Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml'
   - export FUNCTIONAL_XML='.Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml'
   - export TYPO3_PATH_WEB="$(pwd)/.Build/Web"
   # Create extension symlink in typo3conf/ext folder
@@ -57,11 +57,11 @@ before_script:
 
 script:
   - echo "Running unit tests";
-  - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ut-coverage.clover" || echo;)
-  - .Build/bin/phpunit --bootstrap "$UNIT_BOOTSTRAP" -c Tests/phpunit.xml $OPT_COVERAGE
+  - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ut-coverage.clover --whitelist Classes" || echo;)
+  - .Build/bin/phpunit --colors -c $UNIT_XML $OPT_COVERAGE Tests/Unit
 
   - echo "Running functional tests";
-  - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ft-{}-coverage.clover" || echo;)
+  - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ft-{}-coverage.clover --whitelist Classes" || echo;)
   - >
     export typo3DatabaseName="typo3";
     export typo3DatabaseHost="localhost";
