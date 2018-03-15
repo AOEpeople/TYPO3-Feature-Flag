@@ -23,6 +23,8 @@ matrix:
     - env: TYPO3_VERSION=^8.7 COVERAGE=0 FUNCTIONAL=0
       php: 5.6
   include:
+    - env: TYPO3_VERSION=^7.6 COVERAGE=1 FUNCTIONAL=1
+      php: 5.6
     - env: TYPO3_VERSION=^7.6 COVERAGE=0 FUNCTIONAL=1
       php: 7.1
     - env: TYPO3_VERSION=^8.7 COVERAGE=0 FUNCTIONAL=1
@@ -40,44 +42,50 @@ addons:
       - parallel
 
 before_script:
-  - composer self-update
-  - export COMPOSER_VENDOR_DIR=".Build/vendor"
-  - export COMPOSER_BIN_DIR=".Build/bin"
-  - composer config extra.typo3/cms.web-dir ".Build/Web"
-  - composer config extra.typo3/cms.cms-package-dir "${COMPOSER_VENDOR_DIR}/typo3/cms"
-  - composer require --dev typo3/cms="$TYPO3_VERSION"
+  # Installs TYPO3
+  - composer require typo3/cms=$TYPO3_VERSION
   # Restore composer.json
   - git checkout composer.json
-  - export UNIT_XML='.Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml'
-  - export FUNCTIONAL_XML='.Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml'
-  - export TYPO3_PATH_WEB="$(pwd)/.Build/Web"
-  # Create extension symlink in typo3conf/ext folder
-  - mkdir -p .Build/Web/typo3conf/ext
-  - ln -snvf ../../../../. .Build/Web/typo3conf/ext/feature_flag
+  - export "TYPO3_PATH_WEB"=$PWD/.Build/Web;
+  # Locating UnitTests.xml
+  - export "UNIT_XML"='.Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml'
+  # Location FunctionalTests.xml
+  - export "FUNCTIONAL_XML"='.Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml'
+  # Symlink TYPO3-Core
+  - ln -nfs .Build/vendor/typo3/cms/typo3 typo3
 
 script:
-  - echo "Running unit tests";
-  - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ut-coverage.clover --whitelist Classes" || echo;)
-  - .Build/bin/phpunit --colors -c $UNIT_XML $OPT_COVERAGE Tests/Unit
-
-  - echo "Running functional tests";
-  - OPT_COVERAGE=$([[ "$COVERAGE" == "1" ]] && echo "--coverage-clover=ft-{}-coverage.clover --whitelist Classes" || echo;)
   - >
-    export typo3DatabaseName="typo3";
-    export typo3DatabaseHost="localhost";
-    export typo3DatabaseUsername="root";
-    export typo3DatabasePassword="";
-
-    find 'Tests/Functional' -wholename '*Test.php' -o -name '*Test.php' | parallel --gnu 'echo "Running functional test suite {}"; .Build/bin/phpunit -c $FUNCTIONAL_XML $OPT_COVERAGE {}'
-
-  # Upload code coverage data, if enabled
+    if [[ "$COVERAGE" == "0" ]]; then
+      echo;
+      echo "Running unit tests";
+      .Build/bin/phpunit --colors -c $UNIT_XML Tests/Unit
+    fi
   - >
     if [[ "$COVERAGE" == "1" ]]; then
+      echo;
+      echo "Running unit tests";
+      .Build/bin/phpunit --whitelist Classes/ --coverage-clover=unittest-coverage.clover --colors -c $UNIT_XML Tests/Unit
+    fi
+  - >
+    if [[ "$FUNCTIONAL" == "1" ]]; then
+      echo;
+      echo "Running functional tests";
+      export typo3DatabaseName="typo3";
+      export typo3DatabaseHost="localhost";
+      export typo3DatabaseUsername="root";
+      export typo3DatabasePassword="";
+      find 'Tests/Functional' -name '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --whitelist Classes/ --coverage-clover={}functionaltest-coverage.clover --colors  -c $FUNCTIONAL_XML {}'
+    fi
+  - >
+    if [[ "$COVERAGE" == "1" ]]; then
+      echo;
       echo "Uploading code coverage results";
       wget https://scrutinizer-ci.com/ocular.phar
-      find . -wholename '*-coverage.clover' -o -name '*-coverage.clover' | xargs -i php ocular.phar code-coverage:upload --format=php-clover {}
+      php ocular.phar code-coverage:upload --format=php-clover unittest-coverage.clover
+      find 'Tests/Functional' -name '*Test.php' -exec php ocular.phar code-coverage:upload --format=php-clover {}functionaltest-coverage.clover \;
     fi
-
   - >
-    echo "Running php lint";
-    find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+    echo;
+      echo "Running php lint";
+      find . -name \*.php ! -path "./.Build/*" ! -path "./scripts/*" ! -path "./typo3_src/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
