@@ -80,6 +80,7 @@ class EidProcessorTest extends UnitTestCase
 
         $eidProcessor = new EidProcessor($serviceMock, $this->getCacheManagerMock());
         $eidProcessor->processRequest();
+        $this->expectOutputRegex('/200/');
     }
 
     /**
