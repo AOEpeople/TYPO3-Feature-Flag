@@ -36,10 +36,20 @@ matrix:
     - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
     - php: 7.2
 
+sudo: false
+
 addons:
   apt:
     packages:
       - parallel
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - composer self-update
+  - composer --version
 
 before_script:
   # Installs TYPO3
