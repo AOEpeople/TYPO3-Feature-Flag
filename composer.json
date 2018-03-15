@@ -46,23 +46,32 @@
             "Tests"
         ]
     },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
     "scripts": {
+        "post-autoload-dump": [
+            "mkdir -p .Build/Web/typo3conf/ext/",
+            "[ -L .Build/Web/typo3conf/ext/feature_flag ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/feature_flag"
+        ],
         "test:unit": [
-            "[ -e 'vendor/bin/phpunit' ] || composer cleanupdate",
-            "vendor/bin/phpunit --colors -v -c vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit"
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/ --debug --verbose"
         ],
         "test:functional": [
-            "[ -e 'vendor/bin/phpunit' ] || composer cleanupdate",
-            "mkdir -p typo3conf/ext",
-            "ln -snvf ../../. typo3conf/ext/feature_flag",
-            "vendor/bin/phpunit --colors -v -c vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional"
-        ],
-        "cleanupdate": [
-            "rm -rf ./typo3conf ./vendor ./uploads ./typo3_src ./typo3temp",
-            "if [ -L 'index.php' ]; then unlink ./index.php; fi",
-            "if [ -L 'typo3' ]; then unlink ./typo3; fi",
-            "composer update"
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional --debug --verbose"
         ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.4.x-dev"
+        },
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web"
+        }
     },
     "keywords": [
         "TYPO3",
