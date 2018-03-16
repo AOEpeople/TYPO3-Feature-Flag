@@ -2,12 +2,12 @@
     "name": "aoe/feature-flag",
     "description": "Add ability to use feature flags for extensions and content elements.",
     "type": "typo3-cms-extension",
-    "homepage": "https://forge.typo3.org/projects/extension-feature_flag",
+    "homepage": "https://github.com/AOEpeople/TYPO3-Feature-Flag",
     "license": "GPL-3.0",
     "support": {
         "email": "dev@aoe.com",
-        "issues": "https://forge.typo3.org/projects/extension-feature_flag/issues",
-        "source": "https://forge.typo3.org/projects/extension-feature_flag"
+        "issues": "https://github.com/AOEpeople/TYPO3-Feature-Flag/issues",
+        "source": "https://github.com/AOEpeople/TYPO3-Feature-Flag"
     },
     "authors": [
         {
