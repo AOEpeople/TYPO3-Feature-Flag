@@ -27,7 +27,6 @@
 /**
  * @package FeatureFlag
  * @subpackage Domain_Model
- * @author Kevin Schu <kevin.schu@aoe.com>
  */
 class Tx_FeatureFlag_Domain_Model_FeatureFlag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

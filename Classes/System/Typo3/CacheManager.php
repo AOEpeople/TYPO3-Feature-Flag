@@ -27,7 +27,6 @@
 /**
  * @package FeatureFlag
  * @subpackage System_Typo3
- * @author Roland Beisel <roland.beisel@aoe.com>
  */
 class Tx_FeatureFlag_System_Typo3_CacheManager
 {

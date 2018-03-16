@@ -27,9 +27,7 @@
 /**
  * @package FeatureFlag
  * @subpackage Service_Exception
- * @author Kevin Schu <kevin.schu@aoe.com>
  */
 class Tx_FeatureFlag_Service_Exception_FeatureNotFound extends Exception
 {
-
 }

@@ -27,7 +27,6 @@
 /**
  * @package FeatureFlag
  * @subpackage Tests_System_Typo3
- * @author Kevin Schu <kevin.schu@aoe.com>
  */
 class Tx_FeatureFlag_Tests_Unit_System_Typo3_ConfigurationTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
 {

@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2018 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -27,7 +27,6 @@
 /**
  * @package FeatureFlag
  * @subpackage System_Db
- * @author Kevin Schu <kevin.schu@aoe.com>
  */
 class Tx_FeatureFlag_System_Db_SqlFactory
 {
@@ -49,7 +48,7 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getSelectStatementForContentElements($table, $behavior, $enabled)
     {
-        $escaptedTable = mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table);
+        $escaptedTable = $this->getDatabaseConnection()->quoteStr($table, $table);
 
         $sql = 'SELECT ' . $escaptedTable . '.uid';
         $sql .= ' FROM ' . $escaptedTable . ',' . self::TABLE_MAPPING . ',' . self::TABLE_FLAGS;
@@ -72,7 +71,7 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getUpdateStatementForContentElements($table, array $uids, $isVisible)
     {
-        $sql = 'UPDATE ' . mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table);
+        $sql = 'UPDATE ' . $this->getDatabaseConnection()->quoteStr($table, $table);
         $sql .= ' SET hidden = ' . ($isVisible === true ? 0 : 1);
         $sql .= ' WHERE uid IN (' . implode(',', $uids) . ');';
         return $sql;
@@ -86,11 +85,18 @@ class Tx_FeatureFlag_System_Db_SqlFactory
      */
     public function getSelectStatementForContentElementPids($table, $uid)
     {
-        $escaptedTable = mysqli_real_escape_string($GLOBALS['TYPO3_DB']->getDatabaseHandle(), $table);
+        $escaptedTable = $this->getDatabaseConnection()->quoteStr($table, $table);
         $sql = 'SELECT ' . $escaptedTable . '.pid';
         $sql .= ' FROM ' . $escaptedTable;
         $sql .= ' WHERE ' . $escaptedTable . '.uid=' . $uid;
 
         return $sql;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    private function getDatabaseConnection() {
+        return $GLOBALS['TYPO3_DB'];
     }
 }

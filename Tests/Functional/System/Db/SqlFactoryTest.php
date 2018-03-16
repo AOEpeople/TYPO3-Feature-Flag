@@ -24,19 +24,18 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+
 /**
  * @package FeatureFlag
  * @subpackage Tests_System_Db
- * @author Kevin Schu <kevin.schu@aoe.com>
  */
-class Tx_FeatureFlag_Tests_Unit_System_Db_SqlFactoryTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+class Tx_FeatureFlag_Tests_Functional_System_Db_SqlFactoryTest extends FunctionalTestCase
 {
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
-        'typo3conf/ext/feature_flag'
-    );
+    protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
      * @var Tx_FeatureFlag_System_Db_SqlFactory
