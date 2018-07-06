@@ -96,6 +96,8 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
      */
     public function shouldReturnTrueForEnabledFeature()
     {
+        $GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'] = 'mockedTca';
+
         $this->setService($this->getMockRepository(true));
         $result = $this->service->isFeatureEnabled('my_cool_feature');
         $this->assertTrue($result);
@@ -106,6 +108,8 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
      */
     public function shouldReturnFalseForDisabledFeature()
     {
+        $GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'] = 'mockedTca';
+
         $this->setService($this->getMockRepository(false));
         $result = $this->service->isFeatureEnabled('my_cool_feature');
         $this->assertFalse($result);
@@ -116,10 +120,26 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
      */
     public function shouldThrowExceptionIfFlagDoesNotExist()
     {
+        $GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'] = 'mockedTca';
+
         $mockRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findByFlag'));
         $mockRepository->expects($this->once())->method('findByFlag')->will($this->returnValue(null));
         $this->setService($mockRepository);
         $this->setExpectedException('Tx_FeatureFlag_Service_Exception_FeatureNotFound');
+        $this->service->isFeatureEnabled('my_cool_feature');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfTcaIsNotLoaded()
+    {
+        $GLOBALS['TCA'] = null;
+
+        $mockRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findByFlag'));
+        $mockRepository->expects($this->never())->method('findByFlag');
+        $this->setService($mockRepository);
+        $this->setExpectedException('RuntimeException');
         $this->service->isFeatureEnabled('my_cool_feature');
     }
 
