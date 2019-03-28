@@ -10,9 +10,6 @@ env:
   - TYPO3_VERSION=^9.5 COVERAGE=0 FUNCTIONAL=0
 
 matrix:
-  exclude:
-    - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
-      php: 7.1
   include:
     - env: TYPO3_VERSION=^9.5 COVERAGE=1 FUNCTIONAL=1
       php: 7.2
