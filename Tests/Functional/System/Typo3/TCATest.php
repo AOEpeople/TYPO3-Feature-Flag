@@ -46,7 +46,7 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
         parent::setUp();
 
         $this->tca = $this->getMock(
-            'Tx_FeatureFlag_System_Typo3_TCA',
+            '\\Aoe\\FeatureFlag\\System\\Typo3\\TCA',
             [
                 'getMappingRepository', 'getFeatureFlagRepository',
                 'getFeatureFlagByUid', 'getPersistenceManager', 'getLanguageService'

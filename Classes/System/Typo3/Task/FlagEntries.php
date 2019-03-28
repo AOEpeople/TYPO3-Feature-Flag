@@ -1,5 +1,9 @@
 <?php
 
+namespace Aoe\FeatureFlag\System\Typo3\Task;
+
+use Aoe\FeatureFlag\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +32,7 @@
  * @package FeatureFlag
  * @subpackage System_Typo3_Task
  */
-class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class FlagEntries extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
     /**
      * @return bool
@@ -40,11 +44,11 @@ class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends \TYPO3\CMS\Scheduler\
     }
 
     /**
-     * @return Tx_FeatureFlag_Service
+     * @return Service
      */
     protected function getFeatureFlagService()
     {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
-            ->get(Tx_FeatureFlag_Service::class);
+            ->get(Service::class);
     }
 }

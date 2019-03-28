@@ -25,6 +25,10 @@ namespace Aoe\FeatureFlag\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Service;
+use Aoe\FeatureFlag\Service\Exception\ActionNotFound;
+use Aoe\FeatureFlag\Service\Exception\FeatureNotFound;
+use Aoe\FeatureFlag\System\Typo3\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -33,23 +37,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class EidProcessor
 {
     /**
-     * @var \Tx_FeatureFlag_Service
+     * @var Service
      */
     protected $featureFlagService;
 
     /**
-     * @var \Tx_FeatureFlag_System_Typo3_CacheManager
+     * @var CacheManager
      */
     protected $cacheManager;
 
     /**
-     * Tx_FeatureFlag_Service_Eid constructor.
-     * @param \Tx_FeatureFlag_Service $service
-     * @param \Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager
+     * @param Service $service
+     * @param CacheManager $cacheManager
      */
     public function __construct(
-        \Tx_FeatureFlag_Service $service,
-        \Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager
+        Service $service,
+        CacheManager $cacheManager
     )
     {
         $this->featureFlagService = $service;
@@ -58,8 +61,8 @@ class EidProcessor
 
     /**
      * Process request
-     * @throws \Tx_FeatureFlag_Service_Exception_ActionNotFound
-     * @throws \Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     * @throws ActionNotFound
+     * @throws FeatureNotFound
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function processRequest()
@@ -83,7 +86,7 @@ class EidProcessor
                 $response = $this->featureFlagService->isFeatureEnabled($featureName);
                 break;
             default:
-                throw new \Tx_FeatureFlag_Service_Exception_ActionNotFound('Action not found', 1515750886);
+                throw new ActionNotFound('Action not found', 1515750886);
                 break;
         }
 

@@ -1,5 +1,12 @@
 <?php
 
+namespace Aoe\FeatureFlag\System\Typo3;
+
+use Aoe\FeatureFlag\Service;
+use Aoe\FeatureFlag\System\Typo3\Task\FlagEntries;
+use Exception;
+use RuntimeException;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +36,7 @@
  * @package FeatureFlag
  * @subpackage System_Typo3
  */
-class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
+class Cli extends \TYPO3\CMS\Core\Controller\CommandLineController
 {
     /**
      * @var string
@@ -50,7 +57,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
     protected $scheduler;
 
     /**
-     * @var Tx_FeatureFlag_Service
+     * @var Service
      */
     protected $service;
 
@@ -76,7 +83,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
         $this->scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
 
         $this->service = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
-            ->get(Tx_FeatureFlag_Service::class);
+            ->get(Service::class);
     }
 
     /**
@@ -151,7 +158,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
     private function getSchedulerTaskUid()
     {
         foreach ($this->scheduler->fetchTasksWithCondition() as $task) {
-            if ($task instanceof Tx_FeatureFlag_System_Typo3_Task_FlagEntries) {
+            if ($task instanceof FlagEntries) {
                 $taskUid = $task->getTaskUid();
             }
         }
@@ -198,13 +205,13 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
      */
     private function flushCaches()
     {
-        /** @var Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager */
+        /** @var CacheManager $cacheManager */
         $cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
-            ->get(Tx_FeatureFlag_System_Typo3_CacheManager::class);
+            ->get(CacheManager::class);
         $cacheManager->clearAllCaches();
     }
 }
 
-/** @var Tx_FeatureFlag_System_Typo3_Cli $cli */
-$cli = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_FeatureFlag_System_Typo3_Cli');
+/** @var Cli $cli */
+$cli = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Cli::class);
 exit($cli->main($_SERVER['argv']));

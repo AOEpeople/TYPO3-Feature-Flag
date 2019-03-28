@@ -1,5 +1,9 @@
 <?php
 
+namespace Aoe\FeatureFlag\Service\Exception;
+
+use Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,6 +32,6 @@
  * @package FeatureFlag
  * @subpackage Service_Exception
  */
-class Tx_FeatureFlag_Service_Exception_ActionNotFound extends Exception
+class ActionNotFound extends Exception
 {
 }

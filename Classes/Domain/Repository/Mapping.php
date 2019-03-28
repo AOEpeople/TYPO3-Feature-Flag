@@ -1,5 +1,7 @@
 <?php
 
+namespace Aoe\FeatureFlag\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,11 +26,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * @package FeatureFlag
  * @subpackage Domain_Repository
  */
-class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persistence\Repository
+class Mapping extends Repository
 {
     /**
      *
@@ -55,7 +59,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     /**
      * @param $foreignTableUid
      * @param $foreignTableName
-     * @return Tx_FeatureFlag_Domain_Model_Mapping
+     * @return \Aoe\FeatureFlag\Domain\Model\Mapping
      */
     public function findOneByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
     {

@@ -1,5 +1,12 @@
 <?php
 
+namespace Aoe\FeatureFlag;
+
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlag;
+use Aoe\FeatureFlag\Service\Exception\FeatureNotFound;
+use Aoe\FeatureFlag\System\Typo3\Configuration;
+use RuntimeException;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,7 +34,7 @@
 /**
  * @package FeatureFlag
  */
-class Tx_FeatureFlag_Service
+class Service
 {
     /**
      * @var int
@@ -40,7 +47,7 @@ class Tx_FeatureFlag_Service
     const BEHAVIOR_SHOW = 1;
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
+     * @var FeatureFlag
      */
     private $featureFlagRepository;
 
@@ -50,7 +57,7 @@ class Tx_FeatureFlag_Service
     private $persistenceManager;
 
     /**
-     * @var Tx_FeatureFlag_System_Typo3_Configuration
+     * @var Configuration
      */
     private $configuration;
 
@@ -60,15 +67,14 @@ class Tx_FeatureFlag_Service
     private $cachedFlags = array();
 
     /**
-     * Tx_FeatureFlag_Service constructor.
-     * @param Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository
+     * @param FeatureFlag $featureFlagRepository
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-     * @param Tx_FeatureFlag_System_Typo3_Configuration $configuration
+     * @param Configuration $configuration
      */
     public function __construct(
-        Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository,
+        FeatureFlag $featureFlagRepository,
         \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager,
-        Tx_FeatureFlag_System_Typo3_Configuration $configuration
+        Configuration $configuration
     ) {
         $this->featureFlagRepository = $featureFlagRepository;
         $this->persistenceManager = $persistenceManager;
@@ -77,8 +83,8 @@ class Tx_FeatureFlag_Service
 
     /**
      * @param string $flag
-     * @return Tx_FeatureFlag_Domain_Model_FeatureFlag
-     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     * @return \Aoe\FeatureFlag\Domain\Model\FeatureFlag
+     * @throws FeatureNotFound
      * @throws RuntimeException
      * @return boolean
      */
@@ -87,15 +93,15 @@ class Tx_FeatureFlag_Service
         if (false === is_array($GLOBALS['TCA']) || false === isset($GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'])) {
             // This can happen, when we call a REST-endpoint (by using restler-extension without initialized FE) and TYPO3 7:
             // Without TCA, we would load (in this and ALL other following PHP-requests) the featureFlag without initialized
-            // 'property-values' (method 'Tx_FeatureFlag_Domain_Model_FeatureFlag::isEnabled' would return NULL), so we MUST
+            // 'property-values' (method 'FeatureFlag::isEnabled' would return NULL), so we MUST
             // avoid to load any featureFlag without correct loaded TCA!
             throw new RuntimeException('TCA is not loaded - we can\'t load featureFlag "'.$flag.'"');
         }
 
         if (false === array_key_exists($flag, $this->cachedFlags)) {
             $flagModel = $this->featureFlagRepository->findByFlag($flag);
-            if (false === $flagModel instanceof Tx_FeatureFlag_Domain_Model_FeatureFlag) {
-                throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found: "' . $flag . '"', 1383842028);
+            if (false === $flagModel instanceof \Aoe\FeatureFlag\Domain\Model\FeatureFlag) {
+                throw new FeatureNotFound('Feature Flag not found: "' . $flag . '"', 1383842028);
             }
             $this->cachedFlags[$flag] = $flagModel;
         }
@@ -105,7 +111,7 @@ class Tx_FeatureFlag_Service
     /**
      * @param $flag
      * @return bool
-     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     * @throws FeatureNotFound
      */
     public function isFeatureEnabled($flag)
     {
@@ -115,7 +121,7 @@ class Tx_FeatureFlag_Service
     /**
      * @param $flag
      * @param $enabled
-     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     * @throws FeatureNotFound
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function updateFeatureFlag($flag, $enabled)

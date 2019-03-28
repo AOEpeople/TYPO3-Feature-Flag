@@ -1,5 +1,7 @@
 <?php
 
+namespace Aoe\FeatureFlag\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,13 +30,8 @@
  * @package FeatureFlag
  * @subpackage Domain_Repository
  */
-class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Persistence\Repository
+class FeatureFlag extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    /**
-     * @var Tx_FeatureFlag_System_Db_SqlFactory
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    private $sqlFactory;
 
     /**
      *
@@ -59,7 +56,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
 
     /**
      * @param string $flag
-     * @return Tx_FeatureFlag_Domain_Model_FeatureFlag
+     * @return \Aoe\FeatureFlag\Domain\Model\FeatureFlag
      */
     public function findByFlag($flag)
     {
@@ -71,71 +68,12 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
         return $query->execute()->getFirst();
     }
 
-    /**
-     * @param string $table
-     */
-    public function updateFeatureFlagStatusForTable($table)
-    {
-        $this->hideEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 1));
-        $this->hideEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 0));
-        $this->showEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 1));
-        $this->showEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 0));
-    }
+    public function updateFeatureFlagStatusForTable($table): void {
+        /*hole alle records für die es mappings gibt
+        hole FF für mappings // wenn kein FF dann WARNUNG loggen
+        wende mappings an für record
 
-    /**
-     * @param string $table
-     * @param array $uids
-     * @return void
-     */
-    private function hideEntries($table, array $uids)
-    {
-        $this->updateEntries($table, $uids, false);
-    }
 
-    /**
-     * @param string $table
-     * @param array $uids
-     * @return void
-     */
-    private function showEntries($table, array $uids)
-    {
-        $this->updateEntries($table, $uids, true);
-    }
-
-    /**
-     * @param $table
-     * @param array $uids
-     * @param boolean $isVisible
-     * @return void
-     */
-    private function updateEntries($table, array $uids, $isVisible)
-    {
-        if (empty($uids)) {
-            return;
-        }
-        //@TODO: needs to use api
-        //$statement = $this->sqlFactory->getUpdateStatementForContentElements($table, $uids, $isVisible);
-        //$GLOBALS['TYPO3_DB']->sql_query($statement);
-    }
-
-    /**
-     * @param string $table
-     * @param int $behavior
-     * @param int $enabled
-     * @return array
-     */
-    private function getUpdateEntriesUids($table, $behavior, $enabled)
-    {
-        $query = $this->createQuery();
-        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
-        $statement = $this->sqlFactory->getSelectStatementForContentElements($table, $behavior, $enabled);
-        $query->statement($statement);
-        $uids = array();
-        $rows = $query->execute(true);
-        foreach ($rows as $row) {
-            $uids[] = $row['uid'];
-        }
-
-        return $uids;
+        SELECT * FROM table as t where (LEFT JOIN SELECT * FROM Mappings WHERE=foreign_table= table && foreign_id = t.uid)*/
     }
 }

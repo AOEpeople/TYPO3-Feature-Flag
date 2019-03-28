@@ -1,5 +1,7 @@
 <?php
 
+namespace Aoe\FeatureFlag\System\Typo3;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package FeatureFlag
  * @subpackage System_Typo3
  */
-class Tx_FeatureFlag_System_Typo3_Configuration
+class Configuration
 {
     /**
      * @var string

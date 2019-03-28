@@ -1,5 +1,12 @@
 <?php
 
+namespace Aoe\FeatureFlag\System\Typo3;
+
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Domain\Model\Mapping;
+use Aoe\FeatureFlag\Service;
+use Aoe\FeatureFlag\Service\Exception\FeatureNotFound;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +35,7 @@
  * @package FeatureFlag
  * @subpackage System_Typo3
  */
-class Tx_FeatureFlag_System_Typo3_TCA
+class TCA
 {
     /**
      * @var string
@@ -41,7 +48,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
     const FIELD_FLAG = 'tx_featureflag_flag';
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
+     * @var \Aoe\FeatureFlag\Domain\Repository\FeatureFlag
      */
     protected $featureFlagRepository;
 
@@ -73,9 +80,9 @@ class Tx_FeatureFlag_System_Typo3_TCA
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
         $html .= '<option value="0"></option>';
         foreach ($this->getFeatureFlagRepository()->findAll() as $featureFlag) {
-            /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
+            /** @var FeatureFlag $featureFlag */
             $selected = '';
-            if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping &&
+            if ($activeMapping instanceof Mapping &&
                 $activeMapping->getFeatureFlag()->getUid() === $featureFlag->getUid()
             ) {
                 $selected = ' selected="selected"';
@@ -109,10 +116,10 @@ class Tx_FeatureFlag_System_Typo3_TCA
         $isBehaviorHideSelected = false;
         $isBehaviorShowSelected = false;
         $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
-        if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
-            if ($activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_HIDE) {
+        if ($activeMapping instanceof Mapping) {
+            if ($activeMapping->getBehavior() === Service::BEHAVIOR_HIDE) {
                 $isBehaviorHideSelected = true;
-            } elseif ($activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_SHOW) {
+            } elseif ($activeMapping->getBehavior() === Service::BEHAVIOR_SHOW) {
                 $isBehaviorShowSelected = true;
             }
         }
@@ -120,12 +127,12 @@ class Tx_FeatureFlag_System_Typo3_TCA
         // build select-box
         $html = '';
         $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
-        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '"' . ($isBehaviorHideSelected ? ' selected="selected"' : '') .
+        $html .= '<option value="' . Service::BEHAVIOR_HIDE . '"' . ($isBehaviorHideSelected ? ' selected="selected"' : '') .
             '>';
         $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide';
         $html .= $this->getLanguageService()->sL($langField);
         $html .= '</option>';
-        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '"' . ($isBehaviorShowSelected ? ' selected="selected"' : '') .
+        $html .= '<option value="' . Service::BEHAVIOR_SHOW . '"' . ($isBehaviorShowSelected ? ' selected="selected"' : '') .
             '>';
         $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show';
         $html .= $this->getLanguageService()->sL($langField);
@@ -176,7 +183,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
             return;
         }
         foreach ($mappings as $mapping) {
-            if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+            if ($mapping instanceof Mapping) {
                 $this->getMappingRepository()->remove($mapping);
             }
         }
@@ -194,7 +201,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
     {
         if ($this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
             $mapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($row['uid'], $table);
-            if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+            if ($mapping instanceof Mapping) {
                 if ($row['hidden'] === '1') {
                     return 'record-has-feature-flag-which-is-hidden';
                 }
@@ -220,7 +227,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
     protected function updateMapping($table, $id, $featureFlag, $pid, $behavior)
     {
         $mapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($id, $table);
-        if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+        if ($mapping instanceof Mapping) {
             if ('0' === $featureFlag) {
                 $this->getMappingRepository()->remove($mapping);
             } else {
@@ -230,8 +237,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
             $mapping->setTstamp(time());
             $this->getMappingRepository()->update($mapping);
         } elseif ('0' !== $featureFlag) {
-            /** @var Tx_FeatureFlag_Domain_Model_Mapping $mapping */
-            $mapping = $this->getTypo3ObjectManager()->get('Tx_FeatureFlag_Domain_Model_Mapping');
+            /** @var Mapping $mapping */
+            $mapping = $this->getTypo3ObjectManager()->get(Mapping::class);
             $mapping->setPid($pid);
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             $mapping->setForeignTableName($table);
@@ -264,34 +271,34 @@ class Tx_FeatureFlag_System_Typo3_TCA
 
     /**
      * @param int $uid
-     * @return Tx_FeatureFlag_Domain_Model_FeatureFlag
-     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     * @return FeatureFlag
+     * @throws FeatureNotFound
      */
     protected function getFeatureFlagByUid($uid)
     {
-        /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
+        /** @var FeatureFlag $featureFlag */
         $featureFlag = $this->getFeatureFlagRepository()->findByUid($uid);
-        if (false === ($featureFlag instanceof Tx_FeatureFlag_Domain_Model_FeatureFlag)) {
-            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found by uid: "' . $uid . '"', 1384340431);
+        if (false === ($featureFlag instanceof FeatureFlag)) {
+            throw new FeatureNotFound('Feature Flag not found by uid: "' . $uid . '"', 1384340431);
         }
 
         return $featureFlag;
     }
 
     /**
-     * @return Tx_FeatureFlag_Domain_Repository_Mapping
+     * @return \Aoe\FeatureFlag\Domain\Repository\Mapping
      */
     protected function getMappingRepository()
     {
-        return $this->getTypo3ObjectManager()->get('Tx_FeatureFlag_Domain_Repository_Mapping');
+        return $this->getTypo3ObjectManager()->get(\Aoe\FeatureFlag\Domain\Repository\Mapping::class);
     }
 
     /**
-     * @return Tx_FeatureFlag_Domain_Repository_FeatureFlag
+     * @return \Aoe\FeatureFlag\Domain\Repository\FeatureFlag
      */
     protected function getFeatureFlagRepository()
     {
-        return $this->getTypo3ObjectManager()->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
+        return $this->getTypo3ObjectManager()->get(\Aoe\FeatureFlag\Domain\Repository\FeatureFlag::class);
     }
 
     /**

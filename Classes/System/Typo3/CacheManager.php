@@ -1,5 +1,7 @@
 <?php
 
+namespace Aoe\FeatureFlag\System\Typo3;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package FeatureFlag
  * @subpackage System_Typo3
  */
-class Tx_FeatureFlag_System_Typo3_CacheManager
+class CacheManager
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
@@ -36,7 +38,6 @@ class Tx_FeatureFlag_System_Typo3_CacheManager
     private $objectManager;
 
     /**
-     * Tx_FeatureFlag_System_Typo3_Cache constructor.
      * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
      */
     public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)

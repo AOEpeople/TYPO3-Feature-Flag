@@ -18,7 +18,7 @@ if (TYPO3_MODE == 'BE') {
     );
 }
 
-$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag']);
+$confArray = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag'];
 if ($confArray['enableEidMode'] == true) {
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['featureflag'] = 'EXT:feature_flag/Classes/Service/Eid.php';
 }
@@ -28,6 +28,6 @@ $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYP
 $signalSlotDispatcher->connect(
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class,
     'tcaIsBeingBuilt',
-    \Tx_FeatureFlag_TcaPostProcessor::class,
+    \Aoe\FeatureFlag\TcaPostProcessor::class,
     'postProcessTca'
 );

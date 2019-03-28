@@ -1,5 +1,7 @@
 <?php
 
+namespace Aoe\FeatureFlag\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package FeatureFlag
  * @subpackage Domain_Model
  */
-class Tx_FeatureFlag_Domain_Model_Mapping extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Mapping extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /**
      * @var string
@@ -41,7 +43,7 @@ class Tx_FeatureFlag_Domain_Model_Mapping extends \TYPO3\CMS\Extbase\DomainObjec
     protected $crdate;
 
     /**
-     * @var Tx_FeatureFlag_Domain_Model_FeatureFlag
+     * @var \Aoe\FeatureFlag\Domain\Model\FeatureFlag
      */
     protected $featureFlag;
 
@@ -82,15 +84,15 @@ class Tx_FeatureFlag_Domain_Model_Mapping extends \TYPO3\CMS\Extbase\DomainObjec
     }
 
     /**
-     * @param \Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag
+     * @param \Aoe\FeatureFlag\Domain\Model\FeatureFlag $featureFlag
      */
-    public function setFeatureFlag(Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag)
+    public function setFeatureFlag(\Aoe\FeatureFlag\Domain\Model\FeatureFlag $featureFlag)
     {
         $this->featureFlag = $featureFlag;
     }
 
     /**
-     * @return \Tx_FeatureFlag_Domain_Model_FeatureFlag
+     * @return \Aoe\FeatureFlag\Domain\Model\FeatureFlag
      */
     public function getFeatureFlag()
     {

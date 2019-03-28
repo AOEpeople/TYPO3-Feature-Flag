@@ -1,5 +1,7 @@
 <?php
 
+namespace Aoe\FeatureFlag\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package FeatureFlag
  * @subpackage Domain_Model
  */
-class Tx_FeatureFlag_Domain_Model_FeatureFlag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class FeatureFlag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /**
      * @var string

@@ -38,7 +38,7 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends Func
     protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_Mapping
+     * @var Aoe\FeatureFlag\Domain\Repository\Mapping
      */
     protected $mappingRepository;
 
@@ -56,7 +56,7 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends Func
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'TYPO3\CMS\Extbase\Object\ObjectManager'
         );
-        $this->mappingRepository = $this->objectManager->get('Tx_FeatureFlag_Domain_Repository_Mapping');
+        $this->mappingRepository = $this->objectManager->get('Aoe\\FeatureFlag\\Domain\\Repository\\Mapping');
     }
 
     /**
