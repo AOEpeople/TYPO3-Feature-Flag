@@ -36,7 +36,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_ConfigurationTest extends Tx_Featur
      */
     protected function tearDown()
     {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag']);
     }
 
     /**
@@ -58,7 +58,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_ConfigurationTest extends Tx_Featur
      */
     public function methodGetShouldReturnCorrectConfiguration()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'] = serialize(
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag'] = serialize(
             array(
                 'test_conf_key' => 'this_value_must_be_returned'
             )
@@ -72,7 +72,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_ConfigurationTest extends Tx_Featur
      */
     public function getTablesShouldReturnAnArray()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'] = serialize(
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag'] = serialize(
             array(
                 'tables' => 'pages,tt_content,foo,bar'
             )

@@ -32,7 +32,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
 {
     /**
      * @var Tx_FeatureFlag_System_Db_SqlFactory
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     private $sqlFactory;
 
@@ -113,8 +113,9 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
         if (empty($uids)) {
             return;
         }
-        $statement = $this->sqlFactory->getUpdateStatementForContentElements($table, $uids, $isVisible);
-        $GLOBALS['TYPO3_DB']->sql_query($statement);
+        //@TODO: needs to use api
+        //$statement = $this->sqlFactory->getUpdateStatementForContentElements($table, $uids, $isVisible);
+        //$GLOBALS['TYPO3_DB']->sql_query($statement);
     }
 
     /**

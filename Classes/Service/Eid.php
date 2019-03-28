@@ -24,8 +24,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-\TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
-
 /** @var \Aoe\FeatureFlag\Service\php $eidProcessor */
 $eidProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
     ->get(\Aoe\FeatureFlag\Service\php::class);

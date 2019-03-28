@@ -45,7 +45,7 @@ class Tx_FeatureFlag_System_Typo3_Configuration
      */
     public function __construct()
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+        $conf = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag'];
         if (is_array($conf)) {
             $this->configuration = $conf;
         }

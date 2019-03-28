@@ -231,7 +231,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
             $this->getMappingRepository()->update($mapping);
         } elseif ('0' !== $featureFlag) {
             /** @var Tx_FeatureFlag_Domain_Model_Mapping $mapping */
-            $mapping = $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Model_Mapping');
+            $mapping = $this->getTypo3ObjectManager()->get('Tx_FeatureFlag_Domain_Model_Mapping');
             $mapping->setPid($pid);
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             $mapping->setForeignTableName($table);
@@ -283,7 +283,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     protected function getMappingRepository()
     {
-        return $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Repository_Mapping');
+        return $this->getTypo3ObjectManager()->get('Tx_FeatureFlag_Domain_Repository_Mapping');
     }
 
     /**
@@ -291,13 +291,13 @@ class Tx_FeatureFlag_System_Typo3_TCA
      */
     protected function getFeatureFlagRepository()
     {
-        return $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
+        return $this->getTypo3ObjectManager()->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
     }
 
     /**
      * @return \TYPO3\CMS\Extbase\Object\ObjectManager
      */
-    protected function getObjectManager()
+    protected function getTypo3ObjectManager()
     {
         if (false === ($this->objectManager instanceof \TYPO3\CMS\Extbase\Object\ObjectManager)) {
             $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
@@ -312,7 +312,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
     protected function getPersistenceManager()
     {
         if (false === $this->persistenceManager instanceof \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager) {
-            $this->persistenceManager = $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+            $this->persistenceManager = $this->getTypo3ObjectManager()->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
         }
 
         return $this->persistenceManager;

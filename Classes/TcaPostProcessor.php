@@ -87,7 +87,7 @@ class Tx_FeatureFlag_TcaPostProcessor
      */
     private function getTcaTablesWithFeatureFlagSupport()
     {
-        $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+        $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag'];
         if (isset($config['tables'])) {
             return explode(',', $config ['tables']);
         }

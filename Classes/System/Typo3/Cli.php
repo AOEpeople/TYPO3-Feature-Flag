@@ -71,7 +71,7 @@ class Tx_FeatureFlag_System_Typo3_Cli extends \TYPO3\CMS\Core\Controller\Command
             'examples' => 'typo3/cli_dispatch.phpsh ' . $this->extKey . ' [flagEntries]',
             'author' => '(c) 2013 AOE GmbH <dev@aoe.com>',
         ));
-        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$this->extKey]);
 
         $this->scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
 
