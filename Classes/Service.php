@@ -6,6 +6,13 @@ use Aoe\FeatureFlag\Domain\Repository\FeatureFlag;
 use Aoe\FeatureFlag\Service\Exception\FeatureNotFound;
 use Aoe\FeatureFlag\System\Typo3\Configuration;
 use RuntimeException;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -141,7 +148,115 @@ class Service
     public function flagEntries()
     {
         foreach ($this->configuration->getTables() as $table) {
-            $this->featureFlagRepository->updateFeatureFlagStatusForTable($table);
+            $this->updateFeatureFlagStatusForTable($table);
+        }
+    }
+
+    private function updateFeatureFlagStatusForTable($table): void {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($table);
+
+        $elements = $this->getElementsWithFeatureFlagMapping($table, $queryBuilder);
+        $elementsToHide = [];
+        $elementsToShow = [];
+        foreach($elements as $element){
+            //hide element when ff active
+            if ($element['behavior'] === 0 &&
+                $element['enabled'] === 1 &&
+                $element['hidden'] === 0){
+                array_push($elementsToHide, $element['uid']);
+            }
+
+            //show element when ff active
+            if ($element['behavior'] === 1 &&
+                $element['enabled'] === 1 &&
+                $element['hidden'] === 1){
+                array_push($elementsToShow, $element['uid']);
+            }
+
+            //hide element when ff inactive
+            if ($element['behavior'] === 1 &&
+                $element['enabled'] === 0 &&
+                $element['hidden'] === 0){
+                array_push($elementsToHide, $element['uid']);
+            }
+
+            //show element when ff inactive
+            if ($element['behavior'] === 0 &&
+                $element['enabled'] === 0 &&
+                $element['hidden'] === 1){
+                array_push($elementsToShow, $element['uid']);
+            }
+        }
+
+        $this->hideElements($table, $elementsToHide, $queryBuilder);
+        $this->showElements($table, $elementsToShow, $queryBuilder);
+    }
+
+    /**
+     * @param $table
+     * @return array
+     */
+    private function getElementsWithFeatureFlagMapping($table,QueryBuilder $queryBuilder): array
+    {
+        $queryBuilder->getRestrictions()
+            ->removeByType(HiddenRestriction::class)
+            ->removeByType(StartTimeRestriction::class)
+            ->removeByType(EndTimeRestriction::class)
+            ->removeByType(RootLevelRestriction::class);
+        $query = $queryBuilder
+            ->select("$table.uid", "$table.hidden", "mapping.behavior", "featureflag.enabled")
+            ->from($table)
+            ->leftJoin(
+                $table,
+                'tx_featureflag_domain_model_mapping',
+                'mapping',
+                $queryBuilder->expr()->eq('mapping.foreign_table_uid', $queryBuilder->quoteIdentifier($table . '.uid'))
+            )
+            ->leftJoin(
+                'mapping',
+                'tx_featureflag_domain_model_featureflag',
+                'featureflag',
+                $queryBuilder->expr()->eq('mapping.feature_flag', $queryBuilder->quoteIdentifier('featureflag' . '.uid'))
+            )
+            ->where(
+                $queryBuilder->expr()->eq('mapping.foreign_table_name', $queryBuilder->createNamedParameter($table))
+            );
+        $elements = $query->execute()->fetchAll();
+        return $elements;
+    }
+
+    /**
+     * @param $table
+     * @param array $elementsToHide
+     * @param QueryBuilder $queryBuilder
+     */
+    private function hideElements($table, array $elementsToHide, QueryBuilder $queryBuilder): void
+    {
+        if (count($elementsToHide) > 0) {
+            $queryBuilder->update($table)
+                ->where(
+                    $queryBuilder->expr()->in('uid', $elementsToHide)
+                )
+                ->set('hidden', '1')
+                ->execute();
+        }
+    }
+
+    /**
+     * @param $table
+     * @param array $elementsToShow
+     * @param QueryBuilder $queryBuilder
+     */
+    private function showElements($table, array $elementsToShow, QueryBuilder $queryBuilder): void
+    {
+        if (count($elementsToShow) > 0) {
+            $queryBuilder->update($table)
+                ->where(
+                    $queryBuilder->expr()->in('uid', $elementsToShow)
+                )
+                ->set('hidden', '0')
+                ->execute();
         }
     }
 }

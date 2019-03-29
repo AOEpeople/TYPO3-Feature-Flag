@@ -34,6 +34,10 @@ use Aoe\FeatureFlag\Service;
  */
 class FlagEntries extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
+    public function __construct() {
+        parent::__construct();
+    }
+
     /**
      * @return bool
      */

@@ -67,13 +67,4 @@ class FeatureFlag extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         return $query->execute()->getFirst();
     }
-
-    public function updateFeatureFlagStatusForTable($table): void {
-        /*hole alle records für die es mappings gibt
-        hole FF für mappings // wenn kein FF dann WARNUNG loggen
-        wende mappings an für record
-
-
-        SELECT * FROM table as t where (LEFT JOIN SELECT * FROM Mappings WHERE=foreign_table= table && foreign_id = t.uid)*/
-    }
 }

@@ -52,7 +52,7 @@ class TcaPostProcessor
                         'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.label',
                         'config' => [
                             'type' => 'user',
-                            'userFunc' => '\Aoe\FeatureFlag\System\Typo3\TCA->renderInfo',
+                            'userFunc' => 'Aoe\FeatureFlag\System\Typo3\TCA->renderInfo',
                         ]
                     ],
                     'tx_featureflag_flag' => [
@@ -60,7 +60,7 @@ class TcaPostProcessor
                         'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_flag',
                         'config' => [
                             'type' => 'user',
-                            'userFunc' => '\Aoe\FeatureFlag\System\Typo3\TCA->renderSelectForFlag',
+                            'userFunc' => 'Aoe\FeatureFlag\System\Typo3\TCA->renderSelectForFlag',
                         ]
                     ],
                     'tx_featureflag_behavior' => [
@@ -68,7 +68,7 @@ class TcaPostProcessor
                         'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior',
                         'config' => [
                             'type' => 'user',
-                            'userFunc' => '\Aoe\FeatureFlag\System\Typo3\TCA->renderSelectForBehavior',
+                            'userFunc' => 'Aoe\FeatureFlag\System\Typo3\TCA->renderSelectForBehavior',
                         ]
                     ]
                 ]
