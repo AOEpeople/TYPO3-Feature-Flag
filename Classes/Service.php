@@ -130,6 +130,7 @@ class Service
      * @param $enabled
      * @throws FeatureNotFound
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
     public function updateFeatureFlag($flag, $enabled)
     {

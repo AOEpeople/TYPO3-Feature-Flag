@@ -11,13 +11,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Aoe\FeatureFlag
         'locallang_db.xml:tx_featureflag_system_typo3_task_flagentries.description'
 );
 
-if (TYPO3_MODE == 'BE') {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['feature_flag'] = array(
-        'EXT:feature_flag/Classes/System/Typo3/Cli.php',
-        '_CLI_feature_flag'
-    );
-}
-
 $confArray = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag'];
 if ($confArray['enableEidMode'] == true) {
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['featureflag'] = 'EXT:feature_flag/Classes/Service/Eid.php';
