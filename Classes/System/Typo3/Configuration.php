@@ -2,6 +2,8 @@
 
 namespace Aoe\FeatureFlag\System\Typo3;
 
+use InvalidArgumentException;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -47,7 +49,7 @@ class Configuration
      */
     public function __construct()
     {
-        $conf = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag'];
+        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag']);
         if (is_array($conf)) {
             $this->configuration = $conf;
         }

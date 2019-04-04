@@ -1,4 +1,6 @@
 <?php
+namespace Aoe\FeatureFlag\Tests;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,7 +29,7 @@
  * @package FeatureFlag
  * @subpackage Tests
  */
-abstract class Tx_FeatureFlag_Tests_Unit_BaseTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
+abstract class BaseTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
 {
     /**
      * Whether global variables should be backed up

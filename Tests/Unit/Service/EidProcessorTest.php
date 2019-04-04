@@ -25,7 +25,10 @@ namespace Aoe\FeatureFlag\Tests\Unit\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Service;
 use Aoe\FeatureFlag\Service\EidProcessor;
+use Aoe\FeatureFlag\Service\Exception\ActionNotFound;
+use Aoe\FeatureFlag\System\Typo3\CacheManager;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
@@ -39,9 +42,7 @@ class EidProcessorTest extends UnitTestCase
      */
     private function getServiceMock()
     {
-        return $this->getMock(
-            'Tx_FeatureFlag_Service', ['updateFeatureFlag'], [], '', false
-        );
+        return $this->getMockBuilder(Service::class)->disableOriginalConstructor()->getMock();
     }
 
     /**
@@ -49,9 +50,7 @@ class EidProcessorTest extends UnitTestCase
      */
     private function getCacheManagerMock()
     {
-        return $this->getMock(
-            'Tx_FeatureFlag_System_Typo3_CacheManager', ['clearPageCache'], [], '', false
-        );
+        return $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
     }
 
     /**
@@ -91,7 +90,7 @@ class EidProcessorTest extends UnitTestCase
         $_GET = ['action' => '', 'feature' => 'testfeature'];
         $eidProcessor = new EidProcessor($this->getServiceMock(), $this->getCacheManagerMock());
 
-        $this->setExpectedException(\Tx_FeatureFlag_Service_Exception_ActionNotFound::class);
+        $this->expectException(ActionNotFound::class);
         $eidProcessor->processRequest();
     }
 }

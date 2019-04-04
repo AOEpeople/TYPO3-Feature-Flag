@@ -1,5 +1,11 @@
 <?php
 
+namespace Aoe\FeatureFlag\Tests\Domain\Model;
+
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Domain\Model\Mapping;
+use Aoe\FeatureFlag\Tests\BaseTest;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,10 +34,10 @@
  * @package FeatureFlag
  * @subpackage Tests_Domain_Model
  */
-class Tx_FeatureFlag_Tests_Unit_Domain_Model_MappingTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
+class MappingTest extends BaseTest
 {
     /**
-     * @var Tx_FeatureFlag_Domain_Model_Mapping
+     * @var Mapping
      */
     private $mapping;
 
@@ -41,7 +47,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Model_MappingTest extends Tx_FeatureFlag_
      */
     protected function setUp()
     {
-        $this->mapping = new Tx_FeatureFlag_Domain_Model_Mapping();
+        $this->mapping = new Mapping();
     }
 
     /**
@@ -76,7 +82,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Model_MappingTest extends Tx_FeatureFlag_
      */
     public function featureFlag()
     {
-        $featureFlag = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', array('getFlag'));
+        $featureFlag = $this->getMockBuilder(FeatureFlag::class)->getMock();
         $featureFlag->expects($this->any())->method('getFlag')->will($this->returnValue('my_awesome_feature_flag'));
         $this->mapping->setFeatureFlag($featureFlag);
         $this->assertEquals($this->mapping->getFeatureFlag()->getFlag(), 'my_awesome_feature_flag');

@@ -1,5 +1,10 @@
 <?php
 
+namespace Aoe\FeatureFlag\Tests\Domain\Model;
+
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Tests\BaseTest;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,10 +33,10 @@
  * @package FeatureFlag
  * @subpackage Tests_Domain_Model
  */
-class Tx_FeatureFlag_Tests_Unit_Domain_Model_FeatureFlagTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
+class FeatureFlagTest extends BaseTest
 {
     /**
-     * @var Tx_FeatureFlag_Domain_Model_FeatureFlag
+     * @var FeatureFlag
      */
     private $featureFlag;
 
@@ -41,7 +46,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Model_FeatureFlagTest extends Tx_FeatureF
      */
     protected function setUp()
     {
-        $this->featureFlag = new Tx_FeatureFlag_Domain_Model_FeatureFlag();
+        $this->featureFlag = new FeatureFlag();
     }
 
     /**

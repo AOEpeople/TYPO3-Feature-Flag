@@ -1,5 +1,5 @@
 <?php
-
+namespace Aoe\FeatureFlag\Tests\Unit\System\Typo3;
 /***************************************************************
  *  Copyright notice
  *
@@ -24,11 +24,15 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\System\Typo3\Configuration;
+use Aoe\FeatureFlag\Tests\BaseTest;
+use InvalidArgumentException;
+
 /**
  * @package FeatureFlag
  * @subpackage Tests_System_Typo3
  */
-class Tx_FeatureFlag_Tests_Unit_System_Typo3_ConfigurationTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
+class ConfigurationTest extends BaseTest
 {
     /**
      * (non-PHPdoc)
@@ -44,12 +48,10 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_ConfigurationTest extends Tx_Featur
      */
     public function methodGetShouldThrowException()
     {
-        $configuration = new Tx_FeatureFlag_System_Typo3_Configuration();
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            'Configuration key "InvalidConfigurationKey" does not exist.',
-            1384161387
-        );
+        $configuration = new Configuration();
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Configuration key "InvalidConfigurationKey" does not exist.');
+        $this->expectExceptionCode(1384161387);
         $configuration->get('InvalidConfigurationKey');
     }
 
@@ -63,7 +65,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_ConfigurationTest extends Tx_Featur
                 'test_conf_key' => 'this_value_must_be_returned'
             )
         );
-        $configuration = new Tx_FeatureFlag_System_Typo3_Configuration();
+        $configuration = new Configuration();
         $this->assertEquals('this_value_must_be_returned', $configuration->get('test_conf_key'));
     }
 
@@ -77,7 +79,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_ConfigurationTest extends Tx_Featur
                 'tables' => 'pages,tt_content,foo,bar'
             )
         );
-        $configuration = new Tx_FeatureFlag_System_Typo3_Configuration();
+        $configuration = new Configuration();
         $this->assertTrue(is_array($configuration->getTables()));
         $this->assertCount(4, $configuration->getTables());
     }
