@@ -71,20 +71,4 @@ class FeatureFlagTest extends FunctionalTestCase
         $flag = $this->featureFlagRepository->findByFlag('my_test_feature_flag');
         $this->assertInstanceOf(FeatureFlag::class, $flag);
     }
-
-    /**
-     * @param integer $id
-     * @return array
-     */
-    private function getContentElement($id)
-    {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tt_content');
-        return $queryBuilder
-            ->select('uid,hidden')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
-            )
-            ->execute();
-    }
 }

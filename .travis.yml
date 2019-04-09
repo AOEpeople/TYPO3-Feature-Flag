@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 7.1
   - 7.2
   - 7.3
 
@@ -13,9 +12,6 @@ matrix:
   include:
     - env: TYPO3_VERSION=^9.5 TESTING_VERSION=9.x-dev COVERAGE=1 FUNCTIONAL=1
       php: 7.2
-  exclude:
-    - env: TYPO3_VERSION=^9.5 TESTING_VERSION=9.x-dev COVERAGE=0 FUNCTIONAL=0
-      php: 7.1
 
 sudo: false
 
