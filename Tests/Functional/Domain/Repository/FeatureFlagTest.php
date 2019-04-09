@@ -26,7 +26,9 @@ namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeatureFlag\Domain\Repository\FeatureFlag;
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlag as FeatureFlagRepository;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -41,7 +43,7 @@ class FeatureFlagTest extends FunctionalTestCase
     protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
-     * @var FeatureFlag
+     * @var FeatureFlagRepository
      */
     protected $featureFlagRepository;
 
@@ -55,14 +57,9 @@ class FeatureFlagTest extends FunctionalTestCase
      */
     public function setUp()
     {
-        $this->markTestSkipped(
-            'not working - $GLOBALS[\'TYPO3_DB\'] doenst exist anymore'
-        );
         parent::setUp();
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'TYPO3\CMS\Extbase\Object\ObjectManager'
-        );
-        $this->featureFlagRepository = $this->objectManager->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ObjectManager::class);
+        $this->featureFlagRepository = $this->objectManager->get(FeatureFlagRepository::class);
     }
 
     /**
@@ -72,75 +69,7 @@ class FeatureFlagTest extends FunctionalTestCase
     {
         $this->importDataSet(dirname(__FILE__) . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
         $flag = $this->featureFlagRepository->findByFlag('my_test_feature_flag');
-        $this->assertInstanceOf('Tx_FeatureFlag_Domain_Model_FeatureFlag', $flag);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHideElementForBehaviorHideAndEnabledFeatureFlag()
-    {
-        $this->importDataSet(
-            dirname(__FILE__) .
-            '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.xml'
-        );
-
-        $this->featureFlagRepository->updateFeatureFlagStatusForTable('tt_content');
-
-        $contentElement = $this->getContentElement(4712);
-
-        $this->assertEquals('1', $contentElement['hidden']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHideElementForBehaviorShowAndDisabledFeatureFlag()
-    {
-        $this->importDataSet(
-            dirname(__FILE__) .
-            '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorShowAndDisabledFeatureFlag.xml'
-        );
-
-        $this->featureFlagRepository->updateFeatureFlagStatusForTable('tt_content');
-
-        $contentElement = $this->getContentElement(4712);
-
-        $this->assertEquals('1', $contentElement['hidden']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldShowElementForBehaviorShowAndEnabledFeatureFlag()
-    {
-        $this->importDataSet(
-            dirname(__FILE__) .
-            '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
-        );
-
-        $this->featureFlagRepository->updateFeatureFlagStatusForTable('tt_content');
-
-        $contentElement = $this->getContentElement(4712);
-
-        $this->assertEquals('0', $contentElement['hidden']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldShowElementForBehaviorHideAndDisabledFeatureFlag()
-    {
-        $this->importDataSet(
-            dirname(__FILE__) .
-            '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
-        );
-
-        $this->featureFlagRepository->updateFeatureFlagStatusForTable('tt_content');
-
-        $contentElement = $this->getContentElement(4712);
-
-        $this->assertEquals('0', $contentElement['hidden']);
+        $this->assertInstanceOf(FeatureFlag::class, $flag);
     }
 
     /**
@@ -149,6 +78,13 @@ class FeatureFlagTest extends FunctionalTestCase
      */
     private function getContentElement($id)
     {
-        //return $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,hidden', 'tt_content', 'uid=' . $id);
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tt_content');
+        return $queryBuilder
+            ->select('uid,hidden')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+            )
+            ->execute();
     }
 }
