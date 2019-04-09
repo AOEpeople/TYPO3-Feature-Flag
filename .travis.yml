@@ -34,7 +34,7 @@ before_install:
 
 before_script:
   # Installs TYPO3 with testing framework
-  - composer require typo3/testing-framework"=$TESTING_VERSION
+  - composer require typo3/testing-framework=$TESTING_VERSION
   # Restore composer.json
   - git checkout composer.json
   - export "TYPO3_PATH_ROOT"=$PWD/.Build/Web;
