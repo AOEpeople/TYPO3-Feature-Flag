@@ -1,5 +1,7 @@
 <?php
 
+namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,13 +26,15 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Domain\Repository\Mapping;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * @package FeatureFlag
  * @subpackage Tests_Domain_Repository
  */
-class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends FunctionalTestCase
+class MappingTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -38,7 +42,7 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends Func
     protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
-     * @var Aoe\FeatureFlag\Domain\Repository\Mapping
+     * @var Mapping
      */
     protected $mappingRepository;
 
@@ -53,10 +57,8 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends Func
     public function setUp()
     {
         parent::setUp();
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'TYPO3\CMS\Extbase\Object\ObjectManager'
-        );
-        $this->mappingRepository = $this->objectManager->get('Aoe\\FeatureFlag\\Domain\\Repository\\Mapping');
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ObjectManager::class);
+        $this->mappingRepository = $this->objectManager->get(Mapping::class);
     }
 
     /**
@@ -71,7 +73,7 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends Func
 
         $mapping = $this->mappingRepository->findOneByForeignTableNameAndUid(4712, 'tt_content');
 
-        $this->assertInstanceOf('Tx_FeatureFlag_Domain_Model_Mapping', $mapping);
+        $this->assertInstanceOf(\Aoe\FeatureFlag\Domain\Model\Mapping::class, $mapping);
     }
 
     /**

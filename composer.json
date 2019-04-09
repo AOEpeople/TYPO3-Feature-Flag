@@ -27,7 +27,9 @@
         "phpunit/phpcov": "*",
         "squizlabs/php_codesniffer": "*",
         "sebastian/phpcpd": "*",
-        "phpmd/phpmd": "*"
+        "phpmd/phpmd": "*",
+        "typo3/minimal": "^9.5",
+        "typo3/testing-framework": "8.x-dev || 9.x-dev"
     },
     "replace": {
         "feature_flag": "self.version"

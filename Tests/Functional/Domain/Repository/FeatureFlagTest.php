@@ -1,5 +1,7 @@
 <?php
 
+namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,13 +26,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlag;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 
 /**
  * @package FeatureFlag
  * @subpackage Tests_Domain_Repository
  */
-class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends FunctionalTestCase
+class FeatureFlagTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -38,7 +41,7 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
+     * @var FeatureFlag
      */
     protected $featureFlagRepository;
 
