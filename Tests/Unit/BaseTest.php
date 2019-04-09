@@ -1,6 +1,8 @@
 <?php
 namespace Aoe\FeatureFlag\Tests;
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@ namespace Aoe\FeatureFlag\Tests;
  * @package FeatureFlag
  * @subpackage Tests
  */
-abstract class BaseTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
+abstract class BaseTest extends UnitTestCase
 {
     /**
      * Whether global variables should be backed up
