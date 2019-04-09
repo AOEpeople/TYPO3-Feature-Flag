@@ -3,6 +3,7 @@
 namespace Aoe\FeatureFlag\System\Typo3;
 
 use InvalidArgumentException;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 /***************************************************************
  *  Copyright notice
@@ -47,9 +48,9 @@ class Configuration
     /**
      * Initialize configuration array
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag']);
+        $conf = $extensionConfiguration->get('feature_flag');
         if (is_array($conf)) {
             $this->configuration = $conf;
         }

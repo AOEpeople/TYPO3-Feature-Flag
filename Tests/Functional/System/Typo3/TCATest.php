@@ -29,6 +29,7 @@ namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
 use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Domain\Repository\Mapping;
 use Aoe\FeatureFlag\System\Typo3\TCA;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -51,7 +52,7 @@ class TCATest extends FunctionalTestCase
         parent::setUp();
 
         $this->tca = $this->getMockBuilder(TCA::class)->getMock();
-        $persistenceManager = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
+        $persistenceManager = $this->getMockBuilder(PersistenceManager::class)
             ->disableOriginalConstructor()
             ->setMethods(['persistAll'])
             ->getMock();

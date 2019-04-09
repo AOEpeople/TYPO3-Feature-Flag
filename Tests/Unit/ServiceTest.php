@@ -82,7 +82,7 @@ class ServiceTest extends BaseTest
      */
     private function getMockConfiguration()
     {
-        $mockConfiguration = $this->getMockBuilder(Configuration::class)->getMock();
+        $mockConfiguration = $this->getMockBuilder(Configuration::class)->disableOriginalConstructor()->getMock();
         $mockConfiguration->expects($this->any())->method('getTables')->willReturn('pages');
 
         return $mockConfiguration;

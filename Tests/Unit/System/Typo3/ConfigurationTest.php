@@ -27,6 +27,10 @@ namespace Aoe\FeatureFlag\Tests\Unit\System\Typo3;
 use Aoe\FeatureFlag\System\Typo3\Configuration;
 use Aoe\FeatureFlag\Tests\BaseTest;
 use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * @package FeatureFlag
@@ -34,6 +38,12 @@ use InvalidArgumentException;
  */
 class ConfigurationTest extends BaseTest
 {
+
+    /**
+     * @var MockObject
+     */
+    private $extConfiguation;
+
     /**
      * (non-PHPdoc)
      * @see PHPUnit_Framework_TestCase::tearDown()
@@ -43,12 +53,18 @@ class ConfigurationTest extends BaseTest
         unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag']);
     }
 
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->extConfiguation = $this->getMockBuilder(ExtensionConfiguration::class)->getMock();
+    }
+
     /**
      * @test
      */
     public function methodGetShouldThrowException()
     {
-        $configuration = new Configuration();
+        $configuration = $this->getObjectManager()->get(Configuration::class, $this->extConfiguation);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Configuration key "InvalidConfigurationKey" does not exist.');
         $this->expectExceptionCode(1384161387);
@@ -60,12 +76,11 @@ class ConfigurationTest extends BaseTest
      */
     public function methodGetShouldReturnCorrectConfiguration()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag'] = serialize(
-            array(
+        $mockedConf = array(
                 'test_conf_key' => 'this_value_must_be_returned'
-            )
-        );
-        $configuration = new Configuration();
+            );
+        $this->extConfiguation->expects($this->any())->method('get')->willReturn($mockedConf);
+        $configuration = $this->getObjectManager()->get(Configuration::class, $this->extConfiguation);
         $this->assertEquals('this_value_must_be_returned', $configuration->get('test_conf_key'));
     }
 
@@ -74,13 +89,17 @@ class ConfigurationTest extends BaseTest
      */
     public function getTablesShouldReturnAnArray()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['feature_flag'] = serialize(
-            array(
-                'tables' => 'pages,tt_content,foo,bar'
-            )
+        $mockedConf = array(
+            'tables' => 'pages,tt_content,foo,bar'
         );
-        $configuration = new Configuration();
+        $this->extConfiguation->expects($this->any())->method('get')->willReturn($mockedConf);
+
+        $configuration = $this->getObjectManager()->get(Configuration::class, $this->extConfiguation);
         $this->assertTrue(is_array($configuration->getTables()));
         $this->assertCount(4, $configuration->getTables());
+    }
+
+    private function getObjectManager(){
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 }
