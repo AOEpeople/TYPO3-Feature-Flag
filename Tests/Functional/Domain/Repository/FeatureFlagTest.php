@@ -27,7 +27,7 @@ namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
  ***************************************************************/
 
 use Aoe\FeatureFlag\Domain\Repository\FeatureFlag;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * @package FeatureFlag

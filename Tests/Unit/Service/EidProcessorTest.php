@@ -29,7 +29,7 @@ use Aoe\FeatureFlag\Service;
 use Aoe\FeatureFlag\Service\EidProcessor;
 use Aoe\FeatureFlag\Service\Exception\ActionNotFound;
 use Aoe\FeatureFlag\System\Typo3\CacheManager;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * @package FeatureFlag
