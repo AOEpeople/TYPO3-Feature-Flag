@@ -1,5 +1,5 @@
 <phpunit
-        bootstrap="../../../../vendor/nimut/testing-framework/res/Configuration/FunctionalTestsBootstrap.php"
+        bootstrap="../.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTestsBootstrap.php"
         backupGlobals="true"
         backupStaticAttributes="false"
         colors="true"
@@ -8,7 +8,7 @@
         convertWarningsToExceptions="true"
         forceCoversAnnotation="false"
         processIsolation="true"
-        stopOnError="false"
+        stopOnError="true"
         stopOnFailure="false"
         stopOnIncomplete="false"
         stopOnSkipped="false"

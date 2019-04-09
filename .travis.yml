@@ -33,18 +33,17 @@ before_install:
   - composer --version
 
 before_script:
-  # Installs TYPO3
-  - composer require typo3/cms-core=$TYPO3_VERSION
+  # Installs TYPO3 with testing framework
   - composer require typo3/testing-framework"=$TESTING_VERSION
   # Restore composer.json
   - git checkout composer.json
-  - export "TYPO3_PATH_WEB"=$PWD/.Build/Web;
+  - export "TYPO3_PATH_ROOT"=$PWD/.Build/Web;
   # Locating UnitTests.xml
-  - export "UNIT_XML"='.Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml'
+  - export "UNIT_XML"='Tests/phpunit.xml'
   # Location FunctionalTests.xml
-  - export "FUNCTIONAL_XML"='.Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml'
+  - export "FUNCTIONAL_XML"='Tests/functional.xml'
   # Symlink TYPO3-Core
-  - ln -nfs .Build/vendor/typo3/cms/typo3 typo3
+  - ln -nfs .Build/Web typo3
 
 script:
   - >
