@@ -36,6 +36,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ActivateFeatureFlagCommand extends AbstractCommand
 {
+    public function __construct(?string $name = null)
+    {
+        parent::__construct($name);
+        $this->setDescription('Activates a feature.');
+    }
+
     protected function configure()
     {
         $this->addArgument('features', InputArgument::REQUIRED, 'comma seperated list of features to activate');

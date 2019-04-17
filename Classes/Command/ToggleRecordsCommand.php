@@ -36,6 +36,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ToggleRecordsCommand extends AbstractCommand
 {
+    public function __construct(?string $name = null)
+    {
+        parent::__construct($name);
+        $this->setDescription('Updates the visibility of content elements connected to the feature flag.');
+    }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
