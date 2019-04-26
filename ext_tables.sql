@@ -18,7 +18,7 @@ CREATE TABLE tx_featureflag_domain_model_featureflag (
 	is_dummy_record tinyint(3) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
-	UNIQUE flag (flag),
+	UNIQUE flag (flag(128)),
 	KEY parent (pid)
 ) ENGINE=InnoDB;
 
@@ -42,5 +42,5 @@ CREATE TABLE tx_featureflag_domain_model_mapping (
 
   PRIMARY KEY (uid),
   KEY parent (pid),
-  KEY foreign_uid_name (foreign_table_uid, foreign_table_name)
+  KEY foreign_uid_name (foreign_table_uid, foreign_table_name(128))
 ) ENGINE=InnoDB;
