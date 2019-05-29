@@ -45,13 +45,13 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
     {
         parent::setUp();
 
-        $this->tca = $this->getMock(
-            'Tx_FeatureFlag_System_Typo3_TCA',
-            [
+        $this->tca = $this
+            ->getMockBuilder('Tx_FeatureFlag_System_Typo3_TCA')
+            ->setMethods([
                 'getMappingRepository', 'getFeatureFlagRepository',
                 'getFeatureFlagByUid', 'getPersistenceManager', 'getLanguageService'
-            ]
-        );
+            ])
+            ->getMock();
         $persistenceManager = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
             ->disableOriginalConstructor()
             ->setMethods(['persistAll'])
@@ -81,16 +81,19 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
      */
     public function selectRendersCorrectly()
     {
-        $featureFlag = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', ['getUid']);
+        $featureFlag = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')->setMethods(['getUid'])->getMock();
         $featureFlag->expects($this->any())->method('getUid')->willReturn(4711);
-        $mapping = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping', ['getFeatureFlag']);
+        $mapping = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_Mapping')->setMethods(['getFeatureFlag'])->getMock();
         $mapping->expects($this->any())->method('getFeatureFlag')->willReturn($featureFlag);
-        $mappingRepository = $this->getMock(
-            'Tx_FeatureFlag_Domain_Repository_Mapping',
-            ['findOneByForeignTableNameAndUid']
-        );
+        $mappingRepository = $this
+            ->getMockBuilder('Tx_FeatureFlag_Domain_Repository_Mapping')
+            ->setMethods(['findOneByForeignTableNameAndUid'])
+            ->getMock();
         $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->willReturn($mapping);
-        $featureFlagRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', ['findAll']);
+        $featureFlagRepository = $this
+            ->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')
+            ->setMethods(['findAll'])
+            ->getMock();
         $featureFlagRepository->expects($this->once())->method('findAll')->willReturn($this->getListOfFeatureFlags());
         $this->tca->expects($this->once())->method('getMappingRepository')->willReturn($mappingRepository);
         $this->tca->expects($this->once())->method('getFeatureFlagRepository')->willReturn($featureFlagRepository);
@@ -115,10 +118,9 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
      */
     public function processDatamapDoNothingIfNothingSelected()
     {
-        $mappingRepository = $this->getMock(
-            'Tx_FeatureFlag_Domain_Repository_Mapping',
-            ['findOneByForeignTableNameAndUid', 'add', 'remove', 'update']
-        );
+        $mappingRepository = $this->getMockBuilder('Tx_FeatureFlag_Domain_Repository_Mapping')
+            ->setMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
+            ->getMock();
         $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->willReturn(null);
         $mappingRepository->expects($this->never())->method('add');
         $mappingRepository->expects($this->never())->method('remove');
@@ -126,7 +128,7 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
         $this->tca->expects($this->once())->method('getMappingRepository')->willReturn($mappingRepository);
         $this->tca->expects($this->never())->method('getFeatureFlagByUid');
 
-        $tceMainMock = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $tceMainMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandler::class)->getMock();
         $incomingFieldArray = [
             'tx_featureflag_flag' => '0',
             'tx_featureflag_behavior' => '0',
@@ -139,10 +141,10 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
      */
     public function processDatamapDoNothingIfNotInFeatureFlagContext()
     {
-        $mappingRepository = $this->getMock(
-            'Tx_FeatureFlag_Domain_Repository_Mapping',
-            ['findOneByForeignTableNameAndUid', 'add', 'remove', 'update']
-        );
+        $mappingRepository = $this->getMockBuilder(
+            'Tx_FeatureFlag_Domain_Repository_Mapping')
+            ->setMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
+            ->getMock();
         $mappingRepository->expects($this->never())->method('findOneByForeignTableNameAndUid')->willReturn(null);
         $mappingRepository->expects($this->never())->method('add');
         $mappingRepository->expects($this->never())->method('remove');
@@ -150,7 +152,7 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
         $this->tca->expects($this->never())->method('getMappingRepository')->willReturn($mappingRepository);
         $this->tca->expects($this->never())->method('getFeatureFlagByUid');
 
-        $tceMainMock = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $tceMainMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandler::class)->getMock();
         $incomingFieldArray = ['hidden' => '0'];
         $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', '4711', $tceMainMock);
     }
@@ -160,17 +162,17 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
      */
     public function processDatamapRemoveMappingIfNothingSelectedAndMappingExists()
     {
-        $mapping = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping');
-        $mappingRepository = $this->getMock(
-            'Tx_FeatureFlag_Domain_Repository_Mapping',
-            ['findOneByForeignTableNameAndUid', 'remove', 'update']
-        );
+        $mapping = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_Mapping')->getMock();
+        $mappingRepository = $this->getMockBuilder(
+            'Tx_FeatureFlag_Domain_Repository_Mapping')
+            ->setMethods(['findOneByForeignTableNameAndUid', 'remove', 'update'])
+            ->getMock();
         $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->willReturn($mapping);
         $mappingRepository->expects($this->once())->method('remove');
         $mappingRepository->expects($this->once())->method('update');
         $this->tca->expects($this->any())->method('getMappingRepository')->willReturn($mappingRepository);
 
-        $tceMainMock = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $tceMainMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandler::class)->getMock();
         $incomingFieldArray = [
             'tx_featureflag_flag' => '0',
             'tx_featureflag_behavior' => '0',
@@ -183,20 +185,23 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
      */
     public function processDatamapCreateNewMappingIfFeatureFlagGivenAndNoMappingPreviouslyCreated()
     {
-        $featureFlag = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', ['getUid']);
+        $featureFlag = $this
+            ->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')
+            ->setMethods(['getUid'])
+            ->getMock();
         $featureFlag->expects($this->any())->method('getUid')->willReturn(4711);
 
-        $mappingRepository = $this->getMock(
-            'Tx_FeatureFlag_Domain_Repository_Mapping',
-            ['findOneByForeignTableNameAndUid', 'add']
-        );
+        $mappingRepository = $this
+            ->getMockBuilder('Tx_FeatureFlag_Domain_Repository_Mapping')
+            ->setMethods(['findOneByForeignTableNameAndUid', 'add'])
+            ->getMock();
         $mappingRepository->expects($this->once())->method('findOneByForeignTableNameAndUid')->willReturn(null);
         $mappingRepository->expects($this->once())->method('add');
 
         $this->tca->expects($this->any())->method('getMappingRepository')->willReturn($mappingRepository);
         $this->tca->expects($this->any())->method('getFeatureFlagByUid')->willReturn($featureFlag);
 
-        $tceMainMock = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $tceMainMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandler::class)->getMock();
         $incomingFieldArray = [
             'tx_featureflag_flag' => '4711',
             'tx_featureflag_behavior' => '0',
@@ -218,10 +223,9 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
      */
     public function processCmdmappostIsDelete()
     {
-        $mappingRepository = $this->getMock(
-            'Tx_FeatureFlag_Domain_Repository_Mapping',
-            ['findAllByForeignTableNameAndUid', 'remove']
-        );
+        $mappingRepository = $this->getMockBuilder('Tx_FeatureFlag_Domain_Repository_Mapping')
+            ->setMethods(['findAllByForeignTableNameAndUid', 'remove'])
+            ->getMock();
         $mappingRepository->expects($this->once())->method('findAllByForeignTableNameAndUid')->willReturn($this->getListOfMappings());
         $mappingRepository->expects($this->exactly(2))->method('remove');
         $this->tca->expects($this->any())->method('getMappingRepository')->willReturn($mappingRepository);
@@ -234,9 +238,9 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
      */
     protected function getListOfMappings()
     {
-        $mapping1 = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping');
-        $mapping2 = $this->getMock('Tx_FeatureFlag_Domain_Model_Mapping');
-        $mapping3 = $this->getMock('stdClass');
+        $mapping1 = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_Mapping')->getMock();
+        $mapping2 = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_Mapping')->getMock();
+        $mapping3 = $this->getMockBuilder('stdClass')->getMock();
 
         return array($mapping1, $mapping2, $mapping3);
     }
@@ -246,13 +250,19 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
      */
     protected function getListOfFeatureFlags()
     {
-        $featureFlag1 = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', ['getUid', 'getDescription']);
+        $featureFlag1 = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')
+            ->setMethods(['getUid', 'getDescription'])
+            ->getMock();
         $featureFlag1->expects($this->any())->method('getUid')->willReturn(111);
         $featureFlag1->expects($this->any())->method('getDescription')->willReturn('flag 1');
-        $featureFlag2 = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', ['getUid', 'getDescription']);
+        $featureFlag2 = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')
+            ->setMethods(['getUid', 'getDescription'])
+            ->getMock();
         $featureFlag2->expects($this->any())->method('getUid')->willReturn(4711);
         $featureFlag2->expects($this->any())->method('getDescription')->willReturn('flag 2');
-        $featureFlag3 = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', ['getUid', 'getDescription']);
+        $featureFlag3 = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')
+            ->setMethods(['getUid', 'getDescription'])
+            ->getMock();
         $featureFlag3->expects($this->any())->method('getDescription')->willReturn('flag 3');
         $featureFlag3->expects($this->any())->method('getUid')->willReturn(222);
 
