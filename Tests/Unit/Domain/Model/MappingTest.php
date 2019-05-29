@@ -76,8 +76,8 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Model_MappingTest extends Tx_FeatureFlag_
      */
     public function featureFlag()
     {
-        $featureFlag = $this->getMock('Tx_FeatureFlag_Domain_Model_FeatureFlag', array('getFlag'));
-        $featureFlag->expects($this->any())->method('getFlag')->will($this->returnValue('my_awesome_feature_flag'));
+        $featureFlag = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')->setMethods(['getFlag'])->getMock();
+        $featureFlag->method('getFlag')->willReturn('my_awesome_feature_flag');
         $this->mapping->setFeatureFlag($featureFlag);
         $this->assertEquals($this->mapping->getFeatureFlag()->getFlag(), 'my_awesome_feature_flag');
     }

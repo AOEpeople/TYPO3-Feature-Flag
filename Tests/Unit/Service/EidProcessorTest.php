@@ -39,9 +39,8 @@ class EidProcessorTest extends UnitTestCase
      */
     private function getServiceMock()
     {
-        return $this->getMock(
-            'Tx_FeatureFlag_Service', ['updateFeatureFlag'], [], '', false
-        );
+        return $this->getMockBuilder(
+            'Tx_FeatureFlag_Service')->setMethods(['updateFeatureFlag'])->disableOriginalConstructor()->getMock();
     }
 
     /**
@@ -49,9 +48,8 @@ class EidProcessorTest extends UnitTestCase
      */
     private function getCacheManagerMock()
     {
-        return $this->getMock(
-            'Tx_FeatureFlag_System_Typo3_CacheManager', ['clearPageCache'], [], '', false
-        );
+        return $this->getMockBuilder(
+            'Tx_FeatureFlag_System_Typo3_CacheManager')->setMethods(['clearPageCache'])->disableOriginalConstructor()->getMock();
     }
 
     /**
@@ -91,7 +89,7 @@ class EidProcessorTest extends UnitTestCase
         $_GET = ['action' => '', 'feature' => 'testfeature'];
         $eidProcessor = new EidProcessor($this->getServiceMock(), $this->getCacheManagerMock());
 
-        $this->setExpectedException(\Tx_FeatureFlag_Service_Exception_ActionNotFound::class);
+        $this->expectException(\Tx_FeatureFlag_Service_Exception_ActionNotFound::class);
         $eidProcessor->processRequest();
     }
 }

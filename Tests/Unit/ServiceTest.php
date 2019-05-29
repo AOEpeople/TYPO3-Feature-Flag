@@ -40,7 +40,7 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
      */
     protected function setService(Tx_FeatureFlag_Domain_Repository_FeatureFlag $mockRepository)
     {
-        $mockPersistenceManager = $this->getMock('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface', array());
+        $mockPersistenceManager = $this->getMockBuilder('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface')->getMock();
         $this->service = new Tx_FeatureFlag_Service($mockRepository, $mockPersistenceManager, $this->getMockConfiguration());
     }
 
@@ -76,7 +76,7 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
      */
     private function getMockConfiguration()
     {
-        $mockConfiguration = $this->getMock('Tx_FeatureFlag_System_Typo3_Configuration', array('getTables'));
+        $mockConfiguration = $this->getMockBuilder('Tx_FeatureFlag_System_Typo3_Configuration')->setMethods(['getTables'])->getMock();
         $mockConfiguration->expects($this->any())->method('getTables')->willReturn('pages');
 
         return $mockConfiguration;
@@ -122,10 +122,10 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
     {
         $GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'] = 'mockedTca';
 
-        $mockRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findByFlag'));
+        $mockRepository = $this->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')->setMethods(['findByFlag'])->getMock();
         $mockRepository->expects($this->once())->method('findByFlag')->will($this->returnValue(null));
         $this->setService($mockRepository);
-        $this->setExpectedException('Tx_FeatureFlag_Service_Exception_FeatureNotFound');
+        $this->expectException('Tx_FeatureFlag_Service_Exception_FeatureNotFound');
         $this->service->isFeatureEnabled('my_cool_feature');
     }
 
@@ -136,10 +136,10 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
     {
         $GLOBALS['TCA'] = null;
 
-        $mockRepository = $this->getMock('Tx_FeatureFlag_Domain_Repository_FeatureFlag', array('findByFlag'));
+        $mockRepository = $this->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')->setMethods(['findByFlag'])->getMock();
         $mockRepository->expects($this->never())->method('findByFlag');
         $this->setService($mockRepository);
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
         $this->service->isFeatureEnabled('my_cool_feature');
     }
 
@@ -153,7 +153,7 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
         $mockRepository = $this->getMockRepository(false);
         $mockRepository->expects($this->once())->method('update')->with($mockModel);
 
-        $mockPersistenceManager = $this->getMock('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface', array());
+        $mockPersistenceManager = $this->getMockBuilder('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface')->getMock();
         $mockPersistenceManager->expects($this->once())->method('persistAll');
 
         $serviceMock = $this->getMockBuilder('Tx_FeatureFlag_Service')->setConstructorArgs(array(

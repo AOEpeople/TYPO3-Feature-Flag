@@ -35,33 +35,33 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_Task_FlagEntriesTest extends Tx_Fea
      */
     public function execute()
     {
-        $mockRepository = $this->getMock(
-            'Tx_FeatureFlag_Domain_Repository_FeatureFlag',
-            array('updateFeatureFlagStatusForTable')
-        );
+        $mockRepository = $this
+            ->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')
+            ->setMethods(['updateFeatureFlagStatusForTable'])
+            ->getMock();
         $mockRepository->expects($this->exactly(2))->method('updateFeatureFlagStatusForTable')->with(
             $this->stringStartsWith('table')
         );
 
-        $mockPersistenceManager = $this->getMock('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface', array());
+        $mockPersistenceManager = $this
+            ->getMockBuilder('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface')->getMock();
 
-        $mockConfiguration = $this->getMock('Tx_FeatureFlag_System_Typo3_Configuration', array('getTables'));
-        $mockConfiguration->expects($this->once())->method('getTables')->will(
-            $this->returnValue(
-                array(
-                    'table_one',
-                    'table_two'
-                )
-            )
+        $mockConfiguration = $this
+            ->getMockBuilder('Tx_FeatureFlag_System_Typo3_Configuration')
+            ->setMethods(['getTables'])
+            ->getMock();
+        $mockConfiguration->expects($this->once())->method('getTables')->willReturn(
+            [
+                'table_one',
+                'table_two'
+            ]
         );
 
-        $flagEntries = $this->getMock(
-            'Tx_FeatureFlag_System_Typo3_Task_FlagEntries',
-            array('getFeatureFlagService'),
-            array(),
-            '',
-            false
-        );
+        $flagEntries = $this
+            ->getMockBuilder('Tx_FeatureFlag_System_Typo3_Task_FlagEntries')
+            ->setMethods(['getFeatureFlagService'])
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $serviceMock = $this->getMockBuilder('Tx_FeatureFlag_Service')->setConstructorArgs(array(
             $mockRepository,
