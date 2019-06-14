@@ -18,20 +18,18 @@
     ],
     "require": {
         "php": "^7.0",
-        "typo3/cms-core": ">=7.6.0",
+        "ext-json": "*",
+        "typo3/cms-core": ">=7.6.0, <=8.7.99",
         "typo3/cms-extbase": "*",
         "typo3/cms-scheduler": "*"
     },
     "require-dev": {
         "typo3/cms": "^7.6",
-        "nimut/testing-framework": "2.0.*",
-        "phpunit/phpcov": "3.1.*",
-        "squizlabs/php_codesniffer": "3.3.*",
+        "nimut/testing-framework": "^4.1",
+        "phpunit/phpcov": "4.0.*",
+        "squizlabs/php_codesniffer": "3.4.*",
         "sebastian/phpcpd": "3.0.*",
         "phpmd/phpmd": "2.6.*"
-    },
-    "replace": {
-        "feature_flag": "self.version"
     },
     "autoload": {
         "classmap": [
@@ -57,11 +55,11 @@
         ],
         "test:unit": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/ --debug --verbose"
+            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit"
         ],
         "test:functional": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional --debug --verbose"
+            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional"
         ]
     },
     "extra": {

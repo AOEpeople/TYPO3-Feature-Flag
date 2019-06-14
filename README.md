@@ -17,7 +17,7 @@ You can download and install this extension or use composer.
 
 ## Copyright / License
 
-Copyright: (c) 2015 - 2018, AOE GmbH
+Copyright: (c) 2015 - 2019, AOE GmbH
 License: GPLv3, <http://www.gnu.org/licenses/gpl-3.0.en.html>
 
 ## Contributing
