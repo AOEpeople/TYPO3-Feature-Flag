@@ -7,11 +7,17 @@ php:
 env:
   - TYPO3_VERSION=^8.7 TESTING_VERSION=8.x-dev COVERAGE=0 FUNCTIONAL=0
   - TYPO3_VERSION=^9.5 TESTING_VERSION=9.x-dev COVERAGE=0 FUNCTIONAL=0
+  - TYPO3_VERSION=^10.0 TESTING_VERSION=10.x-dev COVERAGE=0 FUNCTIONAL=0
+  - TYPO3_VERSION=dev-master TESTING_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
 
 matrix:
   include:
     - env: TYPO3_VERSION=^9.5 TESTING_VERSION=9.x-dev COVERAGE=1 FUNCTIONAL=1
       php: 7.2
+
+  allow_failures:
+    - env: TYPO3_VERSION=^10.0 TESTING_VERSION=10.x-dev COVERAGE=0 FUNCTIONAL=0
+    - env: TYPO3_VERSION=dev-master TESTING_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
 
 sudo: false
 
@@ -30,7 +36,7 @@ before_install:
 
 before_script:
   # Installs TYPO3 with testing framework
-  - composer require typo3/testing-framework=$TESTING_VERSION
+  - composer require typo3/cms-core=$TYPO3_VERSION typo3/testing-framework=$TESTING_VERSION
   # Restore composer.json
   - git checkout composer.json
   - export "TYPO3_PATH_ROOT"=$PWD/.Build/Web;
