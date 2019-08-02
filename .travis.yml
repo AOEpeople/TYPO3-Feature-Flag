@@ -5,9 +5,9 @@ php:
   - 7.3
 
 env:
-  - TYPO3_VERSION=^8.7 TESTING_VERSION=8.x-dev COVERAGE=0 FUNCTIONAL=0
-  - TYPO3_VERSION=^9.5 TESTING_VERSION=9.x-dev COVERAGE=0 FUNCTIONAL=0
-  - TYPO3_VERSION=^10.0 TESTING_VERSION=10.x-dev COVERAGE=0 FUNCTIONAL=0
+  - TYPO3_VERSION=^8.7 TESTING_VERSION=^2 COVERAGE=0 FUNCTIONAL=0
+  - TYPO3_VERSION=^9.5 TESTING_VERSION=^4 COVERAGE=0 FUNCTIONAL=0
+  - TYPO3_VERSION=^10.0 TESTING_VERSION=^5 COVERAGE=0 FUNCTIONAL=0
   - TYPO3_VERSION=dev-master TESTING_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
 
 matrix:
@@ -16,10 +16,11 @@ matrix:
       php: 7.2
 
   allow_failures:
-    - env: TYPO3_VERSION=^10.0 TESTING_VERSION=10.x-dev COVERAGE=0 FUNCTIONAL=0
+    - env: TYPO3_VERSION=^8.7 TESTING_VERSION=^2 COVERAGE=0 FUNCTIONAL=0
+    - env: TYPO3_VERSION=^10.0 TESTING_VERSION=^5 COVERAGE=0 FUNCTIONAL=0
     - env: TYPO3_VERSION=dev-master TESTING_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
 
-sudo: false
+sudo: false^
 
 addons:
   apt:
@@ -35,6 +36,11 @@ before_install:
   - composer --version
 
 before_script:
+  - >
+    if [ "$TYPO3_VERSION" == "dev-master" ]; then
+      composer config minimum-stability dev;
+      composer config prefer-stable true;
+    fi
   # Installs TYPO3 with testing framework
   - composer require typo3/cms-core=$TYPO3_VERSION typo3/testing-framework=$TESTING_VERSION
   # Restore composer.json
