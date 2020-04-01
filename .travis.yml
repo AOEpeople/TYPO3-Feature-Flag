@@ -5,6 +5,7 @@ php:
   - 7.1
   - 7.2
   - 7.3
+  - 7.4
 
 env:
   - TYPO3_VERSION=^8.7 COVERAGE=0 FUNCTIONAL=0
@@ -26,8 +27,10 @@ matrix:
     - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=1
     - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
     - php: 7.3
+    - php: 7.4
 
-sudo: false
+os:
+  - linux
 
 services:
   - mysql
