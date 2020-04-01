@@ -5,6 +5,7 @@ php:
   - 7.1
   - 7.2
   - 7.3
+  - 7.4
 
 env:
   - TYPO3_VERSION=^8.7 COVERAGE=0 FUNCTIONAL=0
@@ -13,21 +14,18 @@ env:
 matrix:
   include:
     - env: TYPO3_VERSION=^8.7 COVERAGE=1 FUNCTIONAL=1
-      php: 7.0
-    - env: TYPO3_VERSION=^8.7 COVERAGE=1 FUNCTIONAL=1
       php: 7.2
-  allow_failures:
+  exclude:
     - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
       php: 7.0
     - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
       php: 7.1
+  allow_failures:
     - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
-      php: 7.2
     - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=1
-    - env: TYPO3_VERSION=dev-master COVERAGE=0 FUNCTIONAL=0
-    - php: 7.3
 
-sudo: false
+os:
+  - linux
 
 services:
   - mysql
