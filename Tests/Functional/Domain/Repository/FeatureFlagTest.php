@@ -64,6 +64,7 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::findByFlag()
      * @test
      */
     public function shouldGetFeatureFlagByFlagName()
@@ -74,6 +75,10 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     *
      * @test
      */
     public function shouldHideElementForBehaviorHideAndEnabledFeatureFlag()
@@ -94,6 +99,10 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     *
      * @test
      */
     public function shouldHideElementForBehaviorShowAndDisabledFeatureFlag()
@@ -114,6 +123,10 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     *
      * @test
      */
     public function shouldShowElementForBehaviorShowAndEnabledFeatureFlag()
@@ -134,6 +147,10 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     *
      * @test
      */
     public function shouldShowElementForBehaviorHideAndDisabledFeatureFlag()
@@ -152,6 +169,14 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
         $this->assertEquals(0, $contentElements[0]['hidden']);
     }
 
+    /**
+     * Helper function for testing return
+     *
+     * @param string $table
+     * @param integer $uid
+     *
+     * @return array
+     */
     public function getElementsData($table, $uid)
     {
         /** @var QueryBuilder $queryBuilder */
