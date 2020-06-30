@@ -37,6 +37,7 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_Task_FlagEntriesTest extends Tx_Fea
     {
         $mockRepository = $this
             ->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')
+            ->disableOriginalConstructor()
             ->setMethods(['updateFeatureFlagStatusForTable'])
             ->getMock();
         $mockRepository->expects($this->exactly(2))->method('updateFeatureFlagStatusForTable')->with(

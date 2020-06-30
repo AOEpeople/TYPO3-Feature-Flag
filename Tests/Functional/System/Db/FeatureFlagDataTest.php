@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @package    FeatureFlag
  * @subpackage Tests_Domain_Repository
  */
-class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends FunctionalTestCase
+class Tx_FeatureFlag_System_Db_FeatureFlagDataTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -56,78 +56,22 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
      */
     public function setUp()
     {
-        parent::setUp();
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'TYPO3\CMS\Extbase\Object\ObjectManager'
-        );
-        $this->featureFlagRepository = $this->objectManager->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
+        parent::setUp();;
     }
 
     /**
      * @test
      */
-    public function shouldGetFeatureFlagByFlagName()
-    {
-        $this->importDataSet(dirname(__FILE__) . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
-        $flag = $this->featureFlagRepository->findByFlag('my_test_feature_flag');
-        $this->assertInstanceOf('Tx_FeatureFlag_Domain_Model_FeatureFlag', $flag);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHideElementForBehaviorHideAndEnabledFeatureFlag()
+    public function shouldGetContentElements()
     {
         $this->importDataSet(
             dirname(__FILE__) .
-            '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.xml'
+            '/fixtures/FeatureFlagDataTest.xml'
         );
 
-        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
-        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
+        $instance = new Tx_FeatureFlag_System_Db_FeatureFlagData();
 
-        $instance->updateFeatureFlagStatusForTable('tt_content');
-
-        $contentElements = $this->getElementsData('tt_content', 4712);
-
-        $this->assertEquals(1, $contentElements[0]['hidden']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHideElementForBehaviorShowAndDisabledFeatureFlag()
-    {
-        $this->importDataSet(
-            dirname(__FILE__) .
-            '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorShowAndDisabledFeatureFlag.xml'
-        );
-
-        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
-        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
-
-        $instance->updateFeatureFlagStatusForTable('tt_content');
-
-        $contentElements = $this->getElementsData('tt_content', 4712);
-
-        $this->assertEquals(1, $contentElements[0]['hidden']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldShowElementForBehaviorShowAndEnabledFeatureFlag()
-    {
-        $this->importDataSet(
-            dirname(__FILE__) .
-            '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
-        );
-
-        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
-        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
-
-        $instance->updateFeatureFlagStatusForTable('tt_content');
-
+        $instance->getContentElements('tt_content', 0, 1);
         $contentElements = $this->getElementsData('tt_content', 4712);
 
         $this->assertEquals(0, $contentElements[0]['hidden']);
@@ -136,22 +80,44 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     /**
      * @test
      */
-    public function shouldShowElementForBehaviorHideAndDisabledFeatureFlag()
+    public function updateContentElements()
     {
         $this->importDataSet(
             dirname(__FILE__) .
-            '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
+            '/fixtures/FeatureFlagDataTest.xml'
         );
 
-        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
-        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
+        $instance = new Tx_FeatureFlag_System_Db_FeatureFlagData();
 
-        $instance->updateFeatureFlagStatusForTable('tt_content');
+        $instance->updateContentElements('tt_content', [4712], 1);
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        $this->assertEquals(0, $contentElements[0]['hidden']);
+        $this->assertEquals(1, $contentElements[0]['hidden']);
     }
 
+    /**
+     * @test
+     */
+    public function getContentElementsPIDs()
+    {
+        $this->importDataSet(
+            dirname(__FILE__) .
+            '/fixtures/FeatureFlagDataTest.xml'
+        );
+
+        $instance = new Tx_FeatureFlag_System_Db_FeatureFlagData();
+        $returnedPID = $instance->getContentElementsPIDs('tx_featureflag_domain_model_featureflag', 4711);
+
+        $this->assertEquals(1001, $returnedPID);
+    }
+
+
+    /**
+     * @param $table
+     * @param $uid
+     *
+     * @return array
+     */
     public function getElementsData($table, $uid)
     {
         /** @var QueryBuilder $queryBuilder */

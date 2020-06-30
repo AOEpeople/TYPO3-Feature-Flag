@@ -108,6 +108,7 @@ class Tx_FeatureFlag_Tests_Functional_System_Typo3_TCATest extends FunctionalTes
             ->willReturn($mapping);
         $featureFlagRepository = $this
             ->getMockBuilder(Tx_FeatureFlag_Domain_Repository_FeatureFlag::class)
+            ->disableOriginalConstructor()
             ->setMethods(['findAll'])
             ->getMock();
         $featureFlagRepository
