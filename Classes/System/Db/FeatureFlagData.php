@@ -45,9 +45,9 @@ class Tx_FeatureFlag_System_Db_FeatureFlagData
     const TABLE_FLAGS = 'tx_featureflag_domain_model_featureflag';
 
     /**
-     * @param $table
-     * @param $behavior
-     * @param $enabled
+     * @param string $table
+     * @param integer $behavior
+     * @param integer $enabled
      *
      * @return array
      */
@@ -72,25 +72,19 @@ class Tx_FeatureFlag_System_Db_FeatureFlagData
                     ),
                     $queryBuilder->expr()->eq(
                         $table . '.uid',
-                            self::TABLE_MAPPING . '.foreign_table_uid'
+                        self::TABLE_MAPPING . '.foreign_table_uid'
                     ),
                     $queryBuilder->expr()->eq(
-                        self::TABLE_FLAGS . '.enabled', $queryBuilder->createNamedParameter(
-                            $enabled,
-                            Connection::PARAM_INT
-                        )
+                        self::TABLE_FLAGS . '.enabled',
+                        $queryBuilder->createNamedParameter($enabled, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
-                        self::TABLE_MAPPING . '.foreign_table_name', $queryBuilder->createNamedParameter(
-                            $table,
-                            Connection::PARAM_STR
-                        )
+                        self::TABLE_MAPPING . '.foreign_table_name',
+                        $queryBuilder->createNamedParameter($table, Connection::PARAM_STR)
                     ),
                     $queryBuilder->expr()->eq(
-                        self::TABLE_MAPPING . '.behavior', $queryBuilder->createNamedParameter(
-                            $behavior,
-                            Connection::PARAM_INT
-                        )
+                        self::TABLE_MAPPING . '.behavior',
+                        $queryBuilder->createNamedParameter($behavior, Connection::PARAM_INT)
                     )
                 )
             );
@@ -99,9 +93,9 @@ class Tx_FeatureFlag_System_Db_FeatureFlagData
     }
 
     /**
-     * @param $table
+     * @param string $table
      * @param array $uids
-     * @param $isVisible
+     * @param bool $isVisible
      */
     public function updateContentElements($table, array $uids, $isVisible)
     {
@@ -120,8 +114,8 @@ class Tx_FeatureFlag_System_Db_FeatureFlagData
     }
 
     /**
-     * @param $table
-     * @param $uid
+     * @param string $table
+     * @param integer $uid
      *
      * @return string
      */
