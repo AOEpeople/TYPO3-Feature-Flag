@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2020 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,24 +24,25 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * @package FeatureFlag
  * @subpackage Domain_Repository
  */
-class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Persistence\Repository
+class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Repository
 {
     /**
-     * @var Tx_FeatureFlag_System_Db_SqlFactory
-     * @inject
+     * @var Tx_FeatureFlag_System_Db_FeatureFlagData
      */
-    private $sqlFactory;
+    private $featureFlagData;
 
-    /**
-     *
-     */
-    public function __construct()
+
+    public function __construct(Tx_FeatureFlag_System_Db_FeatureFlagData $featureFlagData)
     {
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $this->featureFlagData = $featureFlagData;
+        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         parent::__construct($objectManager);
     }
 
@@ -51,7 +52,8 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
     public function initializeObject()
     {
         /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $defaultQuerySettings =
+            $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $defaultQuerySettings->setRespectStoragePage(false);
         $defaultQuerySettings->setRespectSysLanguage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
@@ -76,10 +78,21 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
      */
     public function updateFeatureFlagStatusForTable($table)
     {
-        $this->hideEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 1));
-        $this->hideEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 0));
-        $this->showEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 1));
-        $this->showEntries($table, $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 0));
+        $this->hideEntries(
+            $table,
+            $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 1)
+        );
+        $this->hideEntries(
+            $table,
+            $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 0)
+        );
+        $this->showEntries(
+            $table,
+            $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 1)
+        );
+        $this->showEntries($table,
+            $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 0)
+        );
     }
 
     /**
@@ -89,7 +102,9 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
      */
     private function hideEntries($table, array $uids)
     {
-        $this->updateEntries($table, $uids, false);
+        if (!empty($uids)) {
+            $this->featureFlagData->updateContentElements($table, $uids, false);
+        }
     }
 
     /**
@@ -99,22 +114,9 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
      */
     private function showEntries($table, array $uids)
     {
-        $this->updateEntries($table, $uids, true);
-    }
-
-    /**
-     * @param $table
-     * @param array $uids
-     * @param boolean $isVisible
-     * @return void
-     */
-    private function updateEntries($table, array $uids, $isVisible)
-    {
-        if (empty($uids)) {
-            return;
+        if (!empty($uids)) {
+            $this->featureFlagData->updateContentElements($table, $uids, true);
         }
-        $statement = $this->sqlFactory->getUpdateStatementForContentElements($table, $uids, $isVisible);
-        $GLOBALS['TYPO3_DB']->sql_query($statement);
     }
 
     /**
@@ -125,12 +127,12 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends \TYPO3\CMS\Extbase\Pe
      */
     private function getUpdateEntriesUids($table, $behavior, $enabled)
     {
-        $query = $this->createQuery();
-        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
-        $statement = $this->sqlFactory->getSelectStatementForContentElements($table, $behavior, $enabled);
-        $query->statement($statement);
-        $uids = array();
-        $rows = $query->execute(true);
+        $rows = $this->featureFlagData->getContentElements($table, $behavior, $enabled);
+
+        if(empty($rows)) {
+            return $rows;
+        }
+
         foreach ($rows as $row) {
             $uids[] = $row['uid'];
         }

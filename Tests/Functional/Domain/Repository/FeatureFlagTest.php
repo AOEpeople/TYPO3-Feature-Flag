@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018 AOE GmbH <dev@aoe.com>
+ *  (c) 2020 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -25,9 +25,13 @@
  ***************************************************************/
 
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @package FeatureFlag
+ * @package    FeatureFlag
  * @subpackage Tests_Domain_Repository
  */
 class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends FunctionalTestCase
@@ -60,6 +64,7 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::findByFlag()
      * @test
      */
     public function shouldGetFeatureFlagByFlagName()
@@ -70,6 +75,10 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     *
      * @test
      */
     public function shouldHideElementForBehaviorHideAndEnabledFeatureFlag()
@@ -79,14 +88,21 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
             '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.xml'
         );
 
-        $this->featureFlagRepository->updateFeatureFlagStatusForTable('tt_content');
+        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
+        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
 
-        $contentElement = $this->getContentElement(4712);
+        $instance->updateFeatureFlagStatusForTable('tt_content');
 
-        $this->assertEquals('1', $contentElement['hidden']);
+        $contentElements = $this->getElementsData('tt_content', 4712);
+
+        $this->assertEquals(1, $contentElements[0]['hidden']);
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     *
      * @test
      */
     public function shouldHideElementForBehaviorShowAndDisabledFeatureFlag()
@@ -96,14 +112,21 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
             '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorShowAndDisabledFeatureFlag.xml'
         );
 
-        $this->featureFlagRepository->updateFeatureFlagStatusForTable('tt_content');
+        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
+        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
 
-        $contentElement = $this->getContentElement(4712);
+        $instance->updateFeatureFlagStatusForTable('tt_content');
 
-        $this->assertEquals('1', $contentElement['hidden']);
+        $contentElements = $this->getElementsData('tt_content', 4712);
+
+        $this->assertEquals(1, $contentElements[0]['hidden']);
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     *
      * @test
      */
     public function shouldShowElementForBehaviorShowAndEnabledFeatureFlag()
@@ -113,14 +136,21 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
             '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
         );
 
-        $this->featureFlagRepository->updateFeatureFlagStatusForTable('tt_content');
+        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
+        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
 
-        $contentElement = $this->getContentElement(4712);
+        $instance->updateFeatureFlagStatusForTable('tt_content');
 
-        $this->assertEquals('0', $contentElement['hidden']);
+        $contentElements = $this->getElementsData('tt_content', 4712);
+
+        $this->assertEquals(0, $contentElements[0]['hidden']);
     }
 
     /**
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
+     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     *
      * @test
      */
     public function shouldShowElementForBehaviorHideAndDisabledFeatureFlag()
@@ -130,19 +160,45 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
             '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
         );
 
-        $this->featureFlagRepository->updateFeatureFlagStatusForTable('tt_content');
+        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
+        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
 
-        $contentElement = $this->getContentElement(4712);
+        $instance->updateFeatureFlagStatusForTable('tt_content');
+        $contentElements = $this->getElementsData('tt_content', 4712);
 
-        $this->assertEquals('0', $contentElement['hidden']);
+        $this->assertEquals(0, $contentElements[0]['hidden']);
     }
 
     /**
-     * @param integer $id
+     * Helper function for testing return
+     *
+     * @param string $table
+     * @param integer $uid
+     *
      * @return array
      */
-    private function getContentElement($id)
+    public function getElementsData($table, $uid)
     {
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,hidden', 'tt_content', 'uid=' . $id);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($table);
+
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $query = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter(
+                        $uid,
+                        Connection::PARAM_INT
+                    )
+                )
+
+            );
+
+        return $query->execute()->fetchAll();
     }
 }
