@@ -12,6 +12,13 @@ jobs:
       matrix:
         typo3: [ ^8.7, ^9.5, ^10.4 ]
         php: [ '7.2', '7.3', '7.4' ]
+      include:
+        - typo3: ^9.5
+          continue-on-error: true
+        - typo3: ^10.4
+          continue-on-error: true
+
+    continue-on-error: ${{ matrix.continue-on-error }}
 
     steps:
       - name: Start database server
