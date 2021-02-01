@@ -2,7 +2,7 @@
 Add ability to use feature flags for extensions and content elements
 
 ## Build information
-[![Build Status](https://github.com/AOEpeople/TYPO3-Feature-Flag/workflows/CI/badge.svg?branch=master)](https://github.com/AOEpeople/TYPO3-Feature-Flag)
+[![Build Status](https://github.com/AOEpeople/TYPO3-Feature-Flag/workflows/CI/badge.svg?branch=master)](https://github.com/AOEpeople/TYPO3-Feature-Flag/actions)
 [![Code Coverage](https://scrutinizer-ci.com/g/AOEpeople/TYPO3-Feature-Flag/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/AOEpeople/TYPO3-Feature-Flag/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AOEpeople/TYPO3-Feature-Flag/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AOEpeople/TYPO3-Feature-Flag/?branch=master)
 
