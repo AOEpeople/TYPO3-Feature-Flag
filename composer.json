@@ -39,9 +39,10 @@
         }
     },
     "autoload-dev": {
-        "classmap": [
-            "Tests"
-        ]
+        "psr-4": {
+            "Aoe\\FeatureFlag\\Tests\\": "Tests",
+            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
+        }
     },
     "config": {
         "vendor-dir": ".Build/vendor",

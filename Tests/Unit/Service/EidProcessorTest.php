@@ -4,7 +4,7 @@ namespace Aoe\FeatureFlag\Tests\Unit\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -25,37 +25,34 @@ namespace Aoe\FeatureFlag\Tests\Unit\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeatureFlag\Service\EidProcessor;
+use Aoe\FeatureFlag\Service\EidProcessorService;
+use Aoe\FeatureFlag\Service\Exception\ActionNotFoundException;
+use Aoe\FeatureFlag\Service\FeatureFlagService;
+use Aoe\FeatureFlag\System\Typo3\CacheManager;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
-use Tx_FeatureFlag_Service;
-use Tx_FeatureFlag_Service_Exception_ActionNotFound;
-use Tx_FeatureFlag_System_Typo3_CacheManager;
+use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @package FeatureFlag
- * @subpackage Tests
- */
 class EidProcessorTest extends UnitTestCase
 {
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return FeatureFlagService|MockObject
      */
     private function getServiceMock()
     {
         return $this
-            ->getMockBuilder(Tx_FeatureFlag_Service::class)
+            ->getMockBuilder(FeatureFlagService::class)
             ->setMethods(['updateFeatureFlag'])
             ->disableOriginalConstructor()
             ->getMock();
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     private function getCacheManagerMock()
     {
         return $this
-            ->getMockBuilder(Tx_FeatureFlag_System_Typo3_CacheManager::class)
+            ->getMockBuilder(CacheManager::class)
             ->setMethods(['clearPageCache'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -85,7 +82,7 @@ class EidProcessorTest extends UnitTestCase
             ->method('updateFeatureFlag')
             ->with($this->equalTo($feature), $this->equalTo($expected));
 
-        $eidProcessor = new EidProcessor($serviceMock, $this->getCacheManagerMock());
+        $eidProcessor = new EidProcessorService($serviceMock, $this->getCacheManagerMock());
         $eidProcessor->processRequest();
         $this->expectOutputRegex('/200/');
     }
@@ -96,9 +93,9 @@ class EidProcessorTest extends UnitTestCase
     public function shouldThrowExceptionTest()
     {
         $_GET = ['action' => '', 'feature' => 'testfeature'];
-        $eidProcessor = new EidProcessor($this->getServiceMock(), $this->getCacheManagerMock());
+        $eidProcessor = new EidProcessorService($this->getServiceMock(), $this->getCacheManagerMock());
 
-        $this->expectException(Tx_FeatureFlag_Service_Exception_ActionNotFound::class);
+        $this->expectException(ActionNotFoundException::class);
         $eidProcessor->processRequest();
     }
 }

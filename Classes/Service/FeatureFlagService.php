@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Service;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,10 +25,15 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- */
-class Tx_FeatureFlag_Service
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
+use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
+use Aoe\FeatureFlag\System\Typo3\Configuration;
+use RuntimeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+
+class FeatureFlagService
 {
     /**
      * @var int
@@ -40,17 +46,17 @@ class Tx_FeatureFlag_Service
     const BEHAVIOR_SHOW = 1;
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
+     * @var FeatureFlagRepository
      */
     private $featureFlagRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+     * @var PersistenceManagerInterface
      */
     private $persistenceManager;
 
     /**
-     * @var Tx_FeatureFlag_System_Typo3_Configuration
+     * @var Configuration
      */
     private $configuration;
 
@@ -60,15 +66,14 @@ class Tx_FeatureFlag_Service
     private $cachedFlags = array();
 
     /**
-     * Tx_FeatureFlag_Service constructor.
-     * @param Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository
-     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-     * @param Tx_FeatureFlag_System_Typo3_Configuration $configuration
+     * @param FeatureFlagRepository $featureFlagRepository
+     * @param PersistenceManagerInterface $persistenceManager
+     * @param Configuration $configuration
      */
     public function __construct(
-        Tx_FeatureFlag_Domain_Repository_FeatureFlag $featureFlagRepository,
-        \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager,
-        Tx_FeatureFlag_System_Typo3_Configuration $configuration
+        FeatureFlagRepository $featureFlagRepository,
+        PersistenceManagerInterface $persistenceManager,
+        Configuration $configuration
     ) {
         $this->featureFlagRepository = $featureFlagRepository;
         $this->persistenceManager = $persistenceManager;
@@ -77,8 +82,8 @@ class Tx_FeatureFlag_Service
 
     /**
      * @param string $flag
-     * @return Tx_FeatureFlag_Domain_Model_FeatureFlag
-     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     * @return FeatureFlag
+     * @throws FeatureNotFoundException
      * @throws RuntimeException
      * @return boolean
      */
@@ -87,15 +92,15 @@ class Tx_FeatureFlag_Service
         if (false === is_array($GLOBALS['TCA']) || false === isset($GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'])) {
             // This can happen, when we call a REST-endpoint (by using restler-extension without initialized FE) and TYPO3 7:
             // Without TCA, we would load (in this and ALL other following PHP-requests) the featureFlag without initialized
-            // 'property-values' (method 'Tx_FeatureFlag_Domain_Model_FeatureFlag::isEnabled' would return NULL), so we MUST
+            // 'property-values' (method 'FeatureFlag::isEnabled' would return NULL), so we MUST
             // avoid to load any featureFlag without correct loaded TCA!
             throw new RuntimeException('TCA is not loaded - we can\'t load featureFlag "'.$flag.'"');
         }
 
         if (false === array_key_exists($flag, $this->cachedFlags)) {
             $flagModel = $this->featureFlagRepository->findByFlag($flag);
-            if (false === $flagModel instanceof Tx_FeatureFlag_Domain_Model_FeatureFlag) {
-                throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found: "' . $flag . '"', 1383842028);
+            if (false === $flagModel instanceof FeatureFlag) {
+                throw new FeatureNotFoundException('Feature Flag not found: "' . $flag . '"', 1383842028);
             }
             $this->cachedFlags[$flag] = $flagModel;
         }
@@ -105,7 +110,7 @@ class Tx_FeatureFlag_Service
     /**
      * @param $flag
      * @return bool
-     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     * @throws FeatureNotFoundException
      */
     public function isFeatureEnabled($flag)
     {
@@ -115,8 +120,8 @@ class Tx_FeatureFlag_Service
     /**
      * @param $flag
      * @param $enabled
-     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws FeatureNotFoundException
+     * @throws IllegalObjectTypeException
      */
     public function updateFeatureFlag($flag, $enabled)
     {

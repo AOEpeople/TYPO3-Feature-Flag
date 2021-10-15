@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\System\Typo3;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2017 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -26,10 +27,7 @@
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-/**
- * @package FeatureFlag
- */
-class Tx_FeatureFlag_TcaPostProcessor
+class TcaPostProcessor
 {
     /**
      * Add feature-flag-fields to TCA-fields of DB-tables which support feature-flags
@@ -50,7 +48,7 @@ class Tx_FeatureFlag_TcaPostProcessor
                         'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.label',
                         'config' => [
                             'type' => 'user',
-                            'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderInfo',
+                            'userFunc' => 'Aoe\FeatureFlag\System\Typo3\TCA->renderInfo',
                         ]
                     ],
                     'tx_featureflag_flag' => [
@@ -58,7 +56,7 @@ class Tx_FeatureFlag_TcaPostProcessor
                         'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_flag',
                         'config' => [
                             'type' => 'user',
-                            'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelectForFlag',
+                            'userFunc' => 'Aoe\FeatureFlag\System\Typo3\TCA->renderSelectForFlag',
                         ]
                     ],
                     'tx_featureflag_behavior' => [
@@ -66,7 +64,7 @@ class Tx_FeatureFlag_TcaPostProcessor
                         'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior',
                         'config' => [
                             'type' => 'user',
-                            'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelectForBehavior',
+                            'userFunc' => 'Aoe\FeatureFlag\System\Typo3\TCA->renderSelectForBehavior',
                         ]
                     ]
                 ]

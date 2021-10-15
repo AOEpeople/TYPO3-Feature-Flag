@@ -1,9 +1,17 @@
 <?php
+namespace Aoe\FeatureFlag\Tests\Unit\System\Typo3\Task;
+
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
+use Aoe\FeatureFlag\Service\FeatureFlagService;
+use Aoe\FeatureFlag\System\Typo3\Configuration;
+use Aoe\FeatureFlag\System\Typo3\Task\FlagEntriesTask;
+use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,11 +32,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage Tests_System_Typo3_Task
- */
-class Tx_FeatureFlag_Tests_Unit_System_Typo3_Task_FlagEntriesTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
+class FlagEntriesTest extends BaseTest
 {
     /**
      * @test
@@ -36,19 +40,17 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_Task_FlagEntriesTest extends Tx_Fea
     public function execute()
     {
         $mockRepository = $this
-            ->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')
+            ->getMockBuilder(FeatureFlagRepository::class)
             ->disableOriginalConstructor()
             ->setMethods(['updateFeatureFlagStatusForTable'])
             ->getMock();
-        $mockRepository->expects($this->exactly(2))->method('updateFeatureFlagStatusForTable')->with(
-            $this->stringStartsWith('table')
-        );
+        $mockRepository->expects($this->exactly(2))->method('updateFeatureFlagStatusForTable')
+            ->with($this->stringStartsWith('table'));
 
-        $mockPersistenceManager = $this
-            ->getMockBuilder('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface')->getMock();
+        $mockPersistenceManager = $this->getMockBuilder(PersistenceManagerInterface::class)->getMock();
 
         $mockConfiguration = $this
-            ->getMockBuilder('Tx_FeatureFlag_System_Typo3_Configuration')
+            ->getMockBuilder(Configuration::class)
             ->setMethods(['getTables'])
             ->getMock();
         $mockConfiguration->expects($this->once())->method('getTables')->willReturn(
@@ -59,22 +61,23 @@ class Tx_FeatureFlag_Tests_Unit_System_Typo3_Task_FlagEntriesTest extends Tx_Fea
         );
 
         $flagEntries = $this
-            ->getMockBuilder('Tx_FeatureFlag_System_Typo3_Task_FlagEntries')
+            ->getMockBuilder(FlagEntriesTask::class)
             ->setMethods(['getFeatureFlagService'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $serviceMock = $this->getMockBuilder('Tx_FeatureFlag_Service')->setConstructorArgs(array(
-            $mockRepository,
-            $mockPersistenceManager,
-            $mockConfiguration
-        ))->setMethods(array('getFeatureFlagService'))->getMock();
+        $serviceMock = $this->getMockBuilder(FeatureFlagService::class)
+            ->setConstructorArgs(
+                [
+                    $mockRepository,
+                    $mockPersistenceManager,
+                    $mockConfiguration
+                ]
+            )->setMethods(['getFeatureFlagService'])->getMock();
 
-        $flagEntries->expects($this->any())->method('getFeatureFlagService')->will(
-            $this->returnValue($serviceMock)
-        );
+        $flagEntries->expects($this->any())->method('getFeatureFlagService')->willReturn($serviceMock);
 
-        /** @var Tx_FeatureFlag_System_Typo3_Task_FlagEntries $flagEntries */
+        /** @var FlagEntriesTask $flagEntries */
         $this->assertTrue($flagEntries->execute());
     }
 }

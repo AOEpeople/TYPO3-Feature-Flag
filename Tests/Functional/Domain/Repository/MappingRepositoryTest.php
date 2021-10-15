@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,13 +25,12 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
-/**
- * @package FeatureFlag
- * @subpackage Tests_Domain_Repository
- */
-class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends FunctionalTestCase
+class MappingRepositoryTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -38,12 +38,12 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends Func
     protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_Mapping
+     * @var MappingRepository
      */
     protected $mappingRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var ObjectManager
      */
     protected $objectManager;
 
@@ -53,10 +53,8 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends Func
     public function setUp()
     {
         parent::setUp();
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'TYPO3\CMS\Extbase\Object\ObjectManager'
-        );
-        $this->mappingRepository = $this->objectManager->get('Tx_FeatureFlag_Domain_Repository_Mapping');
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->mappingRepository = $this->objectManager->get(MappingRepository::class);
     }
 
     /**
@@ -71,7 +69,7 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends Func
 
         $mapping = $this->mappingRepository->findOneByForeignTableNameAndUid(4712, 'tt_content');
 
-        $this->assertInstanceOf('Tx_FeatureFlag_Domain_Model_Mapping', $mapping);
+        $this->assertInstanceOf(Mapping::class, $mapping);
     }
 
     /**
@@ -81,7 +79,10 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_MappingTest extends Func
     {
         $this->importDataSet(dirname(__FILE__) . '/fixtures/MappingTest.findAllByForeignTableNameAndUid.xml');
 
-        $mapping = $this->mappingRepository->findAllByForeignTableNameAndUid(4711, 'tt_content');
+        $mapping = $this->mappingRepository->findAllByForeignTableNameAndUid(
+            4711,
+            'tt_content'
+        );
 
         $this->assertCount(2, $mapping);
     }

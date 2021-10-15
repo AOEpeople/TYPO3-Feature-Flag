@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Domain\Repository;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,18 +25,21 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage Domain_Repository
- */
-class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persistence\Repository
+use Aoe\FeatureFlag\Domain\Model\Mapping;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
+class MappingRepository extends Repository
 {
     /**
      *
      */
     public function __construct()
     {
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         parent::__construct($objectManager);
     }
 
@@ -45,7 +49,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     public function initializeObject()
     {
         /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $defaultQuerySettings->setRespectSysLanguage(false);
         $defaultQuerySettings->setIgnoreEnableFields(false)->setIncludeDeleted(false);
@@ -55,7 +59,7 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     /**
      * @param $foreignTableUid
      * @param $foreignTableName
-     * @return Tx_FeatureFlag_Domain_Model_Mapping
+     * @return Mapping
      */
     public function findOneByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
     {
@@ -70,14 +74,16 @@ class Tx_FeatureFlag_Domain_Repository_Mapping extends \TYPO3\CMS\Extbase\Persis
     public function findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
     {
         $query = $this->createQuery();
-        $query->matching($query->logicalAnd($query->equals('foreign_table_uid', $foreignTableUid),
-            $query->equals('foreign_table_name', $foreignTableName)));
+        $query->matching(
+            $query->logicalAnd($query->equals('foreign_table_uid', $foreignTableUid),
+            $query->equals('foreign_table_name', $foreignTableName))
+        );
         return $query->execute();
     }
 
     /**
      * @param $featureFlagId
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findAllByFeatureFlag($featureFlagId)
     {

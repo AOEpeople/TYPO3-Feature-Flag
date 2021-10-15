@@ -1,5 +1,5 @@
 <?php
-namespace Aoe\FeatureFlag\System\Typo3;
+namespace Aoe\FeatureFlag\Command;
 
 /***************************************************************
  *  Copyright notice
@@ -25,49 +25,29 @@ namespace Aoe\FeatureFlag\System\Typo3;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use InvalidArgumentException;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class Configuration
+class ActivateFeatureFlagCommand extends AbstractCommand
 {
-    /**
-     * @var string
-     */
-    const CONF_TABLES = 'tables';
-
-    /**
-     * @var array
-     */
-    private $configuration = array();
-
-    /**
-     * Initialize configuration array
-     */
-    public function __construct()
+    public function __construct(?string $name = null)
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
-        if (is_array($conf)) {
-            $this->configuration = $conf;
-        }
+        parent::__construct($name);
+        $this->setDescription('Activates a feature.');
     }
 
-    /**
-     * @return array
-     */
-    public function getTables()
+    protected function configure()
     {
-        return explode(',', $this->get(self::CONF_TABLES));
+        $this->addArgument(
+            'features',
+            InputArgument::REQUIRED,
+            'comma seperated list of features to activate'
+        );
     }
 
-    /**
-     * @param string $key
-     * @return mixed
-     * @throws InvalidArgumentException
-     */
-    public function get($key)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (array_key_exists($key, $this->configuration)) {
-            return $this->configuration[$key];
-        }
-        throw new InvalidArgumentException('Configuration key "' . $key . '" does not exist.', 1384161387);
+        $this->setFeatureStatus($input->getArgument('features'), true);
     }
 }

@@ -1,9 +1,13 @@
 <?php
+namespace Aoe\FeatureFlag\Tests\Unit\Domain\Model;
+
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Tests\Unit\BaseTest;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,29 +28,25 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage Tests_Domain_Model
- */
-class Tx_FeatureFlag_Tests_Unit_Domain_Model_FeatureFlagTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
+class FeatureFlagTest extends BaseTest
 {
     /**
-     * @var Tx_FeatureFlag_Domain_Model_FeatureFlag
+     * @var FeatureFlag
      */
     private $featureFlag;
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
+     * @see TestCase::setUp()
      */
     protected function setUp()
     {
-        $this->featureFlag = new Tx_FeatureFlag_Domain_Model_FeatureFlag();
+        $this->featureFlag = new FeatureFlag();
     }
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
+     * @see TestCase::tearDown()
      */
     protected function tearDown()
     {

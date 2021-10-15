@@ -1,5 +1,5 @@
 <?php
-namespace Aoe\FeatureFlag\System\Typo3;
+namespace Aoe\FeatureFlag\Service;
 
 /***************************************************************
  *  Copyright notice
@@ -25,34 +25,10 @@ namespace Aoe\FeatureFlag\System\Typo3;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+\TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
 
-class CacheManager
-{
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
+/** @var \Aoe\FeatureFlag\Service\EidProcessorService $eidProcessor */
+$eidProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
+    ->get(\Aoe\FeatureFlag\Service\EidProcessorService::class);
 
-    /**
-     * @param ObjectManager $objectManager
-     */
-    public function __construct(ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * Clear all caches. Therefor it is necessary to login a BE_USER. You have to prevent
-     * this function to run on live systems!!!
-     */
-    public function clearAllCaches()
-    {
-        /** @var DataHandler $tce */
-        $tce = $this->objectManager->get(DataHandler::class);
-        $tce->start(array(), array());
-        $tce->admin = 1;
-        $tce->clear_cacheCmd('all');
-    }
-}
+$eidProcessor->processRequest();

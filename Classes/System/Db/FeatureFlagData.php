@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\System\Db;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2020 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -29,10 +30,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class Tx_FeatureFlag_System_Db_FeatureFlagData
- */
-class Tx_FeatureFlag_System_Db_FeatureFlagData
+class FeatureFlagData
 {
     /**
      * @var string

@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Domain\Repository;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2020 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,25 +25,26 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Service\FeatureFlagService;
+use Aoe\FeatureFlag\System\Db\FeatureFlagData;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
-/**
- * @package FeatureFlag
- * @subpackage Domain_Repository
- */
-class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Repository
+class FeatureFlagRepository extends Repository
 {
     /**
-     * @var Tx_FeatureFlag_System_Db_FeatureFlagData
+     * @var FeatureFlagData
      */
     private $featureFlagData;
 
 
-    public function __construct(Tx_FeatureFlag_System_Db_FeatureFlagData $featureFlagData)
+    public function __construct(FeatureFlagData $featureFlagData)
     {
         $this->featureFlagData = $featureFlagData;
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         parent::__construct($objectManager);
     }
 
@@ -52,8 +54,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Repository
     public function initializeObject()
     {
         /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $defaultQuerySettings =
-            $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $defaultQuerySettings->setRespectSysLanguage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
@@ -61,7 +62,7 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Repository
 
     /**
      * @param string $flag
-     * @return Tx_FeatureFlag_Domain_Model_FeatureFlag
+     * @return FeatureFlag
      */
     public function findByFlag($flag)
     {
@@ -80,18 +81,18 @@ class Tx_FeatureFlag_Domain_Repository_FeatureFlag extends Repository
     {
         $this->hideEntries(
             $table,
-            $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 1)
+            $this->getUpdateEntriesUids($table, FeatureFlagService::BEHAVIOR_HIDE, 1)
         );
         $this->hideEntries(
             $table,
-            $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 0)
+            $this->getUpdateEntriesUids($table, FeatureFlagService::BEHAVIOR_SHOW, 0)
         );
         $this->showEntries(
             $table,
-            $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_SHOW, 1)
+            $this->getUpdateEntriesUids($table, FeatureFlagService::BEHAVIOR_SHOW, 1)
         );
         $this->showEntries($table,
-            $this->getUpdateEntriesUids($table, Tx_FeatureFlag_Service::BEHAVIOR_HIDE, 0)
+            $this->getUpdateEntriesUids($table, FeatureFlagService::BEHAVIOR_HIDE, 0)
         );
     }
 

@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Service\Exception;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,27 +25,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage System_Typo3_Task
- */
-class Tx_FeatureFlag_System_Typo3_Task_FlagEntries extends \TYPO3\CMS\Scheduler\Task\AbstractTask
-{
-    /**
-     * @return bool
-     */
-    public function execute()
-    {
-        $this->getFeatureFlagService()->flagEntries();
-        return true;
-    }
+use Exception;
 
-    /**
-     * @return Tx_FeatureFlag_Service
-     */
-    protected function getFeatureFlagService()
-    {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
-            ->get(Tx_FeatureFlag_Service::class);
-    }
+class FeatureNotFoundException extends Exception
+{
 }
