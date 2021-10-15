@@ -1,4 +1,4 @@
-name: CI
+name: Tests
 
 on: [ push, pull_request ]
 
@@ -12,6 +12,7 @@ jobs:
       matrix:
         typo3: [ ^8.7 ]
         php: [ '7.2', '7.3', '7.4' ]
+        mysql: [ '5.7' ]
         experimental: [false]
         include:
           - typo3: ^9.5
@@ -36,8 +37,11 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
 
     steps:
-      - name: Start database server
-        run: sudo /etc/init.d/mysql start
+      - name: Set up MySQL ${{ matrix.mysql }}
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: ${{ matrix.mysql }}
+          mysql root password: 'root'
 
       - name: Checkout
         uses: actions/checkout@v2
