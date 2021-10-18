@@ -4,7 +4,7 @@
 		<uid>4711</uid>
 		<description>lorem ipsum</description>
 		<flag>shouldHideElementForBehaviorHideAndEnabledFeatureFlag</flag>
-		<enabled>0</enabled>
+		<enabled>1</enabled>
 	</tx_featureflag_domain_model_featureflag>
 
 	<tt_content>

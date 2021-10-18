@@ -40,7 +40,7 @@ class Mapping extends AbstractEntity
     protected $crdate;
 
     /**
-     * @var FeatureFlag
+     * @var \Aoe\FeatureFlag\Domain\Model\FeatureFlag
      */
     protected $featureFlag;
 
@@ -81,7 +81,7 @@ class Mapping extends AbstractEntity
     }
 
     /**
-     * @param FeatureFlag $featureFlag
+     * @param \Aoe\FeatureFlag\Domain\Model\FeatureFlag $featureFlag
      */
     public function setFeatureFlag(FeatureFlag $featureFlag)
     {
@@ -89,7 +89,7 @@ class Mapping extends AbstractEntity
     }
 
     /**
-     * @return FeatureFlag
+     * @return \Aoe\FeatureFlag\Domain\Model\FeatureFlag $featureFlag
      */
     public function getFeatureFlag()
     {
