@@ -145,21 +145,21 @@ class TCA
      * @param array $incomingFieldArray
      * @param string $table
      * @param integer $id
-     * @param DataHandler $tceMain
+     * @param DataHandler $dataHandler
      * @codingStandardsIgnoreStart
      */
     public function processDatamap_preProcessFieldArray(
         &$incomingFieldArray,
         $table,
         $id,
-        DataHandler $tceMain
+        DataHandler $dataHandler
     ) {
         // @codingStandardsIgnoreEnd
         if (
             array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) &&
             array_key_exists(self::FIELD_FLAG, $incomingFieldArray)
         ) {
-            $pid = $tceMain->getPID($table, $id);
+            $pid = $dataHandler->getPID($table, $id);
             $this->updateMapping($table, $id, $incomingFieldArray[self::FIELD_FLAG], $pid, $incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_FLAG]);
