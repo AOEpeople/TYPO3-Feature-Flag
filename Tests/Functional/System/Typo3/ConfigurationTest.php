@@ -26,10 +26,10 @@ namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
  ***************************************************************/
 
 use Aoe\FeatureFlag\System\Typo3\Configuration;
-use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class ConfigurationTest extends BaseTest
+class ConfigurationTest extends FunctionalTestCase
 {
     /**
      * (non-PHPdoc)
