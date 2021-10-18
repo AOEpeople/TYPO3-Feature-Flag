@@ -53,7 +53,9 @@ class ConfigurationTest extends FunctionalTestCase
      */
     protected function tearDown()
     {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+        if (!class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
+            unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+        }
     }
 
     /**
@@ -83,7 +85,7 @@ class ConfigurationTest extends FunctionalTestCase
     public function getTablesShouldReturnAnArray()
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
-        $this->assertTrue(is_array($configuration->getTables()));
-        $this->assertCount(4, $configuration->getTables());
+        $this->assertIsArray($configuration->getTables());
+        $this->assertCount(3, $configuration->getTables());
     }
 }
