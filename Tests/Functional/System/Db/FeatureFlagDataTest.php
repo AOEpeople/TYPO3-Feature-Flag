@@ -65,7 +65,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
     public function shouldGetContentElements()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagDataTest.xml'
         );
 
@@ -83,7 +83,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
     public function updateContentElements()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagDataTest.xml'
         );
 
@@ -101,7 +101,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
     public function getContentElementsPIDs()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagDataTest.xml'
         );
 

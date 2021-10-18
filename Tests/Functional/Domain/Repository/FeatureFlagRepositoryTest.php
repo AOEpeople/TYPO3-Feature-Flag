@@ -25,6 +25,7 @@ namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
 use Aoe\FeatureFlag\System\Db\FeatureFlagData;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
@@ -67,7 +68,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
      */
     public function shouldGetFeatureFlagByFlagName()
     {
-        $this->importDataSet(dirname(__FILE__) . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
+        $this->importDataSet(__DIR__ . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
         $flag = $this->featureFlagRepository->findByFlag('my_test_feature_flag');
         $this->assertInstanceOf(FeatureFlag::class, $flag);
     }
@@ -82,7 +83,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     public function shouldHideElementForBehaviorHideAndEnabledFeatureFlag()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.xml'
         );
 
@@ -106,7 +107,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     public function shouldHideElementForBehaviorShowAndDisabledFeatureFlag()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorShowAndDisabledFeatureFlag.xml'
         );
 
@@ -130,7 +131,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     public function shouldShowElementForBehaviorShowAndEnabledFeatureFlag()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
         );
 
@@ -154,7 +155,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     public function shouldShowElementForBehaviorHideAndDisabledFeatureFlag()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
         );
 

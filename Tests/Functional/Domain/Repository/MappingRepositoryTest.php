@@ -25,6 +25,7 @@ namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Domain\Model\Mapping;
 use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -63,7 +64,7 @@ class MappingRepositoryTest extends FunctionalTestCase
     public function findOneByForeignTableNameAndUid()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/MappingTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.xml'
         );
 
@@ -77,7 +78,7 @@ class MappingRepositoryTest extends FunctionalTestCase
      */
     public function findAllByForeignTableNameAndUid()
     {
-        $this->importDataSet(dirname(__FILE__) . '/fixtures/MappingTest.findAllByForeignTableNameAndUid.xml');
+        $this->importDataSet(__DIR__ . '/fixtures/MappingTest.findAllByForeignTableNameAndUid.xml');
 
         $mapping = $this->mappingRepository->findAllByForeignTableNameAndUid(
             4711,
@@ -92,7 +93,7 @@ class MappingRepositoryTest extends FunctionalTestCase
      */
     public function shouldGetHashedMappings()
     {
-        $this->importDataSet(dirname(__FILE__) . '/fixtures/MappingTest.shouldGetHashedMappings.xml');
+        $this->importDataSet(__DIR__ . '/fixtures/MappingTest.shouldGetHashedMappings.xml');
 
         $hashedMappings = $this->mappingRepository->getHashedMappings();
 
