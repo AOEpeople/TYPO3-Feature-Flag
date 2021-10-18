@@ -1,13 +1,6 @@
 <?php
 namespace Aoe\FeatureFlag\Tests\Unit\System\Typo3\Task;
 
-use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
-use Aoe\FeatureFlag\Service\FeatureFlagService;
-use Aoe\FeatureFlag\System\Typo3\Configuration;
-use Aoe\FeatureFlag\System\Typo3\Task\FlagEntriesTask;
-use Aoe\FeatureFlag\Tests\Unit\BaseTest;
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -32,6 +25,13 @@ use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
+use Aoe\FeatureFlag\Service\FeatureFlagService;
+use Aoe\FeatureFlag\System\Typo3\Configuration;
+use Aoe\FeatureFlag\System\Typo3\Task\FlagEntriesTask;
+use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+
 class FlagEntriesTest extends BaseTest
 {
     /**
@@ -51,6 +51,7 @@ class FlagEntriesTest extends BaseTest
 
         $mockConfiguration = $this
             ->getMockBuilder(Configuration::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getTables'])
             ->getMock();
         $mockConfiguration->expects($this->once())->method('getTables')->willReturn(

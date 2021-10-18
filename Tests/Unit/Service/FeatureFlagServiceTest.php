@@ -93,8 +93,10 @@ class FeatureFlagServiceTest extends BaseTest
      */
     private function getMockConfiguration()
     {
-        $mockConfiguration =
-            $this->getMockBuilder(Configuration::class)->setMethods(['getTables'])->getMock();
+        $mockConfiguration = $this->getMockBuilder(Configuration::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getTables'])
+            ->getMock();
         $mockConfiguration->expects($this->any())->method('getTables')->willReturn('pages');
 
         return $mockConfiguration;
