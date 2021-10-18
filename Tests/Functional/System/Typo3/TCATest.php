@@ -127,7 +127,7 @@ class TCATest extends FunctionalTestCase
 
         $PA = [];
         $PA['row'] = [];
-        $PA['row']['uid'] = '111';
+        $PA['row']['uid'] = 111;
         $PA['table'] = 'pages';
         $PA['itemFormElID'] = 'itemFormElID';
         $PA['itemFormElName'] = 'itemFormElName';
@@ -159,12 +159,12 @@ class TCATest extends FunctionalTestCase
         $this->tca->expects($this->once())->method('getMappingRepository')->willReturn($mappingRepository);
         $this->tca->expects($this->never())->method('getFeatureFlagByUid');
 
-        $tceMainMock = $this->createMock(DataHandler::class);
+        $dataHandlerMock = $this->createMock(DataHandler::class);
         $incomingFieldArray = [
             'tx_featureflag_flag' => '0',
             'tx_featureflag_behavior' => '0',
         ];
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', '4711', $tceMainMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $dataHandlerMock);
     }
 
     /**
@@ -186,9 +186,9 @@ class TCATest extends FunctionalTestCase
         $this->tca->expects($this->never())->method('getMappingRepository')->willReturn($mappingRepository);
         $this->tca->expects($this->never())->method('getFeatureFlagByUid');
 
-        $tceMainMock = $this->getMockBuilder(DataHandler::class)->getMock();
+        $dataHandlerMock = $this->createMock(DataHandler::class);
         $incomingFieldArray = ['hidden' => '0'];
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', '4711', $tceMainMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $dataHandlerMock);
     }
 
     /**
@@ -209,12 +209,12 @@ class TCATest extends FunctionalTestCase
         $mappingRepository->expects($this->once())->method('update');
         $this->tca->expects($this->any())->method('getMappingRepository')->willReturn($mappingRepository);
 
-        $tceMainMock = $this->createMock(DataHandler::class);
+        $dataHandlerMock = $this->createMock(DataHandler::class);
         $incomingFieldArray = [
             'tx_featureflag_flag' => '0',
             'tx_featureflag_behavior' => '0',
         ];
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', '4711', $tceMainMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $dataHandlerMock);
     }
 
     /**
@@ -241,12 +241,13 @@ class TCATest extends FunctionalTestCase
         $this->tca->expects($this->any())->method('getMappingRepository')->willReturn($mappingRepository);
         $this->tca->expects($this->any())->method('getFeatureFlagByUid')->willReturn($featureFlag);
 
-        $tceMainMock = $this->createMock(DataHandler::class);
+        $dataHandlerMock = $this->createMock(DataHandler::class);
+        $dataHandlerMock->expects($this->once())->method('getPID')->willReturn(678);
         $incomingFieldArray = [
             'tx_featureflag_flag' => '4711',
             'tx_featureflag_behavior' => '0',
         ];
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', '123', $tceMainMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 123, $dataHandlerMock);
     }
 
     /**
@@ -255,7 +256,7 @@ class TCATest extends FunctionalTestCase
     public function processCmdmapCommandIsNotDelete()
     {
         $this->tca->expects($this->never())->method('getMappingRepository');
-        $this->tca->processCmdmap_postProcess('not_delete', 'my_table', '4711');
+        $this->tca->processCmdmap_postProcess('not_delete', 'my_table', 4711);
     }
 
     /**
@@ -273,7 +274,7 @@ class TCATest extends FunctionalTestCase
         $mappingRepository->expects($this->exactly(2))->method('remove');
         $this->tca->expects($this->any())->method('getMappingRepository')->willReturn($mappingRepository);
 
-        $this->tca->processCmdmap_postProcess('delete', 'my_table', '4711');
+        $this->tca->processCmdmap_postProcess('delete', 'my_table', 4711);
     }
 
     /**
