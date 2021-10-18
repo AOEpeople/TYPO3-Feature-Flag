@@ -1,5 +1,5 @@
 <?php
-namespace Aoe\FeatureFlag\Tests\Unit\System\Typo3;
+namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
 
 /***************************************************************
  *  Copyright notice
@@ -27,9 +27,26 @@ namespace Aoe\FeatureFlag\Tests\Unit\System\Typo3;
 
 use Aoe\FeatureFlag\System\Typo3\Configuration;
 use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationTest extends BaseTest
 {
+    /**
+     * (non-PHPdoc)
+     * @see TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        if (!class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
+            // TYPO3v8 or lower
+            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'] = serialize(
+                [
+                    'tables' => 'tt_content,pages,sys_template'
+                ]
+            );
+        }
+    }
+
     /**
      * (non-PHPdoc)
      * @see TestCase::tearDown()
@@ -44,7 +61,7 @@ class ConfigurationTest extends BaseTest
      */
     public function methodGetShouldThrowException()
     {
-        $configuration = new Configuration();
+        $configuration = GeneralUtility::makeInstance(Configuration::class);
         $this->expectException('InvalidArgumentException');
         $this->expectExceptionMessage('Configuration key "InvalidConfigurationKey" does not exist.');
         $this->expectExceptionCode(1384161387);
@@ -56,13 +73,8 @@ class ConfigurationTest extends BaseTest
      */
     public function methodGetShouldReturnCorrectConfiguration()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'] = serialize(
-            array(
-                'test_conf_key' => 'this_value_must_be_returned'
-            )
-        );
-        $configuration = new Configuration();
-        $this->assertEquals('this_value_must_be_returned', $configuration->get('test_conf_key'));
+        $configuration = GeneralUtility::makeInstance(Configuration::class);
+        $this->assertEquals('tt_content,pages,sys_template', $configuration->get('tables'));
     }
 
     /**
@@ -70,12 +82,7 @@ class ConfigurationTest extends BaseTest
      */
     public function getTablesShouldReturnAnArray()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'] = serialize(
-            array(
-                'tables' => 'pages,tt_content,foo,bar'
-            )
-        );
-        $configuration = new Configuration();
+        $configuration = GeneralUtility::makeInstance(Configuration::class);
         $this->assertTrue(is_array($configuration->getTables()));
         $this->assertCount(4, $configuration->getTables());
     }

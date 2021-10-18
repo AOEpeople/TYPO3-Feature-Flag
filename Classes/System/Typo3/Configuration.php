@@ -44,7 +44,17 @@ class Configuration
      */
     public function __construct()
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+        if (class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
+            $conf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                "TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration"
+            )->get('feature_flag');
+        } else {
+            $conf = unserialize(
+                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'],
+                ['allowed_classes' => false]
+            );
+        }
+
         if (is_array($conf)) {
             $this->configuration = $conf;
         }

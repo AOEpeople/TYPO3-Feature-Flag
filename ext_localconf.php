@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_FeatureFlag_System_Typo3_Task_FlagEntries'] = [
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Aoe\FeatureFlag\System\Typo3\Task\FlagEntriesTask'] = [
     'extension' => 'feature_flag',
     'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
         'locallang_db.xml:tx_featureflag_system_typo3_task_flagentries.title',
@@ -19,7 +19,16 @@ if (TYPO3_MODE === 'BE') {
     ];
 }
 
-$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+if (class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
+    $confArray = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        "TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration"
+    )->get('feature_flag');
+} else {
+    $confArray = unserialize(
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'],
+        ['allowed_classes' => false]
+    );
+}
 if ($confArray['enableEidMode'] === true) {
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['featureflag'] = 'EXT:feature_flag/Classes/Service/Eid.php';
 }

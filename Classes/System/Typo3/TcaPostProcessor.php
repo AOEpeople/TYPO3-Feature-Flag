@@ -85,7 +85,17 @@ class TcaPostProcessor
      */
     private function getTcaTablesWithFeatureFlagSupport()
     {
-        $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+        if (class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
+            $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                "TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration"
+            )->get('feature_flag');
+        } else {
+            $config = unserialize(
+                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'],
+                ['allowed_classes' => false]
+            );
+        }
+
         if (isset($config['tables'])) {
             return explode(',', $config ['tables']);
         }
