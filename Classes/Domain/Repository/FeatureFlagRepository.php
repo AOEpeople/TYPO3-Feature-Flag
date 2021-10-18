@@ -40,7 +40,6 @@ class FeatureFlagRepository extends Repository
      */
     private $featureFlagData;
 
-
     public function __construct(FeatureFlagData $featureFlagData)
     {
         $this->featureFlagData = $featureFlagData;
