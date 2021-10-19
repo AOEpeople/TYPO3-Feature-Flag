@@ -33,6 +33,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ConfigurationTest extends FunctionalTestCase
 {
     /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
+
+    /**
      * (non-PHPdoc)
      * @see TestCase::setUp()
      */
