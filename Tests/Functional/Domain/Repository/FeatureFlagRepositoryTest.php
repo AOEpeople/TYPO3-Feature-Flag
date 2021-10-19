@@ -63,7 +63,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers FeatureFlagRepository::findByFlag()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::findByFlag()
      * @test
      */
     public function shouldGetFeatureFlagByFlagName()
@@ -74,9 +74,9 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers FeatureFlagRepository::hideEntries()
-     * @covers FeatureFlagRepository::showEntries()
-     * @covers FeatureFlagRepository::getUpdateEntriesUids()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
      *
      * @test
      */
@@ -98,9 +98,9 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers FeatureFlagRepository::hideEntries()
-     * @covers FeatureFlagRepository::showEntries()
-     * @covers FeatureFlagRepository::getUpdateEntriesUids()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
      *
      * @test
      */
@@ -122,9 +122,9 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers FeatureFlagRepository::hideEntries()
-     * @covers FeatureFlagRepository::showEntries()
-     * @covers FeatureFlagRepository::getUpdateEntriesUids()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
      *
      * @test
      */
@@ -146,9 +146,9 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers FeatureFlagRepository::hideEntries()
-     * @covers FeatureFlagRepository::showEntries()
-     * @covers FeatureFlagRepository::getUpdateEntriesUids()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
      *
      * @test
      */
