@@ -97,7 +97,7 @@ class MappingRepository extends Repository
     public function getHashedMappings()
     {
         $mappings = $this->createQuery()->execute(true);
-        $prepared = array();
+        $prepared = [];
         foreach ($mappings as $mapping) {
             $identifier = sha1($mapping['foreign_table_uid'] . '_' . $mapping['foreign_table_name']);
             $prepared[$identifier] = $identifier;

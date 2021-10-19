@@ -186,7 +186,7 @@ class FeatureFlagServiceTest extends BaseTest
             $mockRepository,
             $mockPersistenceManager,
             $this->getMockConfiguration()
-        ])->setMethods(array('getFeatureFlag'))->getMock();
+        ])->setMethods(['getFeatureFlag'])->getMock();
         $serviceMock->expects($this->any())->method('getFeatureFlag')->willReturn($mockModel);
 
         $serviceMock->expects($this->once())->method('getFeatureFlag')->with('mockFlag');

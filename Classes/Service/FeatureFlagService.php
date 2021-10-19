@@ -63,7 +63,7 @@ class FeatureFlagService
     /**
      * @var array
      */
-    private $cachedFlags = array();
+    private $cachedFlags = [];
 
     /**
      * @param FeatureFlagRepository $featureFlagRepository

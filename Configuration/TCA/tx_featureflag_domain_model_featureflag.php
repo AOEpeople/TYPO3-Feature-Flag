@@ -3,55 +3,55 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/' . 'locallang_db.xml:tx_featureflag_domain_model_featureflag',
         'label' => 'description',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'searchFields' => 'description,flag,',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden'
-        ),
+        ],
         'rootLevel' => 1,
         'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/FeatureFlag.gif'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'description,flag,enabled',
-    ),
-    'columns' => array(
-        'description' => array(
+    ],
+    'columns' => [
+        'description' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/'
                 . 'locallang_db.xml:tx_featureflag_domain_model_featureflag.description',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim,required'
-            ),
-        ),
-        'flag' => array(
+            ],
+        ],
+        'flag' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_featureflag.flag',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'alphanum_x,trim,required,unique'
-            ),
-        ),
-        'enabled' => array(
+            ],
+        ],
+        'enabled' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_featureflag.enabled',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-            ),
-        ),
-    ),
-    'types' => array(
-        '1' => array('showitem' => 'description,flag,enabled'),
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => ''),
-    )
-);
+            ],
+        ],
+    ],
+    'types' => [
+        '1' => ['showitem' => 'description,flag,enabled'],
+    ],
+    'palettes' => [
+        '1' => ['showitem' => ''],
+    ]
+];

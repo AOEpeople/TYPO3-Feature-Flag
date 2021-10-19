@@ -286,7 +286,7 @@ class TCATest extends FunctionalTestCase
         $mapping2 = $this->createMock(Mapping::class);
         $mapping3 = $this->createMock('stdClass');
 
-        return array($mapping1, $mapping2, $mapping3);
+        return [$mapping1, $mapping2, $mapping3];
     }
 
     /**

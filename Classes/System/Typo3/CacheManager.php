@@ -51,7 +51,7 @@ class CacheManager
     {
         /** @var DataHandler $tce */
         $tce = $this->objectManager->get(DataHandler::class);
-        $tce->start(array(), array());
+        $tce->start([], []);
         $tce->admin = 1;
         $tce->clear_cacheCmd('all');
     }
