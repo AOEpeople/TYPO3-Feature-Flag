@@ -31,9 +31,6 @@
         "phpmd/phpmd": "*"
     },
     "autoload": {
-        "classmap": [
-            "Classes/"
-        ],
         "psr-4": {
             "Aoe\\FeatureFlag\\": "Classes/"
         }
