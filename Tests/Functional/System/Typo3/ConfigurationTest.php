@@ -38,6 +38,8 @@ class ConfigurationTest extends FunctionalTestCase
      */
     protected function setUp()
     {
+        parent::setUp();
+
         if (!class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
             // TYPO3v8 or lower
             $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'] = serialize(
@@ -54,6 +56,8 @@ class ConfigurationTest extends FunctionalTestCase
      */
     protected function tearDown()
     {
+        parent::tearDown();
+
         if (!class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
             unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
         }
