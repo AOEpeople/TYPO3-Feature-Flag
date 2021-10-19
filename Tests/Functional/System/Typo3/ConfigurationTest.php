@@ -27,6 +27,7 @@ namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
 
 use Aoe\FeatureFlag\System\Typo3\Configuration;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use PHPUnit\Framework\Constraint\IsType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationTest extends FunctionalTestCase
@@ -85,7 +86,7 @@ class ConfigurationTest extends FunctionalTestCase
     public function getTablesShouldReturnAnArray()
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
-        $this->assertIsArray($configuration->getTables());
+        $this->assertThat($configuration->getTables(), new IsType('array'), '');
         $this->assertCount(3, $configuration->getTables());
     }
 }
