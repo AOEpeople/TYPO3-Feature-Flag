@@ -69,10 +69,12 @@ class TcaPostProcessor
                     ]
                 ]
             );
-            $GLOBALS['TCA'][$table]['palettes']['tx_featureflag'] = ['showitem' => 'tx_featureflag_flag,tx_featureflag_behavior'];
             ExtensionManagementUtility::addToAllTCAtypes(
                 $table,
-                '--div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,tx_featureflag_info,--palette--;;tx_featureflag'
+                '
+                    --div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,
+                        tx_featureflag_info, tx_featureflag_flag, tx_featureflag_behavior
+                '
             );
         }
 
