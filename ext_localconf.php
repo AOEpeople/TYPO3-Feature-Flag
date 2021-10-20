@@ -41,3 +41,21 @@ $signalSlotDispatcher->connect(
     \Aoe\FeatureFlag\System\Typo3\TcaPostProcessor::class,
     'postProcessTca'
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1634655513] = [
+    'nodeName' => 'selectFeatureFlag',
+    'priority' => '70',
+    'class' => \Aoe\FeatureFlag\Form\Element\FeatureFlagFormSelectElement::class,
+];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1634655539] = [
+    'nodeName' => 'selectFeatureFlagBehaviour',
+    'priority' => '70',
+    'class' => \Aoe\FeatureFlag\Form\Element\FeatureFlagBehaviourFormSelectElement::class,
+];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1634736513] = [
+    'nodeName' => 'infoText',
+    'priority' => '70',
+    'class' => \Aoe\FeatureFlag\Form\Element\InfoTextElement::class,
+];
