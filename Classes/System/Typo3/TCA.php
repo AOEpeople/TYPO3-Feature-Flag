@@ -30,7 +30,6 @@ use Aoe\FeatureFlag\Domain\Model\Mapping;
 use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
 use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
 use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
-use Aoe\FeatureFlag\Service\FeatureFlagService;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,81 +63,6 @@ class TCA
      * @var QueryResultInterface
      */
     protected static $hashedMappings;
-
-
-    /**
-     * @param array $PA
-     * @return string
-     */
-    public function renderSelectForFlag(array $PA)
-    {
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
-
-        $html = '';
-        $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
-        $html .= '<option value="0"></option>';
-        foreach ($this->getFeatureFlagRepository()->findAll() as $featureFlag) {
-            /** @var FeatureFlag $featureFlag */
-            $selected = '';
-            if ($activeMapping instanceof Mapping &&
-                $activeMapping->getFeatureFlag()->getUid() === $featureFlag->getUid()
-            ) {
-                $selected = ' selected="selected"';
-            }
-            $value = $featureFlag->getUid();
-            $label = $featureFlag->getDescription();
-            $html .= '<option value="' . $value . '"' . $selected . '>' . $label . '</option>';
-        }
-        $html .= '</select>';
-
-        return $html;
-    }
-
-    /**
-     * @param array $PA
-     * @return string
-     */
-    public function renderInfo(array $PA)
-    {
-        $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text';
-        return $this->getLanguageService()->sL($langField);
-    }
-
-    /**
-     * @param array $PA
-     * @return string
-     */
-    public function renderSelectForBehavior(array $PA)
-    {
-        // check, which behavior is selected
-        $isBehaviorHideSelected = false;
-        $isBehaviorShowSelected = false;
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
-        if ($activeMapping instanceof Mapping) {
-            if ($activeMapping->getBehavior() === FeatureFlagService::BEHAVIOR_HIDE) {
-                $isBehaviorHideSelected = true;
-            } elseif ($activeMapping->getBehavior() === FeatureFlagService::BEHAVIOR_SHOW) {
-                $isBehaviorShowSelected = true;
-            }
-        }
-
-        // build select-box
-        $html = '';
-        $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
-        $html .= '<option value="' . FeatureFlagService::BEHAVIOR_HIDE . '"' . ($isBehaviorHideSelected ? ' selected="selected"' : '') .
-            '>';
-        $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide';
-        $html .= $this->getLanguageService()->sL($langField);
-        $html .= '</option>';
-        $html .= '<option value="' . FeatureFlagService::BEHAVIOR_SHOW . '"' . ($isBehaviorShowSelected ? ' selected="selected"' : '') .
-            '>';
-        $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show';
-        $html .= $this->getLanguageService()->sL($langField);
-        $html .= '</option>';
-        $html .= '</select>';
-
-        return $html;
-    }
 
     /**
      * Hook for updates in Typo3 backend
