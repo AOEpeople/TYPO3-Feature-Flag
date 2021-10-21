@@ -132,11 +132,11 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
 
         $optionElements = [];
         foreach ($options as $option) {
-            $attributes = [];
+            $optionAttributes = [];
             if ($option['isSelected']) {
-                $attributes['selected'] = 'selected';
+                $optionAttributes['selected'] = 'selected';
             }
-            $optionElements[] = $this->renderOptionElement($option['value'], $option['name'], $attributes);
+            $optionElements[] = $this->renderOptionElement($option['value'], $option['name'], $optionAttributes);
         }
 
         $html = [];
