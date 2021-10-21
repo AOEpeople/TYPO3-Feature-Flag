@@ -34,12 +34,6 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class MappingRepository extends Repository
 {
-    public function __construct()
-    {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        parent::__construct($objectManager);
-    }
-
     /**
      * @return void
      */
