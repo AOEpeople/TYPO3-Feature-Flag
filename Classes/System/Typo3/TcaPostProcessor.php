@@ -57,6 +57,7 @@ class TcaPostProcessor
                         'config' => [
                             'type' => 'user',
                             'renderType' => 'selectFeatureFlag',
+                            'size' => 1,
                         ]
                     ],
                     'tx_featureflag_behavior' => [
@@ -65,6 +66,7 @@ class TcaPostProcessor
                         'config' => [
                             'type' => 'user',
                             'renderType' => 'selectFeatureFlagBehaviour',
+                            'size' => 1,
                         ]
                     ]
                 ]
