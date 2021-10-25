@@ -50,8 +50,7 @@ class EidProcessorService
     public function __construct(
         FeatureFlagService $service,
         CacheManager $cacheManager
-    )
-    {
+    ) {
         $this->featureFlagService = $service;
         $this->cacheManager = $cacheManager;
     }
@@ -84,7 +83,6 @@ class EidProcessorService
                 break;
             default:
                 throw new ActionNotFoundException('Action not found', 1515750886);
-                break;
         }
 
         echo json_encode(['status' => 200, 'response' => $response]);
