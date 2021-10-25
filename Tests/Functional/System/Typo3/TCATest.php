@@ -89,61 +89,6 @@ class TCATest extends FunctionalTestCase
     /**
      * @test
      */
-    public function selectRendersCorrectly()
-    {
-        $featureFlag = $this
-            ->getMockBuilder(FeatureFlag::class)
-            ->setMethods(['getUid'])
-            ->getMock();
-        $featureFlag->expects($this->any())->method('getUid')->willReturn(4711);
-        $mapping = $this
-            ->getMockBuilder(Mapping::class)
-            ->setMethods(['getFeatureFlag'])
-            ->getMock();
-        $mapping->expects($this->any())->method('getFeatureFlag')->willReturn($featureFlag);
-        $mappingRepository = $this
-            ->getMockBuilder(MappingRepository::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['findOneByForeignTableNameAndUid'])
-            ->getMock();
-        $mappingRepository
-            ->expects($this->once())
-            ->method('findOneByForeignTableNameAndUid')
-            ->willReturn($mapping);
-        $featureFlagRepository = $this
-            ->getMockBuilder(FeatureFlagRepository::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['findAll'])
-            ->getMock();
-        $featureFlagRepository
-            ->expects($this->once())
-            ->method('findAll')
-            ->willReturn($this->getListOfFeatureFlags());
-        $this->tca->expects($this->once())
-            ->method('getMappingRepository')
-            ->willReturn($mappingRepository);
-        $this->tca->expects($this->once())
-            ->method('getFeatureFlagRepository')
-            ->willReturn($featureFlagRepository);
-
-        $PA = [];
-        $PA['row'] = [];
-        $PA['row']['uid'] = 111;
-        $PA['table'] = 'pages';
-        $PA['itemFormElID'] = 'itemFormElID';
-        $PA['itemFormElName'] = 'itemFormElName';
-
-        $content = $this->tca->renderSelectForFlag($PA);
-
-        $this->assertContains('<option value="0"></option>', $content);
-        $this->assertContains('<option value="111">flag 1</option>', $content);
-        $this->assertContains('<option value="4711" selected="selected">flag 2</option>', $content);
-        $this->assertContains('<option value="222">flag 3</option>', $content);
-    }
-
-    /**
-     * @test
-     */
     public function processDatamapDoNothingIfNothingSelected()
     {
         $mappingRepository = $this
