@@ -25,7 +25,6 @@ namespace Aoe\FeatureFlag\Tests\Unit\Form\Element;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Domain\Model\Mapping;
 use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
 use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
