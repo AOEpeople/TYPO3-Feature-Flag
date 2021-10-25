@@ -40,7 +40,7 @@ class MappingTest extends BaseTest
      * (non-PHPdoc)
      * @see TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mapping = new Mapping();
     }

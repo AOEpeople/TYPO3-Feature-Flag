@@ -39,7 +39,7 @@ class FeatureFlagTest extends BaseTest
      * (non-PHPdoc)
      * @see TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->featureFlag = new FeatureFlag();
     }

@@ -110,8 +110,8 @@ class FeatureFlagBehaviourFormSelectElementTest extends BaseTest
         );
 
         $resultArray = $subject->render();
-        self::assertContains('<option value="0">hide</option>', $resultArray['html']);
-        self::assertContains(
+        self::assertStringContainsString('<option value="0">hide</option>', $resultArray['html']);
+        self::assertStringContainsString(
             '<option selected="selected" value="1">show</option>',
             $resultArray['html']
         );

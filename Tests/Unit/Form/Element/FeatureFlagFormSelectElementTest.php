@@ -123,9 +123,9 @@ class FeatureFlagFormSelectElementTest extends BaseTest
         );
 
         $resultArray = $subject->render();
-        self::assertContains('<option value="0"></option>', $resultArray['html']);
-        self::assertContains('<option value="1000">Special Feature Flag 1</option>', $resultArray['html']);
-        self::assertContains(
+        self::assertStringContainsString('<option value="0"></option>', $resultArray['html']);
+        self::assertStringContainsString('<option value="1000">Special Feature Flag 1</option>', $resultArray['html']);
+        self::assertStringContainsString(
             '<option selected="selected" value="2000">Special Feature Flag 2</option>',
             $resultArray['html']
         );
