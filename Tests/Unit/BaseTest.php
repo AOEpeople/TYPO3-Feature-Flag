@@ -41,19 +41,4 @@ abstract class BaseTest extends UnitTestCase
      * @var boolean
      */
     protected $backupGlobals = false;
-
-    /**
-     * (non-PHPdoc)
-     * @see TestCase::tearDown()
-     */
-    protected function tearDown()
-    {
-        /**
-         * Don't call parent method, otherwise other unittests will fail
-         *
-         * Why can other unittests fail, if we call parent method?
-         * If we call parent method, than a strange PHP-fatal-error in Test-Class Tx_FeatureFlag_Tests_Unit_System_Db_SqlFactoryTest occurs!
-         * The PHP-fatal-error occurs, because than $GLOBALS['TYPO3_DB'] is NULL!
-         */
-    }
 }
