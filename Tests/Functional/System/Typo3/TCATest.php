@@ -103,6 +103,7 @@ class TCATest extends FunctionalTestCase
         $mapping->expects($this->any())->method('getFeatureFlag')->willReturn($featureFlag);
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
+            ->disableOriginalConstructor()
             ->setMethods(['findOneByForeignTableNameAndUid'])
             ->getMock();
         $mappingRepository
@@ -147,6 +148,7 @@ class TCATest extends FunctionalTestCase
     {
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
+            ->disableOriginalConstructor()
             ->setMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
             ->getMock();
         $mappingRepository
@@ -174,6 +176,7 @@ class TCATest extends FunctionalTestCase
     {
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
+            ->disableOriginalConstructor()
             ->setMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
             ->getMock();
         $mappingRepository
@@ -199,6 +202,7 @@ class TCATest extends FunctionalTestCase
         $mapping = $this->createMock(Mapping::class);
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
+            ->disableOriginalConstructor()
             ->setMethods(['findOneByForeignTableNameAndUid', 'remove', 'update'])
             ->getMock();
         $mappingRepository
@@ -230,6 +234,7 @@ class TCATest extends FunctionalTestCase
 
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
+            ->disableOriginalConstructor()
             ->setMethods(['findOneByForeignTableNameAndUid', 'add'])
             ->getMock();
         $mappingRepository
@@ -264,7 +269,9 @@ class TCATest extends FunctionalTestCase
      */
     public function processCmdmappostIsDelete()
     {
-        $mappingRepository = $this->getMockBuilder(MappingRepository::class)
+        $mappingRepository = $this
+            ->getMockBuilder(MappingRepository::class)
+            ->disableOriginalConstructor()
             ->setMethods(['findAllByForeignTableNameAndUid', 'remove'])
             ->getMock();
         $mappingRepository
