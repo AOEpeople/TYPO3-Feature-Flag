@@ -78,9 +78,9 @@ class TCATest extends FunctionalTestCase
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
+     * @see TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->tca);
         parent::tearDown();

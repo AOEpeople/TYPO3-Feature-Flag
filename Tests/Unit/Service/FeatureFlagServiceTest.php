@@ -106,9 +106,10 @@ class FeatureFlagServiceTest extends BaseTest
      * (non-PHPdoc)
      * @see TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->service);
+        parent::tearDown();
     }
 
     /**

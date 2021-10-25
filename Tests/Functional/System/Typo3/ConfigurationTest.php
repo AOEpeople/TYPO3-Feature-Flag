@@ -59,13 +59,13 @@ class ConfigurationTest extends FunctionalTestCase
      * (non-PHPdoc)
      * @see TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
-        parent::tearDown();
-
         if (!class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
             unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
         }
+
+        parent::tearDown();
     }
 
     /**
