@@ -55,7 +55,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     /**
      * Set up testing framework
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);

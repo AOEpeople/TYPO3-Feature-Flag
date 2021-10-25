@@ -41,7 +41,7 @@ class ConfigurationTest extends FunctionalTestCase
      * (non-PHPdoc)
      * @see TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

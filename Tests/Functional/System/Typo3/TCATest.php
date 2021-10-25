@@ -47,7 +47,7 @@ class TCATest extends FunctionalTestCase
      * (non-PHPdoc)
      * @see TestCase::setUp()
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

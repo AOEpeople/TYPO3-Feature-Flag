@@ -52,14 +52,6 @@ class FeatureFlagDataTest extends FunctionalTestCase
     protected $objectManager;
 
     /**
-     * Set up testing framework
-     */
-    public function setUp()
-    {
-        parent::setUp();;
-    }
-
-    /**
      * @test
      */
     public function shouldGetContentElements()
