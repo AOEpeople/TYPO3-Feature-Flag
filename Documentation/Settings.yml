@@ -4,10 +4,10 @@
 
 ---
 conf.py:
-  copyright: 2016
+  copyright: 2015-2021
   project: Feature Flag
-  version: 0.0.1
-  release: 0.0.1
+  version: 9.0.0
+  release: 9.0.*
   latex_documents:
   - - Index
     - manual
