@@ -57,6 +57,12 @@
         "test:functional": [
             "[ -e .Build/bin/phpunit ] || composer update",
             "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c Tests/FunctionalTests.xml Tests/Functional"
+        ],
+        "extension-release": [
+            "rm -rf .Build",
+            "rm -rf Tests/",
+            "rm .gitignore",
+            "rm .scrutinizer.yml"
         ]
     },
     "extra": {
