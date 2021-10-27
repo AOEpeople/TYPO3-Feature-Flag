@@ -77,13 +77,4 @@ abstract class AbstractCommand extends Command
         }
         $this->featureFlagService->flagEntries();
     }
-
-    /**
-     * @throws RuntimeException
-     * @throws \Throwable
-     */
-    protected function flagEntries()
-    {
-        $this->featureFlagService->flagEntries();
-    }
 }

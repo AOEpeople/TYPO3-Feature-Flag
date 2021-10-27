@@ -38,6 +38,6 @@ class ToggleRecordsCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->flagEntries();
+        $this->featureFlagService->flagEntries();
     }
 }
