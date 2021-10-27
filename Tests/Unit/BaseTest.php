@@ -1,8 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Tests\Unit;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2014 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -23,11 +25,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage Tests
- */
-abstract class Tx_FeatureFlag_Tests_Unit_BaseTest extends \Nimut\TestingFramework\TestCase\UnitTestCase
+use Nimut\TestingFramework\TestCase\UnitTestCase;
+
+abstract class BaseTest extends UnitTestCase
 {
     /**
      * Whether global variables should be backed up
@@ -41,19 +41,4 @@ abstract class Tx_FeatureFlag_Tests_Unit_BaseTest extends \Nimut\TestingFramewor
      * @var boolean
      */
     protected $backupGlobals = false;
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
-    protected function tearDown()
-    {
-        /**
-         * Don't call parent method, otherwise other unittests will fail
-         *
-         * Why can other unittests fail, if we call parent method?
-         * If we call parent method, than a strange PHP-fatal-error in Test-Class Tx_FeatureFlag_Tests_Unit_System_Db_SqlFactoryTest occurs!
-         * The PHP-fatal-error occurs, because than $GLOBALS['TYPO3_DB'] is NULL!
-         */
-    }
 }

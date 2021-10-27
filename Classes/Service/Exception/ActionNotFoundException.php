@@ -1,5 +1,5 @@
 <?php
-namespace Aoe\FeatureFlag\System\Typo3;
+namespace Aoe\FeatureFlag\Service\Exception;
 
 /***************************************************************
  *  Copyright notice
@@ -25,34 +25,8 @@ namespace Aoe\FeatureFlag\System\Typo3;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Exception;
 
-class CacheManager
+class ActionNotFoundException extends Exception
 {
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @param ObjectManager $objectManager
-     */
-    public function __construct(ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * Clear all caches. Therefor it is necessary to login a BE_USER. You have to prevent
-     * this function to run on live systems!!!
-     */
-    public function clearAllCaches()
-    {
-        /** @var DataHandler $tce */
-        $tce = $this->objectManager->get(DataHandler::class);
-        $tce->start([], []);
-        $tce->admin = 1;
-        $tce->clear_cacheCmd('all');
-    }
 }

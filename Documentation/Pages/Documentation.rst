@@ -82,26 +82,20 @@ Activating a feature can be done in two calls:
 The eID script always returns a JSON object. This is usually returnes with a status 200.
 When querying for a flags status, the response is the activation status.
 
-CLI Access
+Console Commands (Cli)
 ~~~~~~~~~~
 
-A user **_cli_feature_flag** must exist for CLI access to work.
-
-Following actions are possible via the cli_dispatcher:
+Following actions are possible via typo3 console:
 
 - **activate**
     Activates a feature.
-    ``./typo3/cli_dispatch.phpsh feature_flag activate test_feature``
+    ``vendor/bin/typo3 featureflag:activate test_feature``
 - **deactivate**
     Deactivates a feature.
-    ``./typo3/cli_dispatch.phpsh feature_flag deactivate test_feature``
-- **flushcaches**
-    Flushes all FE caches.
-    This needs a logged in BE user.
-    ``./typo3/cli_dispatch.phpsh feature_flag flushCaches``
+    ``vendor/bin/typo3 featureflag:deactivate test_feature``
 - **flagentries**
     Updates the visibility of content elements connected to the feature flag.
-    ``./typo3/cli_dispatch.phpsh feature_flag flagEntries``
+    ``vendor/bin/typo3 featureflag:toggleRecords``
 
 Admin User
 ----------
@@ -118,7 +112,7 @@ Activate or deactivate features
 
 1. Edit record
 2. Check or uncheck the 'active' checkbox
-3. Run sheduler task 'feature_flag'
+3. Run scheduler task 'feature_flag'
 4. Clear page cache
 
 Connect feature flags with Google Tag Manager

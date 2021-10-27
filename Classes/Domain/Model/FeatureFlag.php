@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Domain\Model;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,11 +25,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage Domain_Model
- */
-class Tx_FeatureFlag_Domain_Model_FeatureFlag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
+class FeatureFlag extends AbstractEntity
 {
     /**
      * @var string

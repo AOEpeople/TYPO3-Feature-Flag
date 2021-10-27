@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\System\Typo3;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,11 +25,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage System_Typo3
- */
-class Tx_FeatureFlag_System_Typo3_Configuration
+use InvalidArgumentException;
+
+class Configuration
 {
     /**
      * @var string
@@ -38,14 +37,24 @@ class Tx_FeatureFlag_System_Typo3_Configuration
     /**
      * @var array
      */
-    private $configuration = array();
+    private $configuration = [];
 
     /**
      * Initialize configuration array
      */
     public function __construct()
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+        if (class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
+            $conf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                "TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration"
+            )->get('feature_flag');
+        } else {
+            $conf = unserialize(
+                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'],
+                ['allowed_classes' => false]
+            );
+        }
+
         if (is_array($conf)) {
             $this->configuration = $conf;
         }

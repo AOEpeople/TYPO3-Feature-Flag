@@ -4,7 +4,7 @@ namespace Aoe\FeatureFlag\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -25,42 +25,41 @@ namespace Aoe\FeatureFlag\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Service\Exception\ActionNotFoundException;
+use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
+use Aoe\FeatureFlag\System\Typo3\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 
-/**
- * @package FeatureFlag
- */
-class EidProcessor
+class EidProcessorService
 {
     /**
-     * @var \Tx_FeatureFlag_Service
+     * @var FeatureFlagService
      */
     protected $featureFlagService;
 
     /**
-     * @var \Tx_FeatureFlag_System_Typo3_CacheManager
+     * @var CacheManager
      */
     protected $cacheManager;
 
     /**
-     * Tx_FeatureFlag_Service_Eid constructor.
-     * @param \Tx_FeatureFlag_Service $service
-     * @param \Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager
+     * @param FeatureFlagService $service
+     * @param CacheManager $cacheManager
      */
     public function __construct(
-        \Tx_FeatureFlag_Service $service,
-        \Tx_FeatureFlag_System_Typo3_CacheManager $cacheManager
-    )
-    {
+        FeatureFlagService $service,
+        CacheManager $cacheManager
+    ) {
         $this->featureFlagService = $service;
         $this->cacheManager = $cacheManager;
     }
 
     /**
      * Process request
-     * @throws \Tx_FeatureFlag_Service_Exception_ActionNotFound
-     * @throws \Tx_FeatureFlag_Service_Exception_FeatureNotFound
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws ActionNotFoundException
+     * @throws FeatureNotFoundException
+     * @throws IllegalObjectTypeException
      */
     public function processRequest()
     {
@@ -83,8 +82,7 @@ class EidProcessor
                 $response = $this->featureFlagService->isFeatureEnabled($featureName);
                 break;
             default:
-                throw new \Tx_FeatureFlag_Service_Exception_ActionNotFound('Action not found', 1515750886);
-                break;
+                throw new ActionNotFoundException('Action not found', 1515750886);
         }
 
         echo json_encode(['status' => 200, 'response' => $response]);

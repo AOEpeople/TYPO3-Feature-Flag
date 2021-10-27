@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\System\Typo3;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2017 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -26,10 +27,7 @@
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-/**
- * @package FeatureFlag
- */
-class Tx_FeatureFlag_TcaPostProcessor
+class TcaPostProcessor
 {
     /**
      * Add feature-flag-fields to TCA-fields of DB-tables which support feature-flags
@@ -50,7 +48,7 @@ class Tx_FeatureFlag_TcaPostProcessor
                         'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.label',
                         'config' => [
                             'type' => 'user',
-                            'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderInfo',
+                            'renderType' => 'infoText',
                         ]
                     ],
                     'tx_featureflag_flag' => [
@@ -58,7 +56,8 @@ class Tx_FeatureFlag_TcaPostProcessor
                         'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_flag',
                         'config' => [
                             'type' => 'user',
-                            'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelectForFlag',
+                            'renderType' => 'selectFeatureFlag',
+                            'size' => 1,
                         ]
                     ],
                     'tx_featureflag_behavior' => [
@@ -66,15 +65,18 @@ class Tx_FeatureFlag_TcaPostProcessor
                         'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior',
                         'config' => [
                             'type' => 'user',
-                            'userFunc' => 'Tx_FeatureFlag_System_Typo3_TCA->renderSelectForBehavior',
+                            'renderType' => 'selectFeatureFlagBehaviour',
+                            'size' => 1,
                         ]
                     ]
                 ]
             );
-            $GLOBALS['TCA'][$table]['palettes']['tx_featureflag'] = ['showitem' => 'tx_featureflag_flag,tx_featureflag_behavior'];
             ExtensionManagementUtility::addToAllTCAtypes(
                 $table,
-                '--div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,tx_featureflag_info,--palette--;;tx_featureflag'
+                '
+                    --div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,
+                        tx_featureflag_info, tx_featureflag_flag, tx_featureflag_behavior
+                '
             );
         }
 
@@ -87,7 +89,17 @@ class Tx_FeatureFlag_TcaPostProcessor
      */
     private function getTcaTablesWithFeatureFlagSupport()
     {
-        $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
+        if (class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
+            $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                "TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration"
+            )->get('feature_flag');
+        } else {
+            $config = unserialize(
+                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'],
+                ['allowed_classes' => false]
+            );
+        }
+
         if (isset($config['tables'])) {
             return explode(',', $config ['tables']);
         }

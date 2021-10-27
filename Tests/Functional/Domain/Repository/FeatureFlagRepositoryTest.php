@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2020 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,17 +25,17 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
+use Aoe\FeatureFlag\System\Db\FeatureFlagData;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
-/**
- * @package    FeatureFlag
- * @subpackage Tests_Domain_Repository
- */
-class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends FunctionalTestCase
+class FeatureFlagRepositoryTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -42,54 +43,52 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
+     * @var FeatureFlagRepository
      */
     protected $featureFlagRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var ObjectManager
      */
     protected $objectManager;
 
     /**
      * Set up testing framework
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'TYPO3\CMS\Extbase\Object\ObjectManager'
-        );
-        $this->featureFlagRepository = $this->objectManager->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->featureFlagRepository = $this->objectManager->get(FeatureFlagRepository::class);
     }
 
     /**
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::findByFlag()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::findByFlag()
      * @test
      */
     public function shouldGetFeatureFlagByFlagName()
     {
-        $this->importDataSet(dirname(__FILE__) . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
+        $this->importDataSet(__DIR__ . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
         $flag = $this->featureFlagRepository->findByFlag('my_test_feature_flag');
-        $this->assertInstanceOf('Tx_FeatureFlag_Domain_Model_FeatureFlag', $flag);
+        $this->assertInstanceOf(FeatureFlag::class, $flag);
     }
 
     /**
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
      *
      * @test
      */
     public function shouldHideElementForBehaviorHideAndEnabledFeatureFlag()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.xml'
         );
 
-        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
-        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
+        $featureFlag = new FeatureFlagData();
+        $instance = new FeatureFlagRepository($featureFlag);
 
         $instance->updateFeatureFlagStatusForTable('tt_content');
 
@@ -99,21 +98,21 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
      *
      * @test
      */
     public function shouldHideElementForBehaviorShowAndDisabledFeatureFlag()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorShowAndDisabledFeatureFlag.xml'
         );
 
-        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
-        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
+        $featureFlag = new FeatureFlagData();
+        $instance = new FeatureFlagRepository($featureFlag);
 
         $instance->updateFeatureFlagStatusForTable('tt_content');
 
@@ -123,21 +122,21 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
      *
      * @test
      */
     public function shouldShowElementForBehaviorShowAndEnabledFeatureFlag()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
         );
 
-        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
-        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
+        $featureFlag = new FeatureFlagData();
+        $instance = new FeatureFlagRepository($featureFlag);
 
         $instance->updateFeatureFlagStatusForTable('tt_content');
 
@@ -147,21 +146,21 @@ class Tx_FeatureFlag_Tests_Functional_Domain_Repository_FeatureFlagTest extends 
     }
 
     /**
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::hideEntries()
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::showEntries()
-     * @covers Tx_FeatureFlag_Domain_Repository_FeatureFlag::getUpdateEntriesUids()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
+     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
      *
      * @test
      */
     public function shouldShowElementForBehaviorHideAndDisabledFeatureFlag()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
         );
 
-        $featureFlag = new Tx_FeatureFlag_System_Db_FeatureFlagData();
-        $instance = new Tx_FeatureFlag_Domain_Repository_FeatureFlag($featureFlag);
+        $featureFlag = new FeatureFlagData();
+        $instance = new FeatureFlagRepository($featureFlag);
 
         $instance->updateFeatureFlagStatusForTable('tt_content');
         $contentElements = $this->getElementsData('tt_content', 4712);

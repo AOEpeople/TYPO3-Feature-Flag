@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\System\Typo3\Task;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,10 +25,28 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-\TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
+use Aoe\FeatureFlag\Service\FeatureFlagService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
-/** @var \Aoe\FeatureFlag\Service\php $eidProcessor */
-$eidProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
-    ->get(\Aoe\FeatureFlag\Service\php::class);
+class FlagEntriesTask extends AbstractTask
+{
+    /**
+     * @return bool
+     */
+    public function execute()
+    {
+        $this->getFeatureFlagService()->flagEntries();
+        return true;
+    }
 
-$eidProcessor->processRequest();
+    /**
+     * @return FeatureFlagService
+     */
+    protected function getFeatureFlagService()
+    {
+        return GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(FeatureFlagService::class);
+    }
+}

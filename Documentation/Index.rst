@@ -30,7 +30,7 @@ Feature Flag
 		feature, flag
 
 	:Copyright:
-		2015
+		2021
 
 	:Author:
 		AOE GmbH
@@ -39,7 +39,7 @@ Feature Flag
 		dev@aoe.com
 
 	:License:
-		copyright 2015 AOE GmbH
+		copyright 2015 - 2021 AOE GmbH
 
 		All rights reserved
 

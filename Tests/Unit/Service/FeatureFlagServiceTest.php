@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Tests\Unit\Service;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2020 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,40 +25,49 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package    FeatureFlag
- * @subpackage Tests
- */
-class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
+use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
+use Aoe\FeatureFlag\Service\FeatureFlagService;
+use Aoe\FeatureFlag\System\Typo3\Configuration;
+use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+
+class FeatureFlagServiceTest extends BaseTest
 {
     /**
-     * @var Tx_FeatureFlag_Service
+     * @var FeatureFlagService
      */
     private $service;
 
     /**
-     * @param Tx_FeatureFlag_Domain_Repository_FeatureFlag $mockRepository
+     * @param FeatureFlagRepository $mockRepository
      */
-    protected function setService(Tx_FeatureFlag_Domain_Repository_FeatureFlag $mockRepository)
+    protected function setService(FeatureFlagRepository $mockRepository)
     {
-        $mockPersistenceManager =
-            $this->getMockBuilder('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface')->getMock();
-        $this->service = new Tx_FeatureFlag_Service($mockRepository, $mockPersistenceManager,
-            $this->getMockConfiguration());
+        $mockPersistenceManager = $this->getMockBuilder(PersistenceManagerInterface::class)->getMock();
+        $this->service = new FeatureFlagService(
+            $mockRepository,
+            $mockPersistenceManager,
+            $this->getMockConfiguration()
+        );
     }
 
     /**
      * @param $isEnabled
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     private function getMockModel($isEnabled)
     {
-        $mockModel = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')
+        $mockModel = $this->getMockBuilder(FeatureFlag::class)
             ->disableOriginalConstructor()
-            ->setMockClassName('Tx_FeatureFlag_Domain_Model_FeatureFlag_Mock')->setMethods(array(
-                'setEnabled',
-                'isEnabled'
-            ))->getMock();
+            ->setMethods(
+                [
+                    'setEnabled',
+                    'isEnabled'
+                ]
+            )->getMock();
 
         $mockModel->expects($this->any())->method('isEnabled')->willReturn($isEnabled);
 
@@ -70,21 +80,23 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
     private function getMockRepository($isEnabled)
     {
         $mockModel = $this->getMockModel($isEnabled);
-        $mockRepository = $this->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')
+        $mockRepository = $this->getMockBuilder(FeatureFlagRepository::class)
             ->disableOriginalConstructor()
-            ->setMockClassName('Tx_FeatureFlag_Domain_Repository_FeatureFlag_Mock')->getMock();
-        $mockRepository->expects($this->any())->method('findByFlag')->will($this->returnValue($mockModel));
+            ->getMock();
+        $mockRepository->expects($this->any())->method('findByFlag')->willReturn($mockModel);
 
         return $mockRepository;
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     private function getMockConfiguration()
     {
-        $mockConfiguration =
-            $this->getMockBuilder('Tx_FeatureFlag_System_Typo3_Configuration')->setMethods(['getTables'])->getMock();
+        $mockConfiguration = $this->getMockBuilder(Configuration::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getTables'])
+            ->getMock();
         $mockConfiguration->expects($this->any())->method('getTables')->willReturn('pages');
 
         return $mockConfiguration;
@@ -92,11 +104,12 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
+     * @see TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->service);
+        parent::tearDown();
     }
 
     /**
@@ -130,12 +143,12 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
     {
         $GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'] = 'mockedTca';
 
-        $mockRepository = $this->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')
+        $mockRepository = $this->getMockBuilder(FeatureFlagRepository::class)
             ->disableOriginalConstructor()
             ->setMethods(['findByFlag'])->getMock();
-        $mockRepository->expects($this->once())->method('findByFlag')->will($this->returnValue(null));
+        $mockRepository->expects($this->once())->method('findByFlag')->willReturn(null);
         $this->setService($mockRepository);
-        $this->expectException('Tx_FeatureFlag_Service_Exception_FeatureNotFound');
+        $this->expectException(FeatureNotFoundException::class);
         $this->service->isFeatureEnabled('my_cool_feature');
     }
 
@@ -146,7 +159,7 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
     {
         $GLOBALS['TCA'] = null;
 
-        $mockRepository = $this->getMockBuilder('Tx_FeatureFlag_Domain_Repository_FeatureFlag')
+        $mockRepository = $this->getMockBuilder(FeatureFlagRepository::class)
             ->disableOriginalConstructor()
             ->setMethods(['findByFlag'])->getMock();
         $mockRepository->expects($this->never())->method('findByFlag');
@@ -166,16 +179,16 @@ class Tx_FeatureFlag_Tests_Unit_ServiceTest extends Tx_FeatureFlag_Tests_Unit_Ba
         $mockRepository->expects($this->once())->method('update')->with($mockModel);
 
         $mockPersistenceManager =
-            $this->getMockBuilder('\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface')->getMock();
+            $this->getMockBuilder(PersistenceManagerInterface::class)->getMock();
 
         $mockPersistenceManager->expects($this->once())->method('persistAll');
 
-        $serviceMock = $this->getMockBuilder('Tx_FeatureFlag_Service')->setConstructorArgs(array(
+        $serviceMock = $this->getMockBuilder(FeatureFlagService::class)->setConstructorArgs([
             $mockRepository,
             $mockPersistenceManager,
             $this->getMockConfiguration()
-        ))->setMethods(array('getFeatureFlag'))->getMock();
-        $serviceMock->expects($this->any())->method('getFeatureFlag')->will($this->returnValue($mockModel));
+        ])->setMethods(['getFeatureFlag'])->getMock();
+        $serviceMock->expects($this->any())->method('getFeatureFlag')->willReturn($mockModel);
 
         $serviceMock->expects($this->once())->method('getFeatureFlag')->with('mockFlag');
         $serviceMock->expects($this->once())->method('getFeatureFlag')->with('mockFlag');

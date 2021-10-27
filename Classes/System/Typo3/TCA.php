@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\System\Typo3;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,11 +25,19 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage System_Typo3
- */
-class Tx_FeatureFlag_System_Typo3_TCA
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Domain\Model\Mapping;
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
+use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
+use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+
+class TCA
 {
     /**
      * @var string
@@ -41,117 +50,40 @@ class Tx_FeatureFlag_System_Typo3_TCA
     const FIELD_FLAG = 'tx_featureflag_flag';
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
-     */
-    protected $featureFlagRepository;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var ObjectManager
      */
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     * @var PersistenceManager
      */
     protected $persistenceManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @var QueryResultInterface
      */
     protected static $hashedMappings;
-
-
-    /**
-     * @param array $PA
-     * @return string
-     */
-    public function renderSelectForFlag(array $PA)
-    {
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
-
-        $html = '';
-        $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
-        $html .= '<option value="0"></option>';
-        foreach ($this->getFeatureFlagRepository()->findAll() as $featureFlag) {
-            /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
-            $selected = '';
-            if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping &&
-                $activeMapping->getFeatureFlag()->getUid() === $featureFlag->getUid()
-            ) {
-                $selected = ' selected="selected"';
-            }
-            $value = $featureFlag->getUid();
-            $label = $featureFlag->getDescription();
-            $html .= '<option value="' . $value . '"' . $selected . '>' . $label . '</option>';
-        }
-        $html .= '</select>';
-
-        return $html;
-    }
-
-    /**
-     * @param array $PA
-     * @return string
-     */
-    public function renderInfo(array $PA)
-    {
-        $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text';
-        return $this->getLanguageService()->sL($langField);
-    }
-
-    /**
-     * @param array $PA
-     * @return string
-     */
-    public function renderSelectForBehavior(array $PA)
-    {
-        // check, which behavior is selected
-        $isBehaviorHideSelected = false;
-        $isBehaviorShowSelected = false;
-        $activeMapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($PA['row']['uid'], $PA['table']);
-        if ($activeMapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
-            if ($activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_HIDE) {
-                $isBehaviorHideSelected = true;
-            } elseif ($activeMapping->getBehavior() === Tx_FeatureFlag_Service::BEHAVIOR_SHOW) {
-                $isBehaviorShowSelected = true;
-            }
-        }
-
-        // build select-box
-        $html = '';
-        $html .= '<select class="select" id="' . $PA['itemFormElID'] . '" name="' . $PA['itemFormElName'] . '">';
-        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_HIDE . '"' . ($isBehaviorHideSelected ? ' selected="selected"' : '') .
-            '>';
-        $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide';
-        $html .= $this->getLanguageService()->sL($langField);
-        $html .= '</option>';
-        $html .= '<option value="' . Tx_FeatureFlag_Service::BEHAVIOR_SHOW . '"' . ($isBehaviorShowSelected ? ' selected="selected"' : '') .
-            '>';
-        $langField = 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show';
-        $html .= $this->getLanguageService()->sL($langField);
-        $html .= '</option>';
-        $html .= '</select>';
-
-        return $html;
-    }
 
     /**
      * Hook for updates in Typo3 backend
      * @param array $incomingFieldArray
      * @param string $table
      * @param integer $id
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
+     * @param DataHandler $dataHandler
      * @codingStandardsIgnoreStart
      */
     public function processDatamap_preProcessFieldArray(
         &$incomingFieldArray,
         $table,
         $id,
-        \TYPO3\CMS\Core\DataHandling\DataHandler &$tceMain
+        DataHandler $dataHandler
     ) {
         // @codingStandardsIgnoreEnd
-        if (array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) && array_key_exists(self::FIELD_FLAG, $incomingFieldArray)) {
-            $pid = $tceMain->getPID($table, $id);
+        if (
+            array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) &&
+            array_key_exists(self::FIELD_FLAG, $incomingFieldArray)
+        ) {
+            $pid = $dataHandler->getPID($table, $id);
             $this->updateMapping($table, $id, $incomingFieldArray[self::FIELD_FLAG], $pid, $incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_FLAG]);
@@ -172,11 +104,11 @@ class Tx_FeatureFlag_System_Typo3_TCA
             return;
         }
         $mappings = $this->getMappingRepository()->findAllByForeignTableNameAndUid($id, $table);
-        if (false === is_array($mappings) && false === ($mappings instanceof \TYPO3\CMS\Extbase\Persistence\QueryResultInterface)) {
+        if (false === is_array($mappings) && false === ($mappings instanceof QueryResultInterface)) {
             return;
         }
         foreach ($mappings as $mapping) {
-            if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+            if ($mapping instanceof Mapping) {
                 $this->getMappingRepository()->remove($mapping);
             }
         }
@@ -194,7 +126,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
     {
         if ($this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
             $mapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($row['uid'], $table);
-            if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+            if ($mapping instanceof Mapping) {
                 if ($row['hidden'] === '1') {
                     return 'record-has-feature-flag-which-is-hidden';
                 }
@@ -220,7 +152,7 @@ class Tx_FeatureFlag_System_Typo3_TCA
     protected function updateMapping($table, $id, $featureFlag, $pid, $behavior)
     {
         $mapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($id, $table);
-        if ($mapping instanceof Tx_FeatureFlag_Domain_Model_Mapping) {
+        if ($mapping instanceof Mapping) {
             if ('0' === $featureFlag) {
                 $this->getMappingRepository()->remove($mapping);
             } else {
@@ -230,8 +162,8 @@ class Tx_FeatureFlag_System_Typo3_TCA
             $mapping->setTstamp(time());
             $this->getMappingRepository()->update($mapping);
         } elseif ('0' !== $featureFlag) {
-            /** @var Tx_FeatureFlag_Domain_Model_Mapping $mapping */
-            $mapping = $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Model_Mapping');
+            /** @var Mapping $mapping */
+            $mapping = $this->getObjectManager()->get(Mapping::class);
             $mapping->setPid($pid);
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             $mapping->setForeignTableName($table);
@@ -264,62 +196,65 @@ class Tx_FeatureFlag_System_Typo3_TCA
 
     /**
      * @param int $uid
-     * @return Tx_FeatureFlag_Domain_Model_FeatureFlag
-     * @throws Tx_FeatureFlag_Service_Exception_FeatureNotFound
+     * @return FeatureFlag
+     * @throws FeatureNotFoundException
      */
     protected function getFeatureFlagByUid($uid)
     {
-        /** @var Tx_FeatureFlag_Domain_Model_FeatureFlag $featureFlag */
+        /** @var FeatureFlag $featureFlag */
         $featureFlag = $this->getFeatureFlagRepository()->findByUid($uid);
-        if (false === ($featureFlag instanceof Tx_FeatureFlag_Domain_Model_FeatureFlag)) {
-            throw new Tx_FeatureFlag_Service_Exception_FeatureNotFound('Feature Flag not found by uid: "' . $uid . '"', 1384340431);
+        if (false === ($featureFlag instanceof FeatureFlag)) {
+            throw new FeatureNotFoundException(
+                'Feature Flag not found by uid: "' . $uid . '"',
+                1384340431
+            );
         }
 
         return $featureFlag;
     }
 
     /**
-     * @return Tx_FeatureFlag_Domain_Repository_Mapping
+     * @return MappingRepository
      */
     protected function getMappingRepository()
     {
-        return $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Repository_Mapping');
+        return $this->getObjectManager()->get(MappingRepository::class);
     }
 
     /**
-     * @return Tx_FeatureFlag_Domain_Repository_FeatureFlag
+     * @return FeatureFlagRepository
      */
     protected function getFeatureFlagRepository()
     {
-        return $this->getObjectManager()->get('Tx_FeatureFlag_Domain_Repository_FeatureFlag');
+        return $this->getObjectManager()->get(FeatureFlagRepository::class);
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @return ObjectManager
      */
     protected function getObjectManager()
     {
-        if (false === ($this->objectManager instanceof \TYPO3\CMS\Extbase\Object\ObjectManager)) {
-            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        if (false === ($this->objectManager instanceof ObjectManager)) {
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
 
         return $this->objectManager;
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     * @return PersistenceManager
      */
     protected function getPersistenceManager()
     {
-        if (false === $this->persistenceManager instanceof \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager) {
-            $this->persistenceManager = $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+        if (false === $this->persistenceManager instanceof PersistenceManager) {
+            $this->persistenceManager = $this->getObjectManager()->get(PersistenceManager::class);
         }
 
         return $this->persistenceManager;
     }
 
     /**
-     * @return TYPO3\CMS\Lang\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService()
     {

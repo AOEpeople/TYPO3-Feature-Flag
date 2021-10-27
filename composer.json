@@ -19,7 +19,7 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "typo3/cms-core": "^8.7 || ^9.5 || ^10.4",
+        "typo3/cms-core": "^9.5 || ^10.4",
         "typo3/cms-extbase": "*",
         "typo3/cms-scheduler": "*"
     },
@@ -31,17 +31,15 @@
         "phpmd/phpmd": "*"
     },
     "autoload": {
-        "classmap": [
-            "Classes/"
-        ],
         "psr-4": {
             "Aoe\\FeatureFlag\\": "Classes/"
         }
     },
     "autoload-dev": {
-        "classmap": [
-            "Tests"
-        ]
+        "psr-4": {
+            "Aoe\\FeatureFlag\\Tests\\": "Tests",
+            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
+        }
     },
     "config": {
         "vendor-dir": ".Build/vendor",
@@ -54,11 +52,11 @@
         ],
         "test:unit": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit"
+            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c Tests/UnitTests.xml Tests/Unit"
         ],
         "test:functional": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional"
+            "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c Tests/FunctionalTests.xml Tests/Functional"
         ]
     },
     "extra": {
@@ -67,7 +65,8 @@
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
-            "web-dir": ".Build/Web"
+            "web-dir": ".Build/Web",
+            "extension-key": "feature_flag"
         }
     },
     "keywords": [

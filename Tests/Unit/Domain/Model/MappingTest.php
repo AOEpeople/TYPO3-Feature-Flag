@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Tests\Unit\Domain\Model;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,33 +25,34 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage Tests_Domain_Model
- */
-class Tx_FeatureFlag_Tests_Unit_Domain_Model_MappingTest extends Tx_FeatureFlag_Tests_Unit_BaseTest
+use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
+use Aoe\FeatureFlag\Domain\Model\Mapping;
+use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+
+class MappingTest extends BaseTest
 {
     /**
-     * @var Tx_FeatureFlag_Domain_Model_Mapping
+     * @var Mapping
      */
     private $mapping;
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
+     * @see TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->mapping = new Tx_FeatureFlag_Domain_Model_Mapping();
+        $this->mapping = new Mapping();
     }
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
+     * @see TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->mapping = null;
+        parent::tearDown();
     }
 
     /**
@@ -76,7 +78,7 @@ class Tx_FeatureFlag_Tests_Unit_Domain_Model_MappingTest extends Tx_FeatureFlag_
      */
     public function featureFlag()
     {
-        $featureFlag = $this->getMockBuilder('Tx_FeatureFlag_Domain_Model_FeatureFlag')->setMethods(['getFlag'])->getMock();
+        $featureFlag = $this->getMockBuilder(FeatureFlag::class)->setMethods(['getFlag'])->getMock();
         $featureFlag->method('getFlag')->willReturn('my_awesome_feature_flag');
         $this->mapping->setFeatureFlag($featureFlag);
         $this->assertEquals($this->mapping->getFeatureFlag()->getFlag(), 'my_awesome_feature_flag');

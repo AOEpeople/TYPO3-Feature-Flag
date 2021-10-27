@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Command;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,10 +25,29 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage Service_Exception
- */
-class Tx_FeatureFlag_Service_Exception_FeatureNotFound extends Exception
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class DeactivateFeatureFlagCommand extends AbstractCommand
 {
+    public function __construct(?string $name = null)
+    {
+        parent::__construct($name);
+        $this->setDescription('Deactivates a feature.');
+    }
+
+    protected function configure()
+    {
+        $this->addArgument(
+            'features',
+            InputArgument::REQUIRED,
+            'comma seperated list of features to deactive'
+        );
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->setFeatureStatus($input->getArgument('features'), false);
+    }
 }

@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Tests\Functional\System\Db;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2020 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,17 +25,16 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
+use Aoe\FeatureFlag\System\Db\FeatureFlagData;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
-/**
- * @package    FeatureFlag
- * @subpackage Tests_Domain_Repository
- */
-class Tx_FeatureFlag_System_Db_FeatureFlagDataTest extends FunctionalTestCase
+class FeatureFlagDataTest extends FunctionalTestCase
 {
     /**
      * @var array
@@ -42,22 +42,14 @@ class Tx_FeatureFlag_System_Db_FeatureFlagDataTest extends FunctionalTestCase
     protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
-     * @var Tx_FeatureFlag_Domain_Repository_FeatureFlag
+     * @var FeatureFlagRepository
      */
     protected $featureFlagRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var ObjectManager
      */
     protected $objectManager;
-
-    /**
-     * Set up testing framework
-     */
-    public function setUp()
-    {
-        parent::setUp();;
-    }
 
     /**
      * @test
@@ -65,11 +57,11 @@ class Tx_FeatureFlag_System_Db_FeatureFlagDataTest extends FunctionalTestCase
     public function shouldGetContentElements()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagDataTest.xml'
         );
 
-        $instance = new Tx_FeatureFlag_System_Db_FeatureFlagData();
+        $instance = new FeatureFlagData();
 
         $instance->getContentElements('tt_content', 0, 1);
         $contentElements = $this->getElementsData('tt_content', 4712);
@@ -83,11 +75,11 @@ class Tx_FeatureFlag_System_Db_FeatureFlagDataTest extends FunctionalTestCase
     public function updateContentElements()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagDataTest.xml'
         );
 
-        $instance = new Tx_FeatureFlag_System_Db_FeatureFlagData();
+        $instance = new FeatureFlagData();
 
         $instance->updateContentElements('tt_content', [4712], 1);
         $contentElements = $this->getElementsData('tt_content', 4712);
@@ -101,11 +93,11 @@ class Tx_FeatureFlag_System_Db_FeatureFlagDataTest extends FunctionalTestCase
     public function getContentElementsPIDs()
     {
         $this->importDataSet(
-            dirname(__FILE__) .
+            __DIR__ .
             '/fixtures/FeatureFlagDataTest.xml'
         );
 
-        $instance = new Tx_FeatureFlag_System_Db_FeatureFlagData();
+        $instance = new FeatureFlagData();
         $returnedPID = $instance->getContentElementsPIDs('tx_featureflag_domain_model_featureflag', 4711);
 
         $this->assertEquals(1001, $returnedPID);

@@ -1,9 +1,10 @@
 <?php
+namespace Aoe\FeatureFlag\Service\Exception;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 AOE GmbH <dev@aoe.com>
+ *  (c) 2021 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -24,10 +25,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package FeatureFlag
- * @subpackage Service_Exception
- */
-class Tx_FeatureFlag_Service_Exception_ActionNotFound extends Exception
+use Exception;
+
+class FeatureNotFoundException extends Exception
 {
 }
