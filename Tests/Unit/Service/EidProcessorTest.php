@@ -78,7 +78,7 @@ class EidProcessorTest extends UnitTestCase
         $_GET = ['action' => $action, 'feature' => $feature];
 
         $serviceMock = $this->getServiceMock();
-        $serviceMock->expects($this->once())
+        $serviceMock->expects(self::once())
             ->method('updateFeatureFlag')
             ->with($this->equalTo($feature), $this->equalTo($expected));
 

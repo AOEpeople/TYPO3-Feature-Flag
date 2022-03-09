@@ -26,9 +26,12 @@ namespace Aoe\FeatureFlag\Tests\Unit;
  ***************************************************************/
 
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 abstract class BaseTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * Whether global variables should be backed up
      *

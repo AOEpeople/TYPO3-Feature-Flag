@@ -54,7 +54,7 @@ class FlagEntriesTest extends BaseTest
             ->disableOriginalConstructor()
             ->setMethods(['getTables'])
             ->getMock();
-        $mockConfiguration->expects($this->once())->method('getTables')->willReturn(
+        $mockConfiguration->expects(self::once())->method('getTables')->willReturn(
             [
                 'table_one',
                 'table_two'
@@ -76,7 +76,7 @@ class FlagEntriesTest extends BaseTest
                 ]
             )->setMethods(['getFeatureFlagService'])->getMock();
 
-        $flagEntries->expects($this->any())->method('getFeatureFlagService')->willReturn($serviceMock);
+        $flagEntries->expects(self::any())->method('getFeatureFlagService')->willReturn($serviceMock);
 
         /** @var FlagEntriesTask $flagEntries */
         $this->assertTrue($flagEntries->execute());

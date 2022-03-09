@@ -69,7 +69,7 @@ class FeatureFlagServiceTest extends BaseTest
                 ]
             )->getMock();
 
-        $mockModel->expects($this->any())->method('isEnabled')->willReturn($isEnabled);
+        $mockModel->expects(self::any())->method('isEnabled')->willReturn($isEnabled);
 
         return $mockModel;
     }
@@ -83,7 +83,7 @@ class FeatureFlagServiceTest extends BaseTest
         $mockRepository = $this->getMockBuilder(FeatureFlagRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $mockRepository->expects($this->any())->method('findByFlag')->willReturn($mockModel);
+        $mockRepository->expects(self::any())->method('findByFlag')->willReturn($mockModel);
 
         return $mockRepository;
     }
@@ -97,7 +97,7 @@ class FeatureFlagServiceTest extends BaseTest
             ->disableOriginalConstructor()
             ->setMethods(['getTables'])
             ->getMock();
-        $mockConfiguration->expects($this->any())->method('getTables')->willReturn('pages');
+        $mockConfiguration->expects(self::any())->method('getTables')->willReturn('pages');
 
         return $mockConfiguration;
     }
@@ -146,7 +146,7 @@ class FeatureFlagServiceTest extends BaseTest
         $mockRepository = $this->getMockBuilder(FeatureFlagRepository::class)
             ->disableOriginalConstructor()
             ->setMethods(['findByFlag'])->getMock();
-        $mockRepository->expects($this->once())->method('findByFlag')->willReturn(null);
+        $mockRepository->expects(self::once())->method('findByFlag')->willReturn(null);
         $this->setService($mockRepository);
         $this->expectException(FeatureNotFoundException::class);
         $this->service->isFeatureEnabled('my_cool_feature');
@@ -162,7 +162,7 @@ class FeatureFlagServiceTest extends BaseTest
         $mockRepository = $this->getMockBuilder(FeatureFlagRepository::class)
             ->disableOriginalConstructor()
             ->setMethods(['findByFlag'])->getMock();
-        $mockRepository->expects($this->never())->method('findByFlag');
+        $mockRepository->expects(self::never())->method('findByFlag');
         $this->setService($mockRepository);
         $this->expectException('RuntimeException');
         $this->service->isFeatureEnabled('my_cool_feature');
@@ -176,22 +176,22 @@ class FeatureFlagServiceTest extends BaseTest
         $mockModel = $this->getMockModel(false);
 
         $mockRepository = $this->getMockRepository(false);
-        $mockRepository->expects($this->once())->method('update')->with($mockModel);
+        $mockRepository->expects(self::once())->method('update')->with($mockModel);
 
         $mockPersistenceManager =
             $this->getMockBuilder(PersistenceManagerInterface::class)->getMock();
 
-        $mockPersistenceManager->expects($this->once())->method('persistAll');
+        $mockPersistenceManager->expects(self::once())->method('persistAll');
 
         $serviceMock = $this->getMockBuilder(FeatureFlagService::class)->setConstructorArgs([
             $mockRepository,
             $mockPersistenceManager,
             $this->getMockConfiguration()
         ])->setMethods(['getFeatureFlag'])->getMock();
-        $serviceMock->expects($this->any())->method('getFeatureFlag')->willReturn($mockModel);
+        $serviceMock->expects(self::any())->method('getFeatureFlag')->willReturn($mockModel);
 
-        $serviceMock->expects($this->once())->method('getFeatureFlag')->with('mockFlag');
-        $serviceMock->expects($this->once())->method('getFeatureFlag')->with('mockFlag');
+        $serviceMock->expects(self::once())->method('getFeatureFlag')->with('mockFlag');
+        $serviceMock->expects(self::once())->method('getFeatureFlag')->with('mockFlag');
 
         $serviceMock->updateFeatureFlag('mockFlag', true);
     }

@@ -17,15 +17,16 @@ You can download and install this extension or use composer.
 
 ## Versions and Support
 
-| Release  | TYPO3 | PHP   | Fixes will contain
-|---|---|---|---|
-| 9.x.y  | 9.5  | 7.2-7.4 | Features, Bugfixes, Security Updates
-| 8.x.y  | 8.7  | 7.2-7.4 | Security Updates
-| 5.x.y  | 7.6  | 5.5-5.6 | End of life
+| Release  | TYPO3 | PHP     | Fixes will contain
+|----------|-------|---------|--------------------|
+| 11.x.y   | 11.5  | 7.4     | Features, Bugfixes, Security Updates
+|  9.x.y   |  9.5  | 7.2-7.4 | Features, Bugfixes, Security Updates
+|  8.x.y   |  8.7  | 7.2-7.4 | Security Updates
+|  5.x.y   |  7.6  | 5.5-5.6 | End of life
 
 ## Copyright / License
 
-Copyright: (c) 2015 - 2021, AOE GmbH
+Copyright: (c) 2015 - 2022, AOE GmbH
 License: GPLv3, <http://www.gnu.org/licenses/gpl-3.0.en.html>
 
 ## Contributing

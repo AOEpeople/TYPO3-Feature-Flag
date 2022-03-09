@@ -17,14 +17,15 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-json": "*",
-        "typo3/cms-core": "^9.5 || ^10.4",
+        "typo3/cms-core": "^11.5",
         "typo3/cms-extbase": "*",
         "typo3/cms-scheduler": "*"
     },
     "require-dev": {
-        "nimut/testing-framework": "*",
+        "nimut/testing-framework": "^6.0",
+        "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpcov": "*",
         "squizlabs/php_codesniffer": "*",
         "sebastian/phpcpd": "*",
@@ -65,9 +66,13 @@
             "rm .scrutinizer.yml"
         ]
     },
+    "scripts-descriptions": {
+        "test:unit": "Run unit-tests - example to run only SOME unit-tests: composer test:unit -- --filter FeatureFlagTest",
+        "test:functional": "Run functional-tests - example to run only SOME functional-tests: composer test:functional -- --filter FeatureFlagRepositoryTest"
+    },
     "extra": {
         "branch-alias": {
-            "dev-main": "9.0.x-dev"
+            "dev-main": "11.0.1-dev"
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
