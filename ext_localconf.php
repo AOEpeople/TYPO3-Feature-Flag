@@ -19,14 +19,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['feature_flag'] =
     '_CLI_feature_flag'
 ];
 
-$confArray = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-    "TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration"
-)->get('feature_flag');
-
-if ($confArray['enableEidMode'] === true) {
-    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['featureflag'] = 'EXT:feature_flag/Classes/Service/Eid.php';
-}
-
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 $signalSlotDispatcher->connect(

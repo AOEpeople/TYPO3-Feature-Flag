@@ -51,37 +51,6 @@ Feature flag query example::
         $this->addCheckboxForFraudDetection( $contextObj );
     }
 
-eID Access
-~~~~~~~~~~
-
-Access via a eID script is disabled by default and can be enabled using the extension configuration in the BE.
-
-**This should never be done on live systems!**
-
-Following actions are possible with an eID script:
-
-- **activate**
-    Activates a feature.
-    Example: ``{BASEURL}/index.php?eID=featureflag&action=activate&feature=test_feature``
-- **deactivate**
-    Deactivates a feature.
-    Example: ``{BASEURL}/index.php?eID=featureflag&action=deactivate&feature=test_feature``
-- **flagentries**
-    Updates the visibility of content elements connected to the feature flag.
-    Example: ``{BASEURL}/index.php?eID=featureflag&action=flagentries``
-- **status**
-    Returns, whether a feature flag is activated or not.
-    Example: ``{BASEURL}/index.php?eID=featureflag&action=status&feature=test_feature``
-
-Activating a feature can be done in two calls:
-
-``activate`` => ``flagentries``
-
-**After that, the crawler needs to crawl the page tree again.**
-
-The eID script always returns a JSON object. This is usually returnes with a status 200.
-When querying for a flags status, the response is the activation status.
-
 Console Commands (Cli)
 ~~~~~~~~~~
 
