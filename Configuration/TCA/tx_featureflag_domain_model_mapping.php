@@ -15,9 +15,6 @@ return [
         'enablecolumns' => [],
         'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/Mapping.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior',
-    ],
     'columns' => [
         'uid' => [
             'exclude' => 0,

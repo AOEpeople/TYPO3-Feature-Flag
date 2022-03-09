@@ -17,9 +17,6 @@ return [
         'rootLevel' => 1,
         'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/FeatureFlag.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'description,flag,enabled',
-    ],
     'columns' => [
         'description' => [
             'exclude' => 0,
