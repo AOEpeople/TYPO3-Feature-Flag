@@ -25,20 +25,21 @@ namespace Aoe\FeatureFlag\System\Typo3;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TcaPostProcessor
 {
     /**
      * Add feature-flag-fields to TCA-fields of DB-tables which support feature-flags
      *
-     * @param array $tca
-     * @return array
+     * @param AfterTcaCompilationEvent $event
+     * @return void
      */
-    public function postProcessTca(array $tca)
+    public function postProcessTca(AfterTcaCompilationEvent $event): void
     {
-        $GLOBALS['TCA'] = $tca;
-
         foreach ($this->getTcaTablesWithFeatureFlagSupport() as $table) {
             ExtensionManagementUtility::addTCAcolumns(
                 $table,
@@ -80,28 +81,18 @@ class TcaPostProcessor
             );
         }
 
-        $tca = $GLOBALS['TCA'];
-        return [$tca];
+        $event->setTca($GLOBALS['TCA']);
     }
 
     /**
      * @return array
      */
-    private function getTcaTablesWithFeatureFlagSupport()
+    private function getTcaTablesWithFeatureFlagSupport(): array
     {
-        if (class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
-            $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                "TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration"
-            )->get('feature_flag');
-        } else {
-            $config = unserialize(
-                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'],
-                ['allowed_classes' => false]
-            );
-        }
+        $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('feature_flag');
 
         if (isset($config['tables'])) {
-            return explode(',', $config ['tables']);
+            return explode(',', $config['tables']);
         }
         return [];
     }

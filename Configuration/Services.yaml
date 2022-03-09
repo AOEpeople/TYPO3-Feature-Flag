@@ -6,3 +6,11 @@ services:
 
   Aoe\FeatureFlag\:
     resource: '../Classes/*'
+
+  # EventListeners
+  Aoe\FeatureFlag\System\Typo3\TcaPostProcessor:
+    tags:
+      - name: event.listener
+        identifier: 'feature-flag/tca-post-processor'
+        method: 'postProcessTca'
+        event: TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent
