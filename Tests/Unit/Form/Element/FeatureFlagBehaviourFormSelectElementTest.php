@@ -80,10 +80,10 @@ class FeatureFlagBehaviourFormSelectElementTest extends BaseTest
         $nodeFactoryProphecy->create((array) Argument::cetera())->willReturn($abstractNode->reveal());
         $languageService = $this->prophesize(LanguageService::class);
         $languageService->sL(
-            'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide'
+            'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.hide'
         )->willReturn('hide');
         $languageService->sL(
-            'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show'
+            'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.show'
         )->willReturn('show');
         $GLOBALS['LANG'] = $languageService->reveal();
 

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-03-09T14:00:00Z" product-name="feature-flags">
+        <header/>
+        <body>
+            <trans-unit id="feature_flag" xml:space="preserve">
+                <source>Feature Flag</source>
+                <target>Feature Flag</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_flag" xml:space="preserve">
+                <source>Choose Feature Flag</source>
+                <target>Feature Flag auswählen</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_behavior" xml:space="preserve">
+                <source>Behavior on Feature Flag</source>
+                <target>Verhalten bei gewähltem Feature Flag</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_info.label" xml:space="preserve">
+                <source>Notice!</source>
+                <target>Hinweis!</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_info.text" xml:space="preserve">
+                <source><![CDATA[
+                Feature Flag changes on a record are not automatically published
+                and did not have automatically an effect on this record.<br />This editorial change has to
+                be activated by a TYPO3 administrator by starting a scheduler task.
+            ]]></source>
+                <target><![CDATA[
+                Die Veränderung der Featureflag-Auswirkung auf einem Datensatz wird nicht automatisch publiziert
+                und hat nicht automatisch einen Wirkung auf diesen Datensatz.<br /> Diese redaktionelle Änderung
+                muss durch einen TYPO3-Administrator durch das Starten eines Scheduler-Tasks aktiviert werden.
+            ]]></target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_behavior.hide" xml:space="preserve">
+                <source>hide</source>
+                <target>ausblenden</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_behavior.show" xml:space="preserve">
+                <source>show</source>
+                <target>einblenden</target>
+            </trans-unit>
+
+            <trans-unit id="feature_flag.scheduler_task.flag_entries.title" xml:space="preserve">
+                <source>Update records by Feature Flags</source>
+                <target>Datensätze anhand Feature Flags aktualisieren</target>
+            </trans-unit>
+            <trans-unit id="feature_flag.scheduler_task.flag_entries.description" xml:space="preserve">
+                <source>Flags all configured tables by Feature Flags</source>
+                <target>Aktualisiert alle Datensätze in den konfigurierten Tabellen anhand der hinterlegten Feature Flags</target>
+            </trans-unit>
+
+            <trans-unit id="tx_featureflag_domain_model_featureflag" xml:space="preserve">
+                <source>Feature Flag</source>
+                <target>Feature Flag</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_featureflag.description" xml:space="preserve">
+                <source>Description</source>
+                <target>Beschreibung</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_featureflag.flag" xml:space="preserve">
+                <source>Unique identifier</source>
+                <target>Eindeutiger Identifikator</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_featureflag.enabled" xml:space="preserve">
+                <source>enabled?</source>
+                <target>aktiv?</target>
+            </trans-unit>
+
+            <trans-unit id="tx_featureflag_domain_model_mapping" xml:space="preserve">
+                <source>Mapping of Feature Flags to Tables</source>
+                <target>Mapping zwischen Tabellen und Feature Flags</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.crdate" xml:space="preserve">
+                <source>Creation date</source>
+                <target>Erstellt am</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.uid" xml:space="preserve">
+                <source>Mapping Information</source>
+                <target>Mapping Information</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.tstamp" xml:space="preserve">
+                <source>Date of last change</source>
+                <target>Zuletzt aktualisiert am</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.feature_flag" xml:space="preserve">
+                <source>Feature Flag</source>
+                <target>Gewähltes Feature Flag</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.foreign_table_uid" xml:space="preserve">
+                <source>ID of the foreign table</source>
+                <target>ID der Fremdtabelle</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.foreign_table_name" xml:space="preserve">
+                <source>Name of the foreign table</source>
+                <target>Name der Fremdtabelle</target>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.behavior" xml:space="preserve">
+                <source>Behavior</source>
+                <target>Verhalten bei gewähltem Feature Flag</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

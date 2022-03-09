@@ -11,10 +11,8 @@ defined('TYPO3') or die();
  */
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][FlagEntriesTask::class] = [
     'extension' => 'feature_flag',
-    'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-        'locallang_db.xml:tx_featureflag_system_typo3_task_flagentries.title',
-    'description' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-        'locallang_db.xml:tx_featureflag_system_typo3_task_flagentries.description'
+    'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:feature_flag.scheduler_task.flag_entries.title',
+    'description' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:feature_flag.scheduler_task.flag_entries.description'
 ];
 
 /**

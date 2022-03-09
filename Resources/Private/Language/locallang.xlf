@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2022-03-09T14:00:00Z" product-name="feature-flags">
+        <header/>
+        <body>
+            <trans-unit id="feature_flag" xml:space="preserve">
+                <source>Feature Flag</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_flag" xml:space="preserve">
+                <source>Choose Feature Flag</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_behavior" xml:space="preserve">
+                <source>Behavior on Feature Flag</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_info.label" xml:space="preserve">
+                <source>Notice!</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_info.text" xml:space="preserve">
+                <source><![CDATA[
+                Feature Flag changes on a record are not automatically published
+                and did not have automatically an effect on this record.<br />This editorial change has to
+                be activated by a TYPO3 administrator by starting a scheduler task.
+            ]]></source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_behavior.hide" xml:space="preserve">
+                <source>hide</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_behavior.show" xml:space="preserve">
+                <source>show</source>
+            </trans-unit>
+
+            <trans-unit id="feature_flag.scheduler_task.flag_entries.title" xml:space="preserve">
+                <source>Update records by Feature Flags</source>
+            </trans-unit>
+            <trans-unit id="feature_flag.scheduler_task.flag_entries.description" xml:space="preserve">
+                <source>Flags all configured tables by Feature Flags</source>
+            </trans-unit>
+
+            <trans-unit id="tx_featureflag_domain_model_featureflag" xml:space="preserve">
+                <source>Feature Flag</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_featureflag.description" xml:space="preserve">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_featureflag.flag" xml:space="preserve">
+                <source>Unique identifier</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_featureflag.enabled" xml:space="preserve">
+                <source>enabled?</source>
+            </trans-unit>
+
+            <trans-unit id="tx_featureflag_domain_model_mapping" xml:space="preserve">
+                <source>Mapping of Feature Flags to Tables</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.crdate" xml:space="preserve">
+                <source>Creation date</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.uid" xml:space="preserve">
+                <source>Mapping Information</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.tstamp" xml:space="preserve">
+                <source>Date of last change</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.feature_flag" xml:space="preserve">
+                <source>Feature Flag</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.foreign_table_uid" xml:space="preserve">
+                <source>ID of the foreign table</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.foreign_table_name" xml:space="preserve">
+                <source>Name of the foreign table</source>
+            </trans-unit>
+            <trans-unit id="tx_featureflag_domain_model_mapping.behavior" xml:space="preserve">
+                <source>Behavior</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

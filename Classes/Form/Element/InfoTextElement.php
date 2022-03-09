@@ -41,7 +41,7 @@ class InfoTextElement extends AbstractFormElement
         $result = $this->initializeResultArray();
         $result['html'] = '<p>';
         $result['html'] .= $this->getLanguageService()->sL(
-            'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.text'
+            'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_info.text'
         );
         $result['html'] .= '</p>';
         return $result;

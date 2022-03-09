@@ -46,7 +46,7 @@ class TcaPostProcessor
                 [
                     'tx_featureflag_info' => [
                         'exclude' => 1,
-                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.label',
+                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_info.label',
                         'config' => [
                             'type' => 'user',
                             'renderType' => 'infoText',
@@ -54,7 +54,7 @@ class TcaPostProcessor
                     ],
                     'tx_featureflag_flag' => [
                         'exclude' => 1,
-                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_flag',
+                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_flag',
                         'config' => [
                             'type' => 'user',
                             'renderType' => 'selectFeatureFlag',
@@ -63,7 +63,7 @@ class TcaPostProcessor
                     ],
                     'tx_featureflag_behavior' => [
                         'exclude' => 1,
-                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior',
+                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior',
                         'config' => [
                             'type' => 'user',
                             'renderType' => 'selectFeatureFlagBehaviour',
@@ -75,7 +75,7 @@ class TcaPostProcessor
             ExtensionManagementUtility::addToAllTCAtypes(
                 $table,
                 '
-                    --div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,
+                    --div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:feature_flag,
                         tx_featureflag_info, tx_featureflag_flag, tx_featureflag_behavior
                 '
             );

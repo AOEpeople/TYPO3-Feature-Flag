@@ -62,14 +62,14 @@ class FeatureFlagBehaviourFormSelectElement extends AbstractFormSelectElement
         $optionElements = [
             [
                 'name' => $this->getLanguageService()->sL(
-                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide'
+                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.hide'
                 ),
                 'value' => FeatureFlagService::BEHAVIOR_HIDE,
                 'isSelected' => $isBehaviorHideSelected
             ],
             [
                 'name' => $this->getLanguageService()->sL(
-                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show'
+                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.show'
                 ),
                 'value' => FeatureFlagService::BEHAVIOR_SHOW,
                 'isSelected' => $isBehaviorShowSelected
