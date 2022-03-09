@@ -155,22 +155,6 @@ class FeatureFlagServiceTest extends BaseTest
     /**
      * @test
      */
-    public function shouldThrowExceptionIfTcaIsNotLoaded()
-    {
-        $GLOBALS['TCA'] = null;
-
-        $mockRepository = $this->getMockBuilder(FeatureFlagRepository::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['findByFlag'])->getMock();
-        $mockRepository->expects(self::never())->method('findByFlag');
-        $this->setService($mockRepository);
-        $this->expectException('RuntimeException');
-        $this->service->isFeatureEnabled('my_cool_feature');
-    }
-
-    /**
-     * @test
-     */
     public function shouldUpdateFeatureFlag()
     {
         $mockModel = $this->getMockModel(false);

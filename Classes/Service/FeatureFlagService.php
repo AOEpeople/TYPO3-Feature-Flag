@@ -89,14 +89,6 @@ class FeatureFlagService
      */
     protected function getFeatureFlag($flag)
     {
-        if (false === is_array($GLOBALS['TCA']) || false === isset($GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'])) {
-            // This can happen, when we call a REST-endpoint (by using restler-extension without initialized FE) and TYPO3 7:
-            // Without TCA, we would load (in this and ALL other following PHP-requests) the featureFlag without initialized
-            // 'property-values' (method 'FeatureFlag::isEnabled' would return NULL), so we MUST
-            // avoid to load any featureFlag without correct loaded TCA!
-            throw new RuntimeException('TCA is not loaded - we can\'t load featureFlag "'.$flag.'"');
-        }
-
         if (false === array_key_exists($flag, $this->cachedFlags)) {
             $flagModel = $this->featureFlagRepository->findByFlag($flag);
             if (false === $flagModel instanceof FeatureFlag) {
