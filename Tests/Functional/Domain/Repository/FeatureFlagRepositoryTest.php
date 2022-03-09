@@ -198,6 +198,6 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
 
             );
 
-        return $query->execute()->fetchAll();
+        return $query->execute()->fetchAllAssociative();
     }
 }

@@ -87,7 +87,7 @@ class FeatureFlagData
                 )
             );
 
-        return $queryBuilder->execute()->fetchAll();
+        return $queryBuilder->execute()->fetchAllAssociative();
     }
 
     /**
