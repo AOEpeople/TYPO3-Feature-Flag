@@ -25,14 +25,12 @@ namespace Aoe\FeatureFlag\Tests\Functional\System\Db;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
 use Aoe\FeatureFlag\System\Db\FeatureFlagData;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class FeatureFlagDataTest extends FunctionalTestCase
 {
@@ -40,16 +38,6 @@ class FeatureFlagDataTest extends FunctionalTestCase
      * @var array
      */
     protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
-
-    /**
-     * @var FeatureFlagRepository
-     */
-    protected $featureFlagRepository;
-
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
 
     /**
      * @test

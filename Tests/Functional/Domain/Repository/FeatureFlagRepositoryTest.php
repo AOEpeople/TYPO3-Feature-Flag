@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class FeatureFlagRepositoryTest extends FunctionalTestCase
 {
@@ -48,18 +47,12 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     protected $featureFlagRepository;
 
     /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
      * Set up testing framework
      */
     protected function setUp(): void
     {
         parent::setUp();
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->featureFlagRepository = $this->objectManager->get(FeatureFlagRepository::class);
+        $this->featureFlagRepository = GeneralUtility::makeInstance(FeatureFlagRepository::class);
     }
 
     /**

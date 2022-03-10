@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 abstract class AbstractFormSelectElement extends AbstractFormElement
 {
@@ -64,10 +63,10 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
         parent::__construct($nodeFactory, $data);
 
         $this->featureFlagRepository = $featureFlagRepository ??
-            GeneralUtility::makeInstance(ObjectManager::class)->get(FeatureFlagRepository::class);
+            GeneralUtility::makeInstance(FeatureFlagRepository::class);
 
         $this->mappingRepository = $mappingRepository ??
-            GeneralUtility::makeInstance(ObjectManager::class)->get(MappingRepository::class);
+            GeneralUtility::makeInstance(MappingRepository::class);
     }
 
     /**

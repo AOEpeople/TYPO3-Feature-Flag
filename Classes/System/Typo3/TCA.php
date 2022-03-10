@@ -33,7 +33,6 @@ use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
@@ -48,16 +47,6 @@ class TCA
      * @var string
      */
     const FIELD_FLAG = 'tx_featureflag_flag';
-
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @var PersistenceManager
-     */
-    protected $persistenceManager;
 
     /**
      * @var QueryResultInterface
@@ -163,7 +152,7 @@ class TCA
             $this->getMappingRepository()->update($mapping);
         } elseif ('0' !== $featureFlag) {
             /** @var Mapping $mapping */
-            $mapping = $this->getObjectManager()->get(Mapping::class);
+            $mapping = new Mapping();
             $mapping->setPid($pid);
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             $mapping->setForeignTableName($table);
@@ -218,7 +207,7 @@ class TCA
      */
     protected function getMappingRepository()
     {
-        return $this->getObjectManager()->get(MappingRepository::class);
+        return GeneralUtility::makeInstance(MappingRepository::class);
     }
 
     /**
@@ -226,19 +215,7 @@ class TCA
      */
     protected function getFeatureFlagRepository()
     {
-        return $this->getObjectManager()->get(FeatureFlagRepository::class);
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        if (false === ($this->objectManager instanceof ObjectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        }
-
-        return $this->objectManager;
+        return GeneralUtility::makeInstance(FeatureFlagRepository::class);
     }
 
     /**
@@ -246,11 +223,7 @@ class TCA
      */
     protected function getPersistenceManager()
     {
-        if (false === $this->persistenceManager instanceof PersistenceManager) {
-            $this->persistenceManager = $this->getObjectManager()->get(PersistenceManager::class);
-        }
-
-        return $this->persistenceManager;
+        return GeneralUtility::makeInstance(PersistenceManager::class);
     }
 
     /**

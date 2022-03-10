@@ -29,7 +29,6 @@ use Aoe\FeatureFlag\Domain\Model\Mapping;
 use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class MappingRepositoryTest extends FunctionalTestCase
 {
@@ -44,18 +43,12 @@ class MappingRepositoryTest extends FunctionalTestCase
     protected $mappingRepository;
 
     /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
      * Set up testing framework
      */
     protected function setUp(): void
     {
         parent::setUp();
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->mappingRepository = $this->objectManager->get(MappingRepository::class);
+        $this->mappingRepository = GeneralUtility::makeInstance(MappingRepository::class);
     }
 
     /**
