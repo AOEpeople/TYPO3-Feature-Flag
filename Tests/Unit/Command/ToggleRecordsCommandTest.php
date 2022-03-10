@@ -1,10 +1,12 @@
 <?php
-namespace Aoe\FeatureFlag\Command;
+namespace Aoe\FeatureFlag\Tests\Unit\Command;
+
+use Aoe\FeatureFlag\Command\ToggleRecordsCommand;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2022 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -25,26 +27,19 @@ namespace Aoe\FeatureFlag\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
-
-class ActivateFeatureFlagCommand extends AbstractCommand
+class ToggleRecordsCommandTest extends AbstractCommandTest
 {
-    protected function configure()
+    /**
+     * @test
+     */
+    public function shouldRunCommand()
     {
-        $this->addArgument(
-            'features',
-            InputArgument::REQUIRED,
-            'comma seperated list of features to activate'
-        );
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $this->inputOutput = new SymfonyStyle($input, $output);
-        $this->setFeatureStatus($input->getArgument('features'), true);
-        return 0;
+        $this->runCommand(ToggleRecordsCommand::class);
+        $this->assertThatFeaturesAreNotActivated();
+        $this->assertThatFeaturesAreNotDeactivated();
+        $this->assertThatInfosAreShown([
+            'Update visibility of records (e.g. content elements), which are connected with features'
+        ]);
+        $this->assertThatEntriesAreFlagged();
     }
 }

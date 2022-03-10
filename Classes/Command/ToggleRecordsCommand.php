@@ -27,17 +27,15 @@ namespace Aoe\FeatureFlag\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ToggleRecordsCommand extends AbstractCommand
 {
-    public function __construct(?string $name = null)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        parent::__construct($name);
-        $this->setDescription('Updates the visibility of content elements connected to the feature flag.');
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+        $this->inputOutput = new SymfonyStyle($input, $output);
+        $this->showInfo('Update visibility of records (e.g. content elements), which are connected with features');
         $this->featureFlagService->flagEntries();
+        return 0;
     }
 }

@@ -59,6 +59,10 @@
             "[ -e .Build/bin/phpunit ] || composer update",
             "TYPO3_PATH_ROOT=$(pwd)/.Build/Web .Build/bin/phpunit -c Tests/FunctionalTests.xml Tests/Functional"
         ],
+        "test:functional-devbox": [
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=\"t3_congo_dev\" typo3DatabaseHost=\"localhost\" typo3DatabaseUsername=\"root\" typo3DatabasePassword=\"root\" .Build/bin/phpunit -c Tests/FunctionalTests.xml Tests/Functional"
+        ],
         "extension-release": [
             "rm -rf .Build",
             "rm -rf Tests/",
@@ -68,7 +72,8 @@
     },
     "scripts-descriptions": {
         "test:unit": "Run unit-tests - example to run only SOME unit-tests: composer test:unit -- --filter FeatureFlagTest",
-        "test:functional": "Run functional-tests - example to run only SOME functional-tests: composer test:functional -- --filter FeatureFlagRepositoryTest"
+        "test:functional": "Run functional-tests - example to run only SOME functional-tests: composer test:functional -- --filter FeatureFlagRepositoryTest",
+        "test:functional-devbox": "Run functional-tests (use this command on devbox) - example to run only SOME functional-tests: composer test:functional-devbox -- --filter FeatureFlagRepositoryTest"
     },
     "extra": {
         "branch-alias": {

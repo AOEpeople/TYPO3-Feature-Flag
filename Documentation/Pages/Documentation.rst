@@ -57,13 +57,13 @@ Console Commands (Cli)
 Following actions are possible via typo3 console:
 
 - **activate**
-    Activates a feature.
+    Activate a feature + Update the visibility of records (e.g. content elements), which are connected with features.
     ``vendor/bin/typo3 featureflag:activate test_feature``
 - **deactivate**
-    Deactivates a feature.
+    Deactivate a feature + Update the visibility of records (e.g. content elements), which are connected with features.
     ``vendor/bin/typo3 featureflag:deactivate test_feature``
 - **flagentries**
-    Updates the visibility of content elements connected to the feature flag.
+    Update the visibility of records (e.g. content elements), which are connected with features.
     ``vendor/bin/typo3 featureflag:toggleRecords``
 
 Admin User
@@ -81,7 +81,7 @@ Activate or deactivate features
 
 1. Edit record
 2. Check or uncheck the 'active' checkbox
-3. Run scheduler task 'feature_flag'
+3. Run scheduler task 'Execute console commands (scheduler)' (with selected CLI-command 'featureflag:toggleRecord')
 4. Clear page cache
 
 Connect feature flags with Google Tag Manager

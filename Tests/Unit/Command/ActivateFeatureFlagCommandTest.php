@@ -1,10 +1,12 @@
 <?php
-namespace Aoe\FeatureFlag\System\Typo3\Task;
+namespace Aoe\FeatureFlag\Tests\Unit\Command;
+
+use Aoe\FeatureFlag\Command\ActivateFeatureFlagCommand;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2022 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -25,28 +27,22 @@ namespace Aoe\FeatureFlag\System\Typo3\Task;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeatureFlag\Service\FeatureFlagService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
-
-class FlagEntriesTask extends AbstractTask
+class ActivateFeatureFlagCommandTest extends AbstractCommandTest
 {
     /**
-     * @return bool
+     * @test
      */
-    public function execute()
+    public function shouldRunCommand()
     {
-        $this->getFeatureFlagService()->flagEntries();
-        return true;
-    }
-
-    /**
-     * @return FeatureFlagService
-     */
-    protected function getFeatureFlagService()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(FeatureFlagService::class);
+        $this->runCommand(ActivateFeatureFlagCommand::class, 'feature1,feature2,feature3');
+        $this->assertThatFeaturesAreActivated(['feature1', 'feature2', 'feature3']);
+        $this->assertThatFeaturesAreNotDeactivated();
+        $this->assertThatInfosAreShown([
+            'Activate feature: feature1',
+            'Activate feature: feature2',
+            'Activate feature: feature3',
+            'Update visibility of records (e.g. content elements), which are connected with features'
+        ]);
+        $this->assertThatEntriesAreFlagged();
     }
 }
