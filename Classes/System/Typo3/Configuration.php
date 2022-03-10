@@ -25,9 +25,11 @@ namespace Aoe\FeatureFlag\System\Typo3;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use InvalidArgumentException;
+use TYPO3\CMS\Core\SingletonInterface;
 
-class Configuration
+class Configuration implements SingletonInterface
 {
     /**
      * @var string
@@ -40,23 +42,13 @@ class Configuration
     private $configuration = [];
 
     /**
-     * Initialize configuration array
+     * @param ExtensionConfiguration $extensionConfiguration
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
-        if (class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
-            $conf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                "TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration"
-            )->get('feature_flag');
-        } else {
-            $conf = unserialize(
-                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'],
-                ['allowed_classes' => false]
-            );
-        }
-
-        if (is_array($conf)) {
-            $this->configuration = $conf;
+        $configuration = $extensionConfiguration->get('feature_flag');
+        if (is_array($configuration)) {
+            $this->configuration = $configuration;
         }
     }
 

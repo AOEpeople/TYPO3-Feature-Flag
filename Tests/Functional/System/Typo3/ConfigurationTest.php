@@ -38,37 +38,6 @@ class ConfigurationTest extends FunctionalTestCase
     protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
-     * (non-PHPdoc)
-     * @see TestCase::setUp()
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        if (!class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
-            // TYPO3v8 or lower
-            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'] = serialize(
-                [
-                    'tables' => 'tt_content,pages,sys_template'
-                ]
-            );
-        }
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see TestCase::tearDown()
-     */
-    protected function tearDown(): void
-    {
-        if (!class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
-            unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag']);
-        }
-
-        parent::tearDown();
-    }
-
-    /**
      * @test
      */
     public function methodGetShouldThrowException()
@@ -95,7 +64,7 @@ class ConfigurationTest extends FunctionalTestCase
     public function getTablesShouldReturnAnArray()
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
-        $this->assertThat($configuration->getTables(), new IsType('array'), '');
-        $this->assertCount(3, $configuration->getTables());
+        $this->assertThat($configuration->getTables(), new IsType('array'));
+        $this->assertEquals(['tt_content', 'pages', 'sys_template'], $configuration->getTables());
     }
 }
