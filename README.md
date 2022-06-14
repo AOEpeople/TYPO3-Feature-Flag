@@ -9,18 +9,20 @@ Add ability to use feature flags for extensions and content elements
 ## Documentation
 The documentation is available online at [docs.typo3.org][1].
 
-[1]: https://docs.typo3.org/typo3cms/extensions/feature_flag
-
 ## Download / Installation
 
-You can download and install this extension or use composer.
+You can download and install this extension from the [TER (TYPO3 Extension Repository)][1] or use composer.
+
+```shell script
+composer require aoe/feature-flag
+```
 
 ## Versions and Support
 
 | Release  | TYPO3 | PHP     | Fixes will contain
 |----------|-------|---------|--------------------|
 | 11.x.y   | 11.5  | 7.4     | Features, Bugfixes, Security Updates
-|  9.x.y   |  9.5  | 7.2-7.4 | Features, Bugfixes, Security Updates
+|  9.x.y   |  9.5  | 7.2-7.4 | Security Updates
 |  8.x.y   |  8.7  | 7.2-7.4 | Security Updates
 |  5.x.y   |  7.6  | 5.5-5.6 | End of life
 
@@ -37,3 +39,5 @@ License: GPLv3, <http://www.gnu.org/licenses/gpl-3.0.en.html>
 	4. Write tests for your change (if applicable)
 	5. Run the tests, ensuring they all pass
 	6. Submit a Pull Request using Github
+
+[1]: https://docs.typo3.org/typo3cms/extensions/feature_flag

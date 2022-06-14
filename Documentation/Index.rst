@@ -39,7 +39,7 @@ Feature Flag
 		dev@aoe.com
 
 	:License:
-		copyright 2015 - 2021 AOE GmbH
+		copyright 2015 - 2022 AOE GmbH
 
 		All rights reserved
 
