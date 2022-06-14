@@ -86,7 +86,7 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
         $selectElement = $this->renderSelectElement($optionElements, $parameterArray, $config);
 
         $width = MathUtility::forceIntegerInRange(
-            $config['width'] ?: $this->defaultInputWidth,
+            $config['width'] ?? $this->defaultInputWidth,
             $this->minimumInputWidth,
             $this->maxInputWidth
         );

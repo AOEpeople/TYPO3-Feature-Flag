@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         typo3: [ ^11.5 ]
-        php: [ '7.4' ]
+        php: [ '7.4', '8.0', '8.1' ]
         mysql: [ '5.7' ]
     steps:
       - name: Set up MySQL ${{ matrix.mysql }}

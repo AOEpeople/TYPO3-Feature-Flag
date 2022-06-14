@@ -56,10 +56,11 @@ class FeatureFlagFormSelectElementTest extends BaseTest
                     ],
                 ],
                 'itemFormElValue' => 120,
+                'itemFormElName' => 'tx_featureflag_flag',
                 'fieldChangeFunc' => [],
             ],
             'tableName' => 'tt_content',
-            'field' => 'tx_featureflag_behavior',
+            'fieldName' => 'tx_featureflag_behavior',
             'databaseRow' => [
                 'uid' => 9999
             ]
