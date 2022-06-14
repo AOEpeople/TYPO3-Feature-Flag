@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping',
+        'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_domain_model_mapping',
         'label' => 'uid',
         'label_alt' => 'foreign_table_uid,foreign_table_name,foreign_table_column',
         'label_alt_force' => 1,
@@ -15,13 +15,10 @@ return [
         'enablecolumns' => [],
         'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/Mapping.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior',
-    ],
     'columns' => [
         'uid' => [
             'exclude' => 0,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.uid',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_domain_model_mapping.uid',
             'config' => [
                 'type' => 'passthrough',
             ]
@@ -35,7 +32,7 @@ return [
         ],
         'tstamp' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.tstamp',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_domain_model_mapping.tstamp',
             'config' => [
                 'type' => 'text',
                 'size' => 10,
@@ -46,7 +43,7 @@ return [
         ],
         'crdate' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.crdate',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_domain_model_mapping.crdate',
             'config' => [
                 'type' => 'text',
                 'size' => 10,
@@ -57,7 +54,7 @@ return [
         ],
         'feature_flag' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.feature_flag',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_domain_model_mapping.feature_flag',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -71,7 +68,7 @@ return [
         'foreign_table_uid' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-                'locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_uid',
+                'locallang.xlf:tx_featureflag_domain_model_mapping.foreign_table_uid',
             'config' => [
                 'type' => 'text',
                 'size' => 10,
@@ -81,7 +78,7 @@ return [
         'foreign_table_name' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/' .
-                'locallang_db.xml:tx_featureflag_domain_model_mapping.foreign_table_name',
+                'locallang.xlf:tx_featureflag_domain_model_mapping.foreign_table_name',
             'config' => [
                 'type' => 'text',
                 'size' => 10,
@@ -90,7 +87,7 @@ return [
         ],
         'behavior' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_domain_model_mapping.behavior',
+            'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_domain_model_mapping.behavior',
             'config' => [
                 'type' => 'text',
                 'size' => 10,

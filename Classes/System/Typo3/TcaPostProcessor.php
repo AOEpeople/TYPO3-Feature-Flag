@@ -25,27 +25,28 @@ namespace Aoe\FeatureFlag\System\Typo3;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TcaPostProcessor
 {
     /**
      * Add feature-flag-fields to TCA-fields of DB-tables which support feature-flags
      *
-     * @param array $tca
-     * @return array
+     * @param AfterTcaCompilationEvent $event
+     * @return void
      */
-    public function postProcessTca(array $tca)
+    public function postProcessTca(AfterTcaCompilationEvent $event): void
     {
-        $GLOBALS['TCA'] = $tca;
-
         foreach ($this->getTcaTablesWithFeatureFlagSupport() as $table) {
             ExtensionManagementUtility::addTCAcolumns(
                 $table,
                 [
                     'tx_featureflag_info' => [
                         'exclude' => 1,
-                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_info.label',
+                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_info.label',
                         'config' => [
                             'type' => 'user',
                             'renderType' => 'infoText',
@@ -53,7 +54,7 @@ class TcaPostProcessor
                     ],
                     'tx_featureflag_flag' => [
                         'exclude' => 1,
-                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_flag',
+                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_flag',
                         'config' => [
                             'type' => 'user',
                             'renderType' => 'selectFeatureFlag',
@@ -62,7 +63,7 @@ class TcaPostProcessor
                     ],
                     'tx_featureflag_behavior' => [
                         'exclude' => 1,
-                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior',
+                        'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior',
                         'config' => [
                             'type' => 'user',
                             'renderType' => 'selectFeatureFlagBehaviour',
@@ -74,34 +75,24 @@ class TcaPostProcessor
             ExtensionManagementUtility::addToAllTCAtypes(
                 $table,
                 '
-                    --div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:feature_flag,
+                    --div--;LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:feature_flag,
                         tx_featureflag_info, tx_featureflag_flag, tx_featureflag_behavior
                 '
             );
         }
 
-        $tca = $GLOBALS['TCA'];
-        return [$tca];
+        $event->setTca($GLOBALS['TCA']);
     }
 
     /**
      * @return array
      */
-    private function getTcaTablesWithFeatureFlagSupport()
+    private function getTcaTablesWithFeatureFlagSupport(): array
     {
-        if (class_exists('TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
-            $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                "TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration"
-            )->get('feature_flag');
-        } else {
-            $config = unserialize(
-                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['feature_flag'],
-                ['allowed_classes' => false]
-            );
-        }
+        $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('feature_flag');
 
         if (isset($config['tables'])) {
-            return explode(',', $config ['tables']);
+            return explode(',', $config['tables']);
         }
         return [];
     }

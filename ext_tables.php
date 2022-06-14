@@ -1,29 +1,31 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+use Aoe\FeatureFlag\System\Typo3\TCA;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_featureflag_domain_model_featureflag');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_featureflag_domain_model_mapping');
+defined('TYPO3') or die();
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] =
-    \Aoe\FeatureFlag\System\Typo3\TCA::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] =
-    \Aoe\FeatureFlag\System\Typo3\TCA::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Imaging\IconFactory::class]['overrideIconOverlay'][] =
-    \Aoe\FeatureFlag\System\Typo3\TCA::class;
+ExtensionManagementUtility::allowTableOnStandardPages('tx_featureflag_domain_model_featureflag');
+ExtensionManagementUtility::allowTableOnStandardPages('tx_featureflag_domain_model_mapping');
 
-$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = TCA::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = TCA::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][IconFactory::class]['overrideIconOverlay'][] = TCA::class;
+
+$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 $iconRegistry->registerIcon(
     'record-has-feature-flag-which-is-visible',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    BitmapIconProvider::class,
     [
         'source' => 'EXT:feature_flag/Resources/Public/Icons/TBE/FeatureFlag.gif'
     ]
 );
 $iconRegistry->registerIcon(
     'record-has-feature-flag-which-is-hidden',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    BitmapIconProvider::class,
     [
         'source' => 'EXT:feature_flag/Resources/Public/Icons/TBE/FeatureFlagHidden.gif'
     ]

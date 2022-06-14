@@ -1,0 +1,38 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Aoe\FeatureFlag\:
+    resource: '../Classes/*'
+
+  # CLI/console-commands
+  Aoe\FeatureFlag\Command\ActivateFeatureFlagCommand:
+    tags:
+      - name: 'console.command'
+        command: 'featureflag:activate'
+        description: 'Activate a feature + Update the visibility of records (e.g. content elements), which are connected with features'
+        schedulable: true
+
+  Aoe\FeatureFlag\Command\DeactivateFeatureFlagCommand:
+    tags:
+      - name: 'console.command'
+        command: 'featureflag:deactivate'
+        description: 'Deactivate a feature + Update the visibility of records (e.g. content elements), which are connected with features'
+        schedulable: true
+
+  Aoe\FeatureFlag\Command\ToggleRecordsCommand:
+    tags:
+      - name: 'console.command'
+        command: 'featureflag:toggleRecords'
+        description: 'Update the visibility of records (e.g. content elements), which are connected with features'
+        schedulable: true
+
+  # EventListeners
+  Aoe\FeatureFlag\System\Typo3\TcaPostProcessor:
+    tags:
+      - name: event.listener
+        identifier: 'feature-flag/tca-post-processor'
+        method: 'postProcessTca'
+        event: TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent

@@ -51,50 +51,19 @@ Feature flag query example::
         $this->addCheckboxForFraudDetection( $contextObj );
     }
 
-eID Access
-~~~~~~~~~~
-
-Access via a eID script is disabled by default and can be enabled using the extension configuration in the BE.
-
-**This should never be done on live systems!**
-
-Following actions are possible with an eID script:
-
-- **activate**
-    Activates a feature.
-    Example: ``{BASEURL}/index.php?eID=featureflag&action=activate&feature=test_feature``
-- **deactivate**
-    Deactivates a feature.
-    Example: ``{BASEURL}/index.php?eID=featureflag&action=deactivate&feature=test_feature``
-- **flagentries**
-    Updates the visibility of content elements connected to the feature flag.
-    Example: ``{BASEURL}/index.php?eID=featureflag&action=flagentries``
-- **status**
-    Returns, whether a feature flag is activated or not.
-    Example: ``{BASEURL}/index.php?eID=featureflag&action=status&feature=test_feature``
-
-Activating a feature can be done in two calls:
-
-``activate`` => ``flagentries``
-
-**After that, the crawler needs to crawl the page tree again.**
-
-The eID script always returns a JSON object. This is usually returnes with a status 200.
-When querying for a flags status, the response is the activation status.
-
 Console Commands (Cli)
 ~~~~~~~~~~
 
 Following actions are possible via typo3 console:
 
 - **activate**
-    Activates a feature.
+    Activate a feature + Update the visibility of records (e.g. content elements), which are connected with features.
     ``vendor/bin/typo3 featureflag:activate test_feature``
 - **deactivate**
-    Deactivates a feature.
+    Deactivate a feature + Update the visibility of records (e.g. content elements), which are connected with features.
     ``vendor/bin/typo3 featureflag:deactivate test_feature``
 - **flagentries**
-    Updates the visibility of content elements connected to the feature flag.
+    Update the visibility of records (e.g. content elements), which are connected with features.
     ``vendor/bin/typo3 featureflag:toggleRecords``
 
 Admin User
@@ -112,7 +81,7 @@ Activate or deactivate features
 
 1. Edit record
 2. Check or uncheck the 'active' checkbox
-3. Run scheduler task 'feature_flag'
+3. Run scheduler task 'Execute console commands (scheduler)' (with selected CLI-command 'featureflag:toggleRecord')
 4. Clear page cache
 
 Connect feature flags with Google Tag Manager

@@ -1,10 +1,12 @@
 <?php
-namespace Aoe\FeatureFlag\System\Typo3;
+namespace Aoe\FeatureFlag\Tests\Unit\Command;
+
+use Aoe\FeatureFlag\Command\DeactivateFeatureFlagCommand;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2022 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -25,34 +27,22 @@ namespace Aoe\FeatureFlag\System\Typo3;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-
-class CacheManager
+class DeactivateFeatureFlagCommandTest extends AbstractCommandTest
 {
     /**
-     * @var ObjectManager
+     * @test
      */
-    private $objectManager;
-
-    /**
-     * @param ObjectManager $objectManager
-     */
-    public function __construct(ObjectManager $objectManager)
+    public function shouldRunCommand()
     {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * Clear all caches. Therefor it is necessary to login a BE_USER. You have to prevent
-     * this function to run on live systems!!!
-     */
-    public function clearAllCaches()
-    {
-        /** @var DataHandler $tce */
-        $tce = $this->objectManager->get(DataHandler::class);
-        $tce->start([], []);
-        $tce->admin = 1;
-        $tce->clear_cacheCmd('all');
+        $this->runCommand(DeactivateFeatureFlagCommand::class, 'feature1,feature2,feature3');
+        $this->assertThatFeaturesAreNotActivated();
+        $this->assertThatFeaturesAreDeactivated(['feature1', 'feature2', 'feature3']);
+        $this->assertThatInfosAreShown([
+            'Deactivate feature: feature1',
+            'Deactivate feature: feature2',
+            'Deactivate feature: feature3',
+            'Update visibility of records (e.g. content elements), which are connected with features'
+        ]);
+        $this->assertThatEntriesAreFlagged();
     }
 }

@@ -27,13 +27,9 @@ namespace Aoe\FeatureFlag\Command;
 
 use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
 use Aoe\FeatureFlag\Service\FeatureFlagService;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
-use TYPO3\CMS\Scheduler\Scheduler;
 
 abstract class AbstractCommand extends Command
 {
@@ -43,38 +39,40 @@ abstract class AbstractCommand extends Command
     protected $featureFlagService;
 
     /**
-     * @var ObjectManager
+     * @var SymfonyStyle
      */
-    protected $objectManager;
+    protected $inputOutput;
 
-    /**
-     * @var Scheduler
-     */
-    protected $scheduler;
-
-    public function __construct(?string $name = null)
+    public function __construct(FeatureFlagService $featureFlagService)
     {
-        parent::__construct($name);
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->featureFlagService = $this->objectManager->get(FeatureFlagService::class);
-        $this->scheduler = $this->objectManager->get(Scheduler::class);
+        parent::__construct();
+        $this->featureFlagService = $featureFlagService;
     }
 
     /**
      * Enable or disable features. $features can be a comma-separated list of feature names
      * @param String $features
-     * @param $enabled
+     * @param boolean $enabled
      * @throws FeatureNotFoundException
      * @throws IllegalObjectTypeException
-     * @throws UnknownObjectException
      */
-    protected function setFeatureStatus($features, $enabled)
+    protected function setFeatureStatus(string $features, bool $enabled): void
     {
         $features = array_map('trim', explode(',', $features));
         foreach ($features as $feature) {
-            echo $feature;
+            $info = ($enabled === true) ? 'Activate' : 'Deactivate';
+            $this->showInfo($info . ' feature: ' . $feature);
             $this->featureFlagService->updateFeatureFlag($feature, $enabled);
         }
+        $this->showInfo('Update visibility of records (e.g. content elements), which are connected with features');
         $this->featureFlagService->flagEntries();
+    }
+
+    /**
+     * @param string $info
+     */
+    protected function showInfo(string $info): void
+    {
+        $this->inputOutput->block($info, 'INFO', 'fg=green', '', false);
     }
 }

@@ -59,7 +59,7 @@ class FeatureFlagBehaviourFormSelectElementTest extends BaseTest
                 'fieldChangeFunc' => [],
             ],
             'tableName' => 'tt_content',
-            'field' => 'tx_featureflag_flag',
+            'fieldName' => 'tx_featureflag_flag',
             'databaseRow' => [
                 'uid' => 9999
             ]
@@ -69,7 +69,7 @@ class FeatureFlagBehaviourFormSelectElementTest extends BaseTest
 
         /** @var AbstractNode|ObjectProphecy $abstractNode */
         $abstractNode = $this->prophesize(AbstractNode::class);
-        $abstractNode->render(Argument::cetera())->willReturn([
+        $abstractNode->render()->willReturn([
             'additionalJavaScriptPost' => [],
             'additionalJavaScriptSubmit' => [],
             'additionalHiddenFields' => [],
@@ -77,13 +77,13 @@ class FeatureFlagBehaviourFormSelectElementTest extends BaseTest
         ]);
         /** @var NodeFactory|ObjectProphecy $nodeFactoryProphecy */
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
-        $nodeFactoryProphecy->create(Argument::cetera())->willReturn($abstractNode->reveal());
+        $nodeFactoryProphecy->create((array) Argument::cetera())->willReturn($abstractNode->reveal());
         $languageService = $this->prophesize(LanguageService::class);
         $languageService->sL(
-            'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.hide'
+            'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.hide'
         )->willReturn('hide');
         $languageService->sL(
-            'LLL:EXT:feature_flag/Resources/Private/Language/locallang_db.xml:tx_featureflag_behavior.show'
+            'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.show'
         )->willReturn('show');
         $GLOBALS['LANG'] = $languageService->reveal();
 

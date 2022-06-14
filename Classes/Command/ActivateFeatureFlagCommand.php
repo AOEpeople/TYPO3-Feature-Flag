@@ -28,15 +28,10 @@ namespace Aoe\FeatureFlag\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ActivateFeatureFlagCommand extends AbstractCommand
 {
-    public function __construct(?string $name = null)
-    {
-        parent::__construct($name);
-        $this->setDescription('Activates a feature.');
-    }
-
     protected function configure()
     {
         $this->addArgument(
@@ -46,8 +41,10 @@ class ActivateFeatureFlagCommand extends AbstractCommand
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->inputOutput = new SymfonyStyle($input, $output);
         $this->setFeatureStatus($input->getArgument('features'), true);
+        return 0;
     }
 }

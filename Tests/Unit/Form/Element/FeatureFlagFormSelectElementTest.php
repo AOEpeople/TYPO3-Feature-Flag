@@ -69,7 +69,7 @@ class FeatureFlagFormSelectElementTest extends BaseTest
 
         /** @var AbstractNode|ObjectProphecy $abstractNode */
         $abstractNode = $this->prophesize(AbstractNode::class);
-        $abstractNode->render(Argument::cetera())->willReturn([
+        $abstractNode->render()->willReturn([
             'additionalJavaScriptPost' => [],
             'additionalJavaScriptSubmit' => [],
             'additionalHiddenFields' => [],
@@ -77,7 +77,7 @@ class FeatureFlagFormSelectElementTest extends BaseTest
         ]);
         /** @var NodeFactory|ObjectProphecy $nodeFactoryProphecy */
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
-        $nodeFactoryProphecy->create(Argument::cetera())->willReturn($abstractNode->reveal());
+        $nodeFactoryProphecy->create((array) Argument::cetera())->willReturn($abstractNode->reveal());
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
 

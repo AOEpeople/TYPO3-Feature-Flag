@@ -1,5 +1,2 @@
 # cat=basic; type=input; label=Enable Feature Flags for tables
 tables = tt_content,pages,sys_template
-
-# cat=basic; type=boolean; label=Enable eID Script for Feature Flags
-enableEidMode = 0

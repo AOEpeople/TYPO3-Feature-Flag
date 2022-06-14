@@ -1,10 +1,12 @@
 <?php
-namespace Aoe\FeatureFlag\Service;
+namespace Aoe\FeatureFlag\Tests\Unit\Command;
+
+use Aoe\FeatureFlag\Command\ToggleRecordsCommand;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2022 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -25,10 +27,19 @@ namespace Aoe\FeatureFlag\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-\TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
-
-/** @var \Aoe\FeatureFlag\Service\EidProcessorService $eidProcessor */
-$eidProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
-    ->get(\Aoe\FeatureFlag\Service\EidProcessorService::class);
-
-$eidProcessor->processRequest();
+class ToggleRecordsCommandTest extends AbstractCommandTest
+{
+    /**
+     * @test
+     */
+    public function shouldRunCommand()
+    {
+        $this->runCommand(ToggleRecordsCommand::class);
+        $this->assertThatFeaturesAreNotActivated();
+        $this->assertThatFeaturesAreNotDeactivated();
+        $this->assertThatInfosAreShown([
+            'Update visibility of records (e.g. content elements), which are connected with features'
+        ]);
+        $this->assertThatEntriesAreFlagged();
+    }
+}
