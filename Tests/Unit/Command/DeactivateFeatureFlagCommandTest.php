@@ -35,14 +35,14 @@ class DeactivateFeatureFlagCommandTest extends AbstractCommandTest
     public function shouldRunCommand()
     {
         $this->runCommand(DeactivateFeatureFlagCommand::class, 'feature1,feature2,feature3');
-        $this->assertThatFeaturesAreNotActivated();
-        $this->assertThatFeaturesAreDeactivated(['feature1', 'feature2', 'feature3']);
-        $this->assertThatInfosAreShown([
+        self::assertThatFeaturesAreNotActivated();
+        self::assertThatFeaturesAreDeactivated(['feature1', 'feature2', 'feature3']);
+        self::assertThatInfosAreShown([
             'Deactivate feature: feature1',
             'Deactivate feature: feature2',
             'Deactivate feature: feature3',
             'Update visibility of records (e.g. content elements), which are connected with features'
         ]);
-        $this->assertThatEntriesAreFlagged();
+        self::assertThatEntriesAreFlagged();
     }
 }

@@ -63,7 +63,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     {
         $this->importDataSet(__DIR__ . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
         $flag = $this->featureFlagRepository->findByFlag('my_test_feature_flag');
-        $this->assertInstanceOf(FeatureFlag::class, $flag);
+        self::assertInstanceOf(FeatureFlag::class, $flag);
     }
 
     /**
@@ -87,7 +87,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
 
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        $this->assertEquals(1, $contentElements[0]['hidden']);
+        self::assertEquals(1, $contentElements[0]['hidden']);
     }
 
     /**
@@ -111,7 +111,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
 
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        $this->assertEquals(1, $contentElements[0]['hidden']);
+        self::assertEquals(1, $contentElements[0]['hidden']);
     }
 
     /**
@@ -135,7 +135,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
 
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        $this->assertEquals(0, $contentElements[0]['hidden']);
+        self::assertEquals(0, $contentElements[0]['hidden']);
     }
 
     /**
@@ -158,7 +158,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
         $instance->updateFeatureFlagStatusForTable('tt_content');
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        $this->assertEquals(0, $contentElements[0]['hidden']);
+        self::assertEquals(0, $contentElements[0]['hidden']);
     }
 
     /**

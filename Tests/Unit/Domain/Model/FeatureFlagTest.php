@@ -62,8 +62,8 @@ class FeatureFlagTest extends BaseTest
         $this->featureFlag->setDescription('This is a test description');
         $this->featureFlag->setEnabled(true);
         $this->featureFlag->setFlag('my_new_feature_flag');
-        $this->assertTrue($this->featureFlag->isEnabled());
-        $this->assertEquals($this->featureFlag->getDescription(), 'This is a test description');
-        $this->assertEquals($this->featureFlag->getFlag(), 'my_new_feature_flag');
+        self::assertTrue($this->featureFlag->isEnabled());
+        self::assertEquals($this->featureFlag->getDescription(), 'This is a test description');
+        self::assertEquals($this->featureFlag->getFlag(), 'my_new_feature_flag');
     }
 }

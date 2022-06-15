@@ -55,7 +55,7 @@ class ConfigurationTest extends FunctionalTestCase
     public function methodGetShouldReturnCorrectConfiguration()
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
-        $this->assertEquals('tt_content,pages,sys_template', $configuration->get('tables'));
+        self::assertEquals('tt_content,pages,sys_template', $configuration->get('tables'));
     }
 
     /**
@@ -64,7 +64,7 @@ class ConfigurationTest extends FunctionalTestCase
     public function getTablesShouldReturnAnArray()
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
-        $this->assertThat($configuration->getTables(), new IsType('array'));
-        $this->assertEquals(['tt_content', 'pages', 'sys_template'], $configuration->getTables());
+        self::assertThat($configuration->getTables(), new IsType('array'));
+        self::assertEquals(['tt_content', 'pages', 'sys_template'], $configuration->getTables());
     }
 }

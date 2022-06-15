@@ -54,7 +54,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
         $instance->getContentElements('tt_content', 0, 1);
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        $this->assertEquals(0, $contentElements[0]['hidden']);
+        self::assertEquals(0, $contentElements[0]['hidden']);
     }
 
     /**
@@ -72,7 +72,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
         $instance->updateContentElements('tt_content', [4712], 1);
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        $this->assertEquals(1, $contentElements[0]['hidden']);
+        self::assertEquals(1, $contentElements[0]['hidden']);
     }
 
     /**
@@ -88,7 +88,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
         $instance = new FeatureFlagData();
         $returnedPID = $instance->getContentElementsPIDs('tx_featureflag_domain_model_featureflag', 4711);
 
-        $this->assertEquals(1001, $returnedPID);
+        self::assertEquals(1001, $returnedPID);
     }
 
 

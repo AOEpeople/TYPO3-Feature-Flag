@@ -121,7 +121,7 @@ class FeatureFlagServiceTest extends BaseTest
 
         $this->setService($this->getMockRepository(true));
         $result = $this->service->isFeatureEnabled('my_cool_feature');
-        $this->assertTrue($result);
+        self::assertTrue($result);
     }
 
     /**
@@ -133,7 +133,7 @@ class FeatureFlagServiceTest extends BaseTest
 
         $this->setService($this->getMockRepository(false));
         $result = $this->service->isFeatureEnabled('my_cool_feature');
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 
     /**

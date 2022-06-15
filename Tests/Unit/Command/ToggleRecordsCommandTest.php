@@ -35,11 +35,11 @@ class ToggleRecordsCommandTest extends AbstractCommandTest
     public function shouldRunCommand()
     {
         $this->runCommand(ToggleRecordsCommand::class);
-        $this->assertThatFeaturesAreNotActivated();
-        $this->assertThatFeaturesAreNotDeactivated();
-        $this->assertThatInfosAreShown([
+        self::assertThatFeaturesAreNotActivated();
+        self::assertThatFeaturesAreNotDeactivated();
+        self::assertThatInfosAreShown([
             'Update visibility of records (e.g. content elements), which are connected with features'
         ]);
-        $this->assertThatEntriesAreFlagged();
+        self::assertThatEntriesAreFlagged();
     }
 }
