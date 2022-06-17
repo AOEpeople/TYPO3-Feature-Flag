@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\System\Db;
 
 /***************************************************************
@@ -35,12 +36,12 @@ class FeatureFlagData
     /**
      * @var string
      */
-    const TABLE_MAPPING = 'tx_featureflag_domain_model_mapping';
+    public const TABLE_MAPPING = 'tx_featureflag_domain_model_mapping';
 
     /**
      * @var string
      */
-    const TABLE_FLAGS = 'tx_featureflag_domain_model_featureflag';
+    public const TABLE_FLAGS = 'tx_featureflag_domain_model_featureflag';
 
     /**
      * @param string $table
@@ -55,7 +56,8 @@ class FeatureFlagData
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);
 
-        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()
+            ->removeAll();
 
         $queryBuilder
             ->select($table . '.uid')
@@ -63,31 +65,38 @@ class FeatureFlagData
             ->from(self::TABLE_MAPPING)
             ->from(self::TABLE_FLAGS)
             ->where(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq(
-                        self::TABLE_MAPPING . '.feature_flag',
-                        self::TABLE_FLAGS . '.uid'
-                    ),
-                    $queryBuilder->expr()->eq(
-                        $table . '.uid',
-                        self::TABLE_MAPPING . '.foreign_table_uid'
-                    ),
-                    $queryBuilder->expr()->eq(
-                        self::TABLE_FLAGS . '.enabled',
-                        $queryBuilder->createNamedParameter($enabled, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        self::TABLE_MAPPING . '.foreign_table_name',
-                        $queryBuilder->createNamedParameter($table, Connection::PARAM_STR)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        self::TABLE_MAPPING . '.behavior',
-                        $queryBuilder->createNamedParameter($behavior, Connection::PARAM_INT)
+                $queryBuilder->expr()
+                    ->andX(
+                        $queryBuilder->expr()
+                            ->eq(
+                                self::TABLE_MAPPING . '.feature_flag',
+                                self::TABLE_FLAGS . '.uid'
+                            ),
+                        $queryBuilder->expr()
+                            ->eq(
+                                $table . '.uid',
+                                self::TABLE_MAPPING . '.foreign_table_uid'
+                            ),
+                        $queryBuilder->expr()
+                            ->eq(
+                                self::TABLE_FLAGS . '.enabled',
+                                $queryBuilder->createNamedParameter($enabled, Connection::PARAM_INT)
+                            ),
+                        $queryBuilder->expr()
+                            ->eq(
+                                self::TABLE_MAPPING . '.foreign_table_name',
+                                $queryBuilder->createNamedParameter($table, Connection::PARAM_STR)
+                            ),
+                        $queryBuilder->expr()
+                            ->eq(
+                                self::TABLE_MAPPING . '.behavior',
+                                $queryBuilder->createNamedParameter($behavior, Connection::PARAM_INT)
+                            )
                     )
-                )
             );
 
-        return $queryBuilder->execute()->fetchAllAssociative();
+        return $queryBuilder->execute()
+            ->fetchAllAssociative();
     }
 
     /**
@@ -101,7 +110,8 @@ class FeatureFlagData
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);
 
-        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()
+            ->removeAll();
 
         $query = $queryBuilder
             ->update($table)
@@ -123,17 +133,21 @@ class FeatureFlagData
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);
 
-        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()
+            ->removeAll();
 
         $query = $queryBuilder
             ->select($table . '.pid')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq(
-                    $table . '.uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                )
+                $queryBuilder->expr()
+                    ->eq(
+                        $table . '.uid',
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                    )
             );
 
-        return $query->execute()->fetchColumn(0);
+        return $query->execute()
+            ->fetchColumn(0);
     }
 }

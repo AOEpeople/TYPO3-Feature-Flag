@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Domain\Repository;
 
 /***************************************************************
@@ -47,12 +48,10 @@ class FeatureFlagRepository extends Repository
         parent::__construct($objectManager);
     }
 
-    /**
-     * @return void
-     */
+
     public function initializeObject()
     {
-        /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $defaultQuerySettings->setRespectSysLanguage(false);
@@ -66,11 +65,14 @@ class FeatureFlagRepository extends Repository
     public function findByFlag($flag)
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectSysLanguage(false);
-        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()
+            ->setRespectSysLanguage(false);
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
         $query->matching($query->equals('flag', $flag));
 
-        return $query->execute()->getFirst();
+        return $query->execute()
+            ->getFirst();
     }
 
     /**
@@ -90,7 +92,8 @@ class FeatureFlagRepository extends Repository
             $table,
             $this->getUpdateEntriesUids($table, FeatureFlagService::BEHAVIOR_SHOW, 1)
         );
-        $this->showEntries($table,
+        $this->showEntries(
+            $table,
             $this->getUpdateEntriesUids($table, FeatureFlagService::BEHAVIOR_HIDE, 0)
         );
     }
@@ -98,7 +101,6 @@ class FeatureFlagRepository extends Repository
     /**
      * @param string $table
      * @param array $uids
-     * @return void
      */
     private function hideEntries($table, array $uids)
     {
@@ -110,7 +112,6 @@ class FeatureFlagRepository extends Repository
     /**
      * @param string $table
      * @param array $uids
-     * @return void
      */
     private function showEntries($table, array $uids)
     {
@@ -129,7 +130,7 @@ class FeatureFlagRepository extends Repository
     {
         $rows = $this->featureFlagData->getContentElements($table, $behavior, $enabled);
 
-        if(empty($rows)) {
+        if (empty($rows)) {
             return $rows;
         }
 

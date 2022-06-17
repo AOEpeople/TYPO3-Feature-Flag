@@ -63,7 +63,7 @@ class MappingRepositoryTest extends FunctionalTestCase
 
         $mapping = $this->mappingRepository->findOneByForeignTableNameAndUid(4712, 'tt_content');
 
-        $this->assertInstanceOf(Mapping::class, $mapping);
+        self::assertInstanceOf(Mapping::class, $mapping);
     }
 
     /**
@@ -78,7 +78,7 @@ class MappingRepositoryTest extends FunctionalTestCase
             'tt_content'
         );
 
-        $this->assertCount(2, $mapping);
+        self::assertCount(2, $mapping);
     }
 
     /**
@@ -90,11 +90,11 @@ class MappingRepositoryTest extends FunctionalTestCase
 
         $hashedMappings = $this->mappingRepository->getHashedMappings();
 
-        $this->assertEquals(
+        self::assertEquals(
             '35d83e54054892288a31e71e40d8394e76032697',
             $hashedMappings['35d83e54054892288a31e71e40d8394e76032697']
         );
-        $this->assertEquals(
+        self::assertEquals(
             '39ecd17e510c064c9ea06162aaf58753b071177d',
             $hashedMappings['39ecd17e510c064c9ea06162aaf58753b071177d']
         );

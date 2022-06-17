@@ -6,8 +6,8 @@
 conf.py:
   copyright: 2015-2022
   project: Feature Flag
-  version: 11.0.0
-  release: 11.0.*
+  version: 11.1.0
+  release: 11.1.*
   latex_documents:
   - - Index
     - manual

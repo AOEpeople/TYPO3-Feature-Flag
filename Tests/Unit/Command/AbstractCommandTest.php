@@ -91,7 +91,7 @@ abstract class AbstractCommandTest extends BaseTest
      */
     protected function assertThatEntriesAreFlagged()
     {
-        $this->assertEquals(1, $this->countOfFlagEntries);
+        self::assertEquals(1, $this->countOfFlagEntries);
     }
 
     /**
@@ -99,7 +99,7 @@ abstract class AbstractCommandTest extends BaseTest
      */
     protected function assertThatFeaturesAreActivated(array $expectedFeatures)
     {
-        $this->assertEquals($expectedFeatures, $this->activatedFeatures);
+        self::assertEquals($expectedFeatures, $this->activatedFeatures);
     }
 
     /**
@@ -107,7 +107,7 @@ abstract class AbstractCommandTest extends BaseTest
      */
     protected function assertThatFeaturesAreNotActivated()
     {
-        $this->assertThatFeaturesAreActivated([]);
+        self::assertThatFeaturesAreActivated([]);
     }
 
     /**
@@ -115,7 +115,7 @@ abstract class AbstractCommandTest extends BaseTest
      */
     protected function assertThatFeaturesAreDeactivated(array $expectedFeatures)
     {
-        $this->assertEquals($expectedFeatures, $this->deactivatedFeatures);
+        self::assertEquals($expectedFeatures, $this->deactivatedFeatures);
     }
 
     /**
@@ -123,7 +123,7 @@ abstract class AbstractCommandTest extends BaseTest
      */
     protected function assertThatFeaturesAreNotDeactivated()
     {
-        $this->assertThatFeaturesAreDeactivated([]);
+        self::assertThatFeaturesAreDeactivated([]);
     }
 
     /**
@@ -131,7 +131,7 @@ abstract class AbstractCommandTest extends BaseTest
      */
     protected function assertThatInfosAreShown(array $expectedInfos)
     {
-        $this->assertEquals($expectedInfos, $this->shownInfos);
+        self::assertEquals($expectedInfos, $this->shownInfos);
     }
 
     /**
@@ -170,6 +170,6 @@ abstract class AbstractCommandTest extends BaseTest
             ->method('showInfo')
             ->willReturnCallback(array($this, 'callbackOnShowInfo'));
         $returnCode = $command->run($input, $output);
-        $this->assertEquals(0, $returnCode);
+        self::assertEquals(0, $returnCode);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\System\Typo3;
 
 /***************************************************************
@@ -34,9 +35,6 @@ class TcaPostProcessor
 {
     /**
      * Add feature-flag-fields to TCA-fields of DB-tables which support feature-flags
-     *
-     * @param AfterTcaCompilationEvent $event
-     * @return void
      */
     public function postProcessTca(AfterTcaCompilationEvent $event): void
     {
@@ -50,7 +48,7 @@ class TcaPostProcessor
                         'config' => [
                             'type' => 'user',
                             'renderType' => 'infoText',
-                        ]
+                        ],
                     ],
                     'tx_featureflag_flag' => [
                         'exclude' => 1,
@@ -59,7 +57,7 @@ class TcaPostProcessor
                             'type' => 'user',
                             'renderType' => 'selectFeatureFlag',
                             'size' => 1,
-                        ]
+                        ],
                     ],
                     'tx_featureflag_behavior' => [
                         'exclude' => 1,
@@ -68,8 +66,8 @@ class TcaPostProcessor
                             'type' => 'user',
                             'renderType' => 'selectFeatureFlagBehaviour',
                             'size' => 1,
-                        ]
-                    ]
+                        ],
+                    ],
                 ]
             );
             ExtensionManagementUtility::addToAllTCAtypes(
@@ -84,9 +82,6 @@ class TcaPostProcessor
         $event->setTca($GLOBALS['TCA']);
     }
 
-    /**
-     * @return array
-     */
     private function getTcaTablesWithFeatureFlagSupport(): array
     {
         $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('feature_flag');

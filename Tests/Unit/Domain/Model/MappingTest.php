@@ -61,7 +61,7 @@ class MappingTest extends BaseTest
     public function tstamp()
     {
         $this->mapping->setTstamp(2183466346);
-        $this->assertEquals($this->mapping->getTstamp(), 2183466346);
+        self::assertEquals($this->mapping->getTstamp(), 2183466346);
     }
 
     /**
@@ -70,7 +70,7 @@ class MappingTest extends BaseTest
     public function crdate()
     {
         $this->mapping->setCrdate(2183466347);
-        $this->assertEquals($this->mapping->getCrdate(), 2183466347);
+        self::assertEquals($this->mapping->getCrdate(), 2183466347);
     }
 
     /**
@@ -81,7 +81,7 @@ class MappingTest extends BaseTest
         $featureFlag = $this->getMockBuilder(FeatureFlag::class)->setMethods(['getFlag'])->getMock();
         $featureFlag->method('getFlag')->willReturn('my_awesome_feature_flag');
         $this->mapping->setFeatureFlag($featureFlag);
-        $this->assertEquals($this->mapping->getFeatureFlag()->getFlag(), 'my_awesome_feature_flag');
+        self::assertEquals($this->mapping->getFeatureFlag()->getFlag(), 'my_awesome_feature_flag');
     }
 
     /**
@@ -90,7 +90,7 @@ class MappingTest extends BaseTest
     public function foreignTableColumn()
     {
         $this->mapping->setForeignTableColumn('my_foreign_column');
-        $this->assertEquals($this->mapping->getForeignTableColumn(), 'my_foreign_column');
+        self::assertEquals($this->mapping->getForeignTableColumn(), 'my_foreign_column');
     }
 
     /**
@@ -99,7 +99,7 @@ class MappingTest extends BaseTest
     public function foreignTableName()
     {
         $this->mapping->setForeignTableName('my_foreign_table');
-        $this->assertEquals($this->mapping->getForeignTableName(), 'my_foreign_table');
+        self::assertEquals($this->mapping->getForeignTableName(), 'my_foreign_table');
     }
 
     /**
@@ -108,7 +108,7 @@ class MappingTest extends BaseTest
     public function foreignTableUid()
     {
         $this->mapping->setForeignTableUid(4711);
-        $this->assertEquals($this->mapping->getForeignTableUid(), 4711);
+        self::assertEquals($this->mapping->getForeignTableUid(), 4711);
     }
 
     /**
@@ -117,6 +117,6 @@ class MappingTest extends BaseTest
     public function behavior()
     {
         $this->mapping->setBehavior(1);
-        $this->assertEquals($this->mapping->getBehavior(), 1);
+        self::assertEquals($this->mapping->getBehavior(), 1);
     }
 }
