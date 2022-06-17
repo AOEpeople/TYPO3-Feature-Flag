@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\System\Typo3;
 
 /***************************************************************
@@ -41,12 +42,12 @@ class TCA
     /**
      * @var string
      */
-    const FIELD_BEHAVIOR = 'tx_featureflag_behavior';
+    public const FIELD_BEHAVIOR = 'tx_featureflag_behavior';
 
     /**
      * @var string
      */
-    const FIELD_FLAG = 'tx_featureflag_flag';
+    public const FIELD_FLAG = 'tx_featureflag_flag';
 
     /**
      * @var QueryResultInterface
@@ -92,16 +93,19 @@ class TCA
         if ($command !== 'delete') {
             return;
         }
-        $mappings = $this->getMappingRepository()->findAllByForeignTableNameAndUid($id, $table);
-        if (false === is_array($mappings) && false === ($mappings instanceof QueryResultInterface)) {
+        $mappings = $this->getMappingRepository()
+            ->findAllByForeignTableNameAndUid($id, $table);
+        if (is_array($mappings) === false && false === ($mappings instanceof QueryResultInterface)) {
             return;
         }
         foreach ($mappings as $mapping) {
             if ($mapping instanceof Mapping) {
-                $this->getMappingRepository()->remove($mapping);
+                $this->getMappingRepository()
+                    ->remove($mapping);
             }
         }
-        $this->getPersistenceManager()->persistAll();
+        $this->getPersistenceManager()
+            ->persistAll();
     }
 
     /**
@@ -114,7 +118,8 @@ class TCA
     public function postOverlayPriorityLookup($table, $row, &$status, $iconName)
     {
         if ($this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
-            $mapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($row['uid'], $table);
+            $mapping = $this->getMappingRepository()
+                ->findOneByForeignTableNameAndUid($row['uid'], $table);
             if ($mapping instanceof Mapping) {
                 if ($row['hidden'] === '1') {
                     return 'record-has-feature-flag-which-is-hidden';
@@ -140,17 +145,20 @@ class TCA
      */
     protected function updateMapping($table, $id, $featureFlag, $pid, $behavior)
     {
-        $mapping = $this->getMappingRepository()->findOneByForeignTableNameAndUid($id, $table);
+        $mapping = $this->getMappingRepository()
+            ->findOneByForeignTableNameAndUid($id, $table);
         if ($mapping instanceof Mapping) {
-            if ('0' === $featureFlag) {
-                $this->getMappingRepository()->remove($mapping);
+            if ($featureFlag === '0') {
+                $this->getMappingRepository()
+                    ->remove($mapping);
             } else {
                 $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
                 $mapping->setBehavior($behavior);
             }
             $mapping->setTstamp(time());
-            $this->getMappingRepository()->update($mapping);
-        } elseif ('0' !== $featureFlag) {
+            $this->getMappingRepository()
+                ->update($mapping);
+        } elseif ($featureFlag !== '0') {
             /** @var Mapping $mapping */
             $mapping = new Mapping();
             $mapping->setPid($pid);
@@ -160,9 +168,11 @@ class TCA
             $mapping->setCrdate(time());
             $mapping->setTstamp(time());
             $mapping->setBehavior($behavior);
-            $this->getMappingRepository()->add($mapping);
+            $this->getMappingRepository()
+                ->add($mapping);
         }
-        $this->getPersistenceManager()->persistAll();
+        $this->getPersistenceManager()
+            ->persistAll();
     }
 
     /**
@@ -172,7 +182,7 @@ class TCA
      */
     protected function isMappingAvailableForTableAndUid($foreignTableUid, $foreignTableName)
     {
-        if (null === self::$hashedMappings) {
+        if (self::$hashedMappings === null) {
             self::$hashedMappings = $this->getMappingRepository()->getHashedMappings();
         }
         $identifier = sha1($foreignTableUid . '_' . $foreignTableName);
@@ -191,7 +201,8 @@ class TCA
     protected function getFeatureFlagByUid($uid)
     {
         /** @var FeatureFlag $featureFlag */
-        $featureFlag = $this->getFeatureFlagRepository()->findByUid($uid);
+        $featureFlag = $this->getFeatureFlagRepository()
+            ->findByUid($uid);
         if (false === ($featureFlag instanceof FeatureFlag)) {
             throw new FeatureNotFoundException(
                 'Feature Flag not found by uid: "' . $uid . '"',

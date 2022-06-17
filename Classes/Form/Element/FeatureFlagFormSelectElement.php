@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Form\Element;
 
 /***************************************************************
@@ -41,7 +42,7 @@ class FeatureFlagFormSelectElement extends AbstractFormSelectElement
         $propertyArray = [
             'table' => $this->data['tableName'],
             'field' => $this->data['fieldName'],
-            'row' => $this->data['databaseRow']
+            'row' => $this->data['databaseRow'],
         ];
 
         $activeMapping = $this->mappingRepository->findOneByForeignTableNameAndUid(
@@ -53,15 +54,16 @@ class FeatureFlagFormSelectElement extends AbstractFormSelectElement
             [
                 'name' => '',
                 'value' => 0,
-                'isSelected' => false
-            ]
+                'isSelected' => false,
+            ],
         ];
 
         foreach ($this->featureFlagRepository->findAll() as $featureFlag) {
             /** @var FeatureFlag $featureFlag */
             $selected = false;
             if ($activeMapping instanceof Mapping &&
-                $activeMapping->getFeatureFlag()->getUid() === $featureFlag->getUid()
+                $activeMapping->getFeatureFlag()
+                    ->getUid() === $featureFlag->getUid()
             ) {
                 $selected = true;
             }
@@ -69,7 +71,7 @@ class FeatureFlagFormSelectElement extends AbstractFormSelectElement
             $optionElements[] = [
                 'name' => $featureFlag->getDescription(),
                 'value' => $featureFlag->getUid(),
-                'isSelected' => $selected
+                'isSelected' => $selected,
             ];
         }
 

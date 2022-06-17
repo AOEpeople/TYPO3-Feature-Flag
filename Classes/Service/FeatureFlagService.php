@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Service;
 
 /***************************************************************
@@ -38,12 +39,12 @@ class FeatureFlagService
     /**
      * @var int
      */
-    const BEHAVIOR_HIDE = 0;
+    public const BEHAVIOR_HIDE = 0;
 
     /**
      * @var int
      */
-    const BEHAVIOR_SHOW = 1;
+    public const BEHAVIOR_SHOW = 1;
 
     /**
      * @var FeatureFlagRepository
@@ -82,36 +83,18 @@ class FeatureFlagService
 
     /**
      * @param string $flag
-     * @return FeatureFlag
-     * @throws FeatureNotFoundException
-     * @throws RuntimeException
-     * @return boolean
-     */
-    protected function getFeatureFlag($flag)
-    {
-        if (false === array_key_exists($flag, $this->cachedFlags)) {
-            $flagModel = $this->featureFlagRepository->findByFlag($flag);
-            if (false === $flagModel instanceof FeatureFlag) {
-                throw new FeatureNotFoundException('Feature Flag not found: "' . $flag . '"', 1383842028);
-            }
-            $this->cachedFlags[$flag] = $flagModel;
-        }
-        return $this->cachedFlags[$flag];
-    }
-
-    /**
-     * @param $flag
      * @return bool
      * @throws FeatureNotFoundException
      */
     public function isFeatureEnabled($flag)
     {
-        return $this->getFeatureFlag($flag)->isEnabled();
+        return $this->getFeatureFlag($flag)
+            ->isEnabled();
     }
 
     /**
-     * @param $flag
-     * @param $enabled
+     * @param string $flag
+     * @param bool $enabled
      * @throws FeatureNotFoundException
      * @throws IllegalObjectTypeException
      */
@@ -134,5 +117,23 @@ class FeatureFlagService
         foreach ($this->configuration->getTables() as $table) {
             $this->featureFlagRepository->updateFeatureFlagStatusForTable($table);
         }
+    }
+
+    /**
+     * @param string $flag
+     * @return FeatureFlag
+     * @throws FeatureNotFoundException
+     * @throws RuntimeException
+     */
+    protected function getFeatureFlag($flag)
+    {
+        if (array_key_exists($flag, $this->cachedFlags) === false) {
+            $flagModel = $this->featureFlagRepository->findByFlag($flag);
+            if ($flagModel instanceof FeatureFlag === false) {
+                throw new FeatureNotFoundException('Feature Flag not found: "' . $flag . '"', 1383842028);
+            }
+            $this->cachedFlags[$flag] = $flagModel;
+        }
+        return $this->cachedFlags[$flag];
     }
 }

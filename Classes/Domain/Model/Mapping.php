@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Domain\Model;
 
 /***************************************************************
@@ -89,7 +90,7 @@ class Mapping extends AbstractEntity
     }
 
     /**
-     * @return \Aoe\FeatureFlag\Domain\Model\FeatureFlag $featureFlag
+     * @return \Aoe\FeatureFlag\Domain\Model\FeatureFlag
      */
     public function getFeatureFlag()
     {
@@ -165,14 +166,14 @@ class Mapping extends AbstractEntity
      */
     public function setBehavior($behavior)
     {
-        $this->behavior = (int)$behavior;
+        $this->behavior = (int) $behavior;
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getBehavior()
     {
-        return (int)$this->behavior;
+        return (int) $this->behavior;
     }
 }

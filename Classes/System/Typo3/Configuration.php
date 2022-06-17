@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\System\Typo3;
 
 /***************************************************************
@@ -34,7 +35,7 @@ class Configuration implements SingletonInterface
     /**
      * @var string
      */
-    const CONF_TABLES = 'tables';
+    public const CONF_TABLES = 'tables';
 
     /**
      * @var array

@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Domain\Repository;
 
 /***************************************************************
@@ -33,16 +34,14 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class MappingRepository extends Repository
 {
-    /**
-     * @return void
-     */
     public function initializeObject()
     {
-        /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $defaultQuerySettings->setRespectSysLanguage(false);
-        $defaultQuerySettings->setIgnoreEnableFields(false)->setIncludeDeleted(false);
+        $defaultQuerySettings->setIgnoreEnableFields(false)
+            ->setIncludeDeleted(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
 
@@ -53,7 +52,8 @@ class MappingRepository extends Repository
      */
     public function findOneByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
     {
-        return $this->findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)->getFirst();
+        return $this->findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
+            ->getFirst();
     }
 
     /**
@@ -65,8 +65,10 @@ class MappingRepository extends Repository
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->logicalAnd($query->equals('foreign_table_uid', $foreignTableUid),
-            $query->equals('foreign_table_name', $foreignTableName))
+            $query->logicalAnd(
+                $query->equals('foreign_table_uid', $foreignTableUid),
+                $query->equals('foreign_table_name', $foreignTableName)
+            )
         );
         return $query->execute();
     }
@@ -78,8 +80,10 @@ class MappingRepository extends Repository
     public function findAllByFeatureFlag($featureFlagId)
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectSysLanguage(false);
-        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()
+            ->setRespectSysLanguage(false);
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
         $query->matching($query->equals('feature_flag', $featureFlagId));
         return $query->execute();
     }
@@ -89,7 +93,8 @@ class MappingRepository extends Repository
      */
     public function getHashedMappings()
     {
-        $mappings = $this->createQuery()->execute(true);
+        $mappings = $this->createQuery()
+            ->execute(true);
         $prepared = [];
         foreach ($mappings as $mapping) {
             $identifier = sha1($mapping['foreign_table_uid'] . '_' . $mapping['foreign_table_name']);

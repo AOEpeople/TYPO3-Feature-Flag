@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Form\Element;
 
 /***************************************************************
@@ -94,12 +95,12 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
 
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
-        $html[] =   '<div class="form-control-wrap" style="max-width: ' . $maxWidth . 'px">';
-        $html[] =       '<div class="form-wizards-wrap">';
-        $html[] =           '<div class="form-wizards-element">';
-        $html[] =               $selectElement;
-        $html[] =           '</div>';
-        $html[] =   '</div>';
+        $html[] = '<div class="form-control-wrap" style="max-width: ' . $maxWidth . 'px">';
+        $html[] = '<div class="form-wizards-wrap">';
+        $html[] = '<div class="form-wizards-element">';
+        $html[] = $selectElement;
+        $html[] = '</div>';
+        $html[] = '</div>';
         $html[] = '</div>';
 
         $resultArray['html'] = implode(LF, $html);
@@ -126,7 +127,7 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
             'class' => 'form-control tceforms-select',
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'disabled' => !empty($config['readOnly']),
-            'size' => (int)$config['size']
+            'size' => (int) $config['size'],
         ];
 
         $optionElements = [];
@@ -140,7 +141,7 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
 
         $html = [];
         $html[] = '<select ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
-        $html[] =   implode(LF, $optionElements);
+        $html[] = implode(LF, $optionElements);
         $html[] = '</select>';
 
         return implode(LF, $html);
@@ -160,7 +161,7 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
         $html = [
             '<option ' . GeneralUtility::implodeAttributes($attributes, true) . '>',
             htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false),
-            '</option>'
+            '</option>',
 
         ];
 

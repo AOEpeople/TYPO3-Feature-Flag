@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Form\Element;
 
 use Aoe\FeatureFlag\Domain\Model\Mapping;
@@ -41,7 +42,7 @@ class FeatureFlagBehaviourFormSelectElement extends AbstractFormSelectElement
         $propertyArray = [
             'table' => $this->data['tableName'],
             'field' => $this->data['fieldName'],
-            'row' => $this->data['databaseRow']
+            'row' => $this->data['databaseRow'],
         ];
 
         // check, which behavior is selected
@@ -61,19 +62,17 @@ class FeatureFlagBehaviourFormSelectElement extends AbstractFormSelectElement
 
         $optionElements = [
             [
-                'name' => $this->getLanguageService()->sL(
-                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.hide'
-                ),
+                'name' => $this->getLanguageService()
+                    ->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.hide'),
                 'value' => FeatureFlagService::BEHAVIOR_HIDE,
-                'isSelected' => $isBehaviorHideSelected
+                'isSelected' => $isBehaviorHideSelected,
             ],
             [
-                'name' => $this->getLanguageService()->sL(
-                    'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.show'
-                ),
+                'name' => $this->getLanguageService()
+                    ->sL('LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_behavior.show'),
                 'value' => FeatureFlagService::BEHAVIOR_SHOW,
-                'isSelected' => $isBehaviorShowSelected
-            ]
+                'isSelected' => $isBehaviorShowSelected,
+            ],
         ];
 
         return $this->renderElement($optionElements);

@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Command;
 
 /***************************************************************
@@ -51,7 +52,7 @@ abstract class AbstractCommand extends Command
 
     /**
      * Enable or disable features. $features can be a comma-separated list of feature names
-     * @param String $features
+     * @param string $features
      * @param boolean $enabled
      * @throws FeatureNotFoundException
      * @throws IllegalObjectTypeException
