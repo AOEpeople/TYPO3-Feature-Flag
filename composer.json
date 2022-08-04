@@ -70,6 +70,10 @@
             "./.Build/bin/ecs check --config .code-quality/ecs.php",
             "./.Build/bin/rector process --dry-run --config .code-quality/rector.php"
         ],
+        "code-style-upgrade": [
+            "[ -e ./.Build/bin/rector ] || composer install",
+            "./.Build/bin/rector process --dry-run --config .code-quality/rector-8_0.php"
+        ],
         "code-analysis": [
             "./.Build/bin/phpstan analyse -c .code-quality/phpstan.neon --memory-limit=1G"
         ],

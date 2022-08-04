@@ -26,7 +26,6 @@ namespace Aoe\FeatureFlag\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Service\FeatureFlagService;
 use Aoe\FeatureFlag\System\Db\FeatureFlagData;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,10 +35,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class FeatureFlagRepository extends Repository
 {
-    /**
-     * @var FeatureFlagData
-     */
-    private $featureFlagData;
+    private FeatureFlagData $featureFlagData;
 
     public function __construct(FeatureFlagData $featureFlagData)
     {
@@ -49,7 +45,7 @@ class FeatureFlagRepository extends Repository
     }
 
 
-    public function initializeObject()
+    public function initializeObject(): void
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
@@ -58,11 +54,7 @@ class FeatureFlagRepository extends Repository
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
 
-    /**
-     * @param string $flag
-     * @return FeatureFlag
-     */
-    public function findByFlag($flag)
+    public function findByFlag(string $flag): ?object
     {
         $query = $this->createQuery();
         $query->getQuerySettings()
@@ -75,10 +67,7 @@ class FeatureFlagRepository extends Repository
             ->getFirst();
     }
 
-    /**
-     * @param string $table
-     */
-    public function updateFeatureFlagStatusForTable($table)
+    public function updateFeatureFlagStatusForTable(string $table): void
     {
         $this->hideEntries(
             $table,
@@ -98,35 +87,21 @@ class FeatureFlagRepository extends Repository
         );
     }
 
-    /**
-     * @param string $table
-     * @param array $uids
-     */
-    private function hideEntries($table, array $uids)
+    private function hideEntries(string $table, array $uids): void
     {
         if (!empty($uids)) {
             $this->featureFlagData->updateContentElements($table, $uids, false);
         }
     }
 
-    /**
-     * @param string $table
-     * @param array $uids
-     */
-    private function showEntries($table, array $uids)
+    private function showEntries(string $table, array $uids): void
     {
         if (!empty($uids)) {
             $this->featureFlagData->updateContentElements($table, $uids, true);
         }
     }
 
-    /**
-     * @param string $table
-     * @param int $behavior
-     * @param int $enabled
-     * @return array
-     */
-    private function getUpdateEntriesUids($table, $behavior, $enabled)
+    private function getUpdateEntriesUids(string $table, int $behavior, int $enabled): array
     {
         $rows = $this->featureFlagData->getContentElements($table, $behavior, $enabled);
 
@@ -134,6 +109,7 @@ class FeatureFlagRepository extends Repository
             return $rows;
         }
 
+        $uids = [];
         foreach ($rows as $row) {
             $uids[] = $row['uid'];
         }

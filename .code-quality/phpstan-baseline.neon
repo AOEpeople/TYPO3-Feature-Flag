@@ -1,2 +1,26 @@
 parameters:
 	ignoreErrors:
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalAnd\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 1
+			path: ../Classes/Domain/Repository/MappingRepository.php
+
+		-
+			message: "#^Constant LF not found\\.$#"
+			count: 3
+			path: ../Classes/Form/Element/AbstractFormSelectElement.php
+
+		-
+			message: "#^Parameter \\#1 \\.\\.\\.\\$predicates of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\:\\:where\\(\\) expects array\\<int, mixed\\>\\|Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\CompositeExpression, string given\\.$#"
+			count: 1
+			path: ../Classes/System/Db/FeatureFlagData.php
+
+		-
+			message: "#^Method Aoe\\\\FeatureFlag\\\\System\\\\Typo3\\\\TCA\\:\\:updateMapping\\(\\) has parameter \\$featureFlag with no typehint specified\\.$#"
+			count: 1
+			path: ../Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Method Aoe\\\\FeatureFlag\\\\System\\\\Typo3\\\\TCA\\:\\:updateMapping\\(\\) has parameter \\$pid with no typehint specified\\.$#"
+			count: 1
+			path: ../Classes/System/Typo3/TCA.php

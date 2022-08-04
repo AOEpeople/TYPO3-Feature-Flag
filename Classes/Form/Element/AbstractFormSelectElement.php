@@ -37,21 +37,13 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 abstract class AbstractFormSelectElement extends AbstractFormElement
 {
-    /**
-     * @var FeatureFlagRepository
-     */
-    protected $featureFlagRepository;
+    protected object $featureFlagRepository;
 
-    /**
-     * @var MappingRepository
-     */
-    protected $mappingRepository;
+    protected object $mappingRepository;
 
     /**
      * Container objects give $nodeFactory down to other containers.
      *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
      * @param FeatureFlagRepository|null $featureFlagRepository
      * @param MappingRepository|null $mappingRepository
      */
@@ -72,11 +64,8 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
 
     /**
      * This will render a selector box element, or possibly a special construction with two selector boxes.
-     *
-     * @param array $optionElements
-     * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function renderElement(array $optionElements)
+    public function renderElement(array $optionElements): array
     {
         $resultArray = $this->initializeResultArray();
         $parameterArray = $this->data['parameterArray'];
@@ -110,24 +99,19 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
 
     /**
      * Renders a <select> element
-     *
-     * @param array $options
-     * @param array $parameterArray
-     * @param array $config Field configuration
-     * @return string
      */
     protected function renderSelectElement(
         array $options,
         array $parameterArray,
         array $config
-    ) {
+    ): string {
         $attributes = [
             'id' => StringUtility::getUniqueId('tceforms-select-'),
             'name' => $parameterArray['itemFormElName'],
             'class' => 'form-control tceforms-select',
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'disabled' => !empty($config['readOnly']),
-            'size' => (int) $config['size'],
+            'disabled' => (string) !empty($config['readOnly']),
+            'size' => $config['size'],
         ];
 
         $optionElements = [];
@@ -149,13 +133,8 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
 
     /**
      * Renders a single <option> element
-     *
-     * @param string $value The option value
-     * @param string $label The option label
-     * @param array $attributes Map of attribute names and values
-     * @return string
      */
-    protected function renderOptionElement($value, $label, array $attributes = [])
+    protected function renderOptionElement(string $value, string $label, array $attributes = []): string
     {
         $attributes['value'] = $value;
         $html = [
@@ -168,10 +147,7 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
         return implode('', $html);
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

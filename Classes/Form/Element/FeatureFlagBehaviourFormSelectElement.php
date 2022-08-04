@@ -34,10 +34,7 @@ use Aoe\FeatureFlag\Service\FeatureFlagService;
  */
 class FeatureFlagBehaviourFormSelectElement extends AbstractFormSelectElement
 {
-    /**
-     * @return array As defined in initializeResultArray() of AbstractNode
-     */
-    public function render()
+    public function render(): array
     {
         $propertyArray = [
             'table' => $this->data['tableName'],

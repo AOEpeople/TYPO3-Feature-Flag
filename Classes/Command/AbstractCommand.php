@@ -34,15 +34,9 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 
 abstract class AbstractCommand extends Command
 {
-    /**
-     * @var FeatureFlagService
-     */
-    protected $featureFlagService;
+    protected FeatureFlagService $featureFlagService;
 
-    /**
-     * @var SymfonyStyle
-     */
-    protected $inputOutput;
+    protected SymfonyStyle $inputOutput;
 
     public function __construct(FeatureFlagService $featureFlagService)
     {
@@ -52,8 +46,6 @@ abstract class AbstractCommand extends Command
 
     /**
      * Enable or disable features. $features can be a comma-separated list of feature names
-     * @param string $features
-     * @param boolean $enabled
      * @throws FeatureNotFoundException
      * @throws IllegalObjectTypeException
      */
@@ -61,7 +53,7 @@ abstract class AbstractCommand extends Command
     {
         $features = array_map('trim', explode(',', $features));
         foreach ($features as $feature) {
-            $info = ($enabled === true) ? 'Activate' : 'Deactivate';
+            $info = ($enabled) ? 'Activate' : 'Deactivate';
             $this->showInfo($info . ' feature: ' . $feature);
             $this->featureFlagService->updateFeatureFlag($feature, $enabled);
         }
@@ -69,9 +61,6 @@ abstract class AbstractCommand extends Command
         $this->featureFlagService->flagEntries();
     }
 
-    /**
-     * @param string $info
-     */
     protected function showInfo(string $info): void
     {
         $this->inputOutput->block($info, 'INFO', 'fg=green', '', false);

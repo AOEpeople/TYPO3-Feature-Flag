@@ -97,7 +97,7 @@ class FeatureFlagServiceTest extends BaseTest
             ->disableOriginalConstructor()
             ->setMethods(['getTables'])
             ->getMock();
-        $mockConfiguration->expects(self::any())->method('getTables')->willReturn('pages');
+        $mockConfiguration->expects(self::any())->method('getTables')->willReturn(['pages']);
 
         return $mockConfiguration;
     }

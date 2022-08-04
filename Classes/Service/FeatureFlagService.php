@@ -46,31 +46,14 @@ class FeatureFlagService
      */
     public const BEHAVIOR_SHOW = 1;
 
-    /**
-     * @var FeatureFlagRepository
-     */
-    private $featureFlagRepository;
+    private FeatureFlagRepository $featureFlagRepository;
 
-    /**
-     * @var PersistenceManagerInterface
-     */
-    private $persistenceManager;
+    private PersistenceManagerInterface $persistenceManager;
 
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private Configuration $configuration;
 
-    /**
-     * @var array
-     */
-    private $cachedFlags = [];
+    private array $cachedFlags = [];
 
-    /**
-     * @param FeatureFlagRepository $featureFlagRepository
-     * @param PersistenceManagerInterface $persistenceManager
-     * @param Configuration $configuration
-     */
     public function __construct(
         FeatureFlagRepository $featureFlagRepository,
         PersistenceManagerInterface $persistenceManager,
@@ -82,23 +65,19 @@ class FeatureFlagService
     }
 
     /**
-     * @param string $flag
-     * @return bool
      * @throws FeatureNotFoundException
      */
-    public function isFeatureEnabled($flag)
+    public function isFeatureEnabled(string $flag): bool
     {
         return $this->getFeatureFlag($flag)
             ->isEnabled();
     }
 
     /**
-     * @param string $flag
-     * @param bool $enabled
      * @throws FeatureNotFoundException
      * @throws IllegalObjectTypeException
      */
-    public function updateFeatureFlag($flag, $enabled)
+    public function updateFeatureFlag(string $flag, bool $enabled): void
     {
         $flagModel = $this->getFeatureFlag($flag);
         $flagModel->setEnabled($enabled);
@@ -112,7 +91,7 @@ class FeatureFlagService
     /**
      * Flags entries in database
      */
-    public function flagEntries()
+    public function flagEntries(): void
     {
         foreach ($this->configuration->getTables() as $table) {
             $this->featureFlagRepository->updateFeatureFlagStatusForTable($table);
@@ -120,16 +99,14 @@ class FeatureFlagService
     }
 
     /**
-     * @param string $flag
-     * @return FeatureFlag
      * @throws FeatureNotFoundException
      * @throws RuntimeException
      */
-    protected function getFeatureFlag($flag)
+    protected function getFeatureFlag(string $flag): FeatureFlag
     {
-        if (array_key_exists($flag, $this->cachedFlags) === false) {
+        if (!array_key_exists($flag, $this->cachedFlags)) {
             $flagModel = $this->featureFlagRepository->findByFlag($flag);
-            if ($flagModel instanceof FeatureFlag === false) {
+            if (!$flagModel instanceof FeatureFlag) {
                 throw new FeatureNotFoundException('Feature Flag not found: "' . $flag . '"', 1383842028);
             }
             $this->cachedFlags[$flag] = $flagModel;

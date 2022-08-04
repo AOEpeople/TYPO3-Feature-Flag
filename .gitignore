@@ -4,6 +4,9 @@
 # Build folder
 .Build
 
+# Tests folder
+Tests
+
 # PHP Dependencies + Dev
 /composer.lock
 /index.php
@@ -11,3 +14,4 @@
 /typo3_src
 /typo3conf
 /vendor
+var

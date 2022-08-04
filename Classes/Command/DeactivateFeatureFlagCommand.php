@@ -33,7 +33,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DeactivateFeatureFlagCommand extends AbstractCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument(
             'features',

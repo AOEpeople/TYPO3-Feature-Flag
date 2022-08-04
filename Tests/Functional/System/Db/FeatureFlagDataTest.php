@@ -69,7 +69,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
 
         $instance = new FeatureFlagData();
 
-        $instance->updateContentElements('tt_content', [4712], 1);
+        $instance->updateContentElements('tt_content', [4712], false);
         $contentElements = $this->getElementsData('tt_content', 4712);
 
         self::assertEquals(1, $contentElements[0]['hidden']);

@@ -48,10 +48,7 @@ class InfoTextElement extends AbstractFormElement
         return $result;
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

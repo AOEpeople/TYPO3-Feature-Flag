@@ -43,14 +43,7 @@ class FeatureFlagData
      */
     public const TABLE_FLAGS = 'tx_featureflag_domain_model_featureflag';
 
-    /**
-     * @param string $table
-     * @param integer $behavior
-     * @param integer $enabled
-     *
-     * @return array
-     */
-    public function getContentElements($table, $behavior, $enabled)
+    public function getContentElements(string $table, int $behavior, int $enabled): array
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -99,12 +92,7 @@ class FeatureFlagData
             ->fetchAllAssociative();
     }
 
-    /**
-     * @param string $table
-     * @param array $uids
-     * @param bool $isVisible
-     */
-    public function updateContentElements($table, array $uids, $isVisible)
+    public function updateContentElements(string $table, array $uids, bool $isVisible): void
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -115,19 +103,13 @@ class FeatureFlagData
 
         $query = $queryBuilder
             ->update($table)
-            ->set('hidden', $isVisible === true ? 0 : 1)
+            ->set('hidden', $isVisible ? 0 : 1)
             ->add('where', $queryBuilder->expr()->in('uid', $uids));
 
         $query->execute();
     }
 
-    /**
-     * @param string $table
-     * @param integer $uid
-     *
-     * @return string
-     */
-    public function getContentElementsPIDs($table, $uid)
+    public function getContentElementsPIDs(string $table, int $uid): string
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -148,6 +130,6 @@ class FeatureFlagData
             );
 
         return $query->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 }

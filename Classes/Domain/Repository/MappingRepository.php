@@ -26,7 +26,6 @@ namespace Aoe\FeatureFlag\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeatureFlag\Domain\Model\Mapping;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -34,7 +33,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class MappingRepository extends Repository
 {
-    public function initializeObject()
+    public function initializeObject(): void
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
@@ -45,23 +44,16 @@ class MappingRepository extends Repository
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
 
-    /**
-     * @param int $foreignTableUid
-     * @param string $foreignTableName
-     * @return Mapping
-     */
-    public function findOneByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
+    public function findOneByForeignTableNameAndUid(int $foreignTableUid, string $foreignTableName): ?object
     {
         return $this->findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
             ->getFirst();
     }
 
     /**
-     * @param int $foreignTableUid
-     * @param string $foreignTableName
      * @return QueryResultInterface
      */
-    public function findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
+    public function findAllByForeignTableNameAndUid(int $foreignTableUid, string $foreignTableName)
     {
         $query = $this->createQuery();
         $query->matching(
@@ -74,10 +66,9 @@ class MappingRepository extends Repository
     }
 
     /**
-     * @param $featureFlagId
      * @return array|QueryResultInterface
      */
-    public function findAllByFeatureFlag($featureFlagId)
+    public function findAllByFeatureFlag(string $featureFlagId)
     {
         $query = $this->createQuery();
         $query->getQuerySettings()
@@ -88,10 +79,7 @@ class MappingRepository extends Repository
         return $query->execute();
     }
 
-    /**
-     * @return array
-     */
-    public function getHashedMappings()
+    public function getHashedMappings(): array
     {
         $mappings = $this->createQuery()
             ->execute(true);

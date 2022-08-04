@@ -42,9 +42,6 @@ class Configuration implements SingletonInterface
      */
     private $configuration = [];
 
-    /**
-     * @param ExtensionConfiguration $extensionConfiguration
-     */
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
         $configuration = $extensionConfiguration->get('feature_flag');
@@ -53,20 +50,16 @@ class Configuration implements SingletonInterface
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getTables()
+    public function getTables(): array
     {
         return explode(',', $this->get(self::CONF_TABLES));
     }
 
     /**
-     * @param string $key
      * @return mixed
      * @throws InvalidArgumentException
      */
-    public function get($key)
+    public function get(string $key)
     {
         if (array_key_exists($key, $this->configuration)) {
             return $this->configuration[$key];

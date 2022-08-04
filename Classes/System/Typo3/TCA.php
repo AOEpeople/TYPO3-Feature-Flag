@@ -49,25 +49,18 @@ class TCA
      */
     public const FIELD_FLAG = 'tx_featureflag_flag';
 
-    /**
-     * @var QueryResultInterface
-     */
-    protected static $hashedMappings;
+    protected static ?array $hashedMappings = null;
 
     /**
      * Hook for updates in Typo3 backend
-     * @param array $incomingFieldArray
-     * @param string $table
-     * @param integer $id
-     * @param DataHandler $dataHandler
      * @codingStandardsIgnoreStart
      */
     public function processDatamap_preProcessFieldArray(
-        &$incomingFieldArray,
-        $table,
-        $id,
+        array &$incomingFieldArray,
+        string $table,
+        int $id,
         DataHandler $dataHandler
-    ) {
+    ): void {
         // @codingStandardsIgnoreEnd
         if (
             array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) &&
@@ -82,12 +75,9 @@ class TCA
 
     /**
      * Hook for deletes in Typo3 Backend. It also delete all overwrite protection
-     * @param string $command
-     * @param string $table
-     * @param integer $id
      * @codingStandardsIgnoreStart
      */
-    public function processCmdmap_postProcess($command, $table, $id)
+    public function processCmdmap_postProcess(string $command, string $table, int $id): void
     {
         // @codingStandardsIgnoreEnd
         if ($command !== 'delete') {
@@ -95,7 +85,7 @@ class TCA
         }
         $mappings = $this->getMappingRepository()
             ->findAllByForeignTableNameAndUid($id, $table);
-        if (is_array($mappings) === false && false === ($mappings instanceof QueryResultInterface)) {
+        if (!is_array($mappings) && !$mappings instanceof QueryResultInterface) {
             return;
         }
         foreach ($mappings as $mapping) {
@@ -108,14 +98,7 @@ class TCA
             ->persistAll();
     }
 
-    /**
-     * @param string $table
-     * @param array $row
-     * @param string $status
-     * @param string $iconName
-     * @return string
-     */
-    public function postOverlayPriorityLookup($table, $row, &$status, $iconName)
+    public function postOverlayPriorityLookup(string $table, array $row, string &$status, string $iconName): string
     {
         if ($this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
             $mapping = $this->getMappingRepository()
@@ -137,25 +120,21 @@ class TCA
     }
 
     /**
-     * @param string $table
-     * @param int $id
-     * @param int $featureFlag
-     * @param int $pid
-     * @param string $behavior
+     * @todo fix code style
      */
-    protected function updateMapping($table, $id, $featureFlag, $pid, $behavior)
+    protected function updateMapping(string $table, int $id, $featureFlag, $pid, string $behavior): void
     {
         $mapping = $this->getMappingRepository()
             ->findOneByForeignTableNameAndUid($id, $table);
         if ($mapping instanceof Mapping) {
-            if ($featureFlag === '0') {
+            if ($featureFlag == '0') {
                 $this->getMappingRepository()
                     ->remove($mapping);
             } else {
                 $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
                 $mapping->setBehavior($behavior);
             }
-            $mapping->setTstamp(time());
+            $mapping->setTstamp((string) time());
             $this->getMappingRepository()
                 ->update($mapping);
         } elseif ($featureFlag !== '0') {
@@ -165,8 +144,8 @@ class TCA
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             $mapping->setForeignTableName($table);
             $mapping->setForeignTableUid($id);
-            $mapping->setCrdate(time());
-            $mapping->setTstamp(time());
+            $mapping->setCrdate((string) time());
+            $mapping->setTstamp((string) time());
             $mapping->setBehavior($behavior);
             $this->getMappingRepository()
                 ->add($mapping);
@@ -175,72 +154,44 @@ class TCA
             ->persistAll();
     }
 
-    /**
-     * @param int $foreignTableUid
-     * @param string $foreignTableName
-     * @return bool
-     */
-    protected function isMappingAvailableForTableAndUid($foreignTableUid, $foreignTableName)
+    protected function isMappingAvailableForTableAndUid(int $foreignTableUid, string $foreignTableName): bool
     {
         if (self::$hashedMappings === null) {
             self::$hashedMappings = $this->getMappingRepository()->getHashedMappings();
         }
         $identifier = sha1($foreignTableUid . '_' . $foreignTableName);
-        if (array_key_exists($identifier, self::$hashedMappings)) {
-            return true;
-        }
 
-        return false;
+        return property_exists(self::$hashedMappings, $identifier);
     }
 
     /**
-     * @param int $uid
-     * @return FeatureFlag
      * @throws FeatureNotFoundException
      */
-    protected function getFeatureFlagByUid($uid)
+    protected function getFeatureFlagByUid(int $uid): FeatureFlag
     {
         /** @var FeatureFlag $featureFlag */
         $featureFlag = $this->getFeatureFlagRepository()
             ->findByUid($uid);
-        if (false === ($featureFlag instanceof FeatureFlag)) {
-            throw new FeatureNotFoundException(
-                'Feature Flag not found by uid: "' . $uid . '"',
-                1384340431
-            );
-        }
 
         return $featureFlag;
     }
 
-    /**
-     * @return MappingRepository
-     */
-    protected function getMappingRepository()
+    protected function getMappingRepository(): object
     {
         return GeneralUtility::makeInstance(MappingRepository::class);
     }
 
-    /**
-     * @return FeatureFlagRepository
-     */
-    protected function getFeatureFlagRepository()
+    protected function getFeatureFlagRepository(): object
     {
         return GeneralUtility::makeInstance(FeatureFlagRepository::class);
     }
 
-    /**
-     * @return PersistenceManager
-     */
-    protected function getPersistenceManager()
+    protected function getPersistenceManager(): object
     {
         return GeneralUtility::makeInstance(PersistenceManager::class);
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

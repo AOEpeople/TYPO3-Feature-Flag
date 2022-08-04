@@ -95,16 +95,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ChangeReadOnlyVariableWithDefaultValueToConstantRector::class,
             PrivatizeLocalPropertyToPrivatePropertyRector::class,
             RemoveDelegatingParentCallRector::class,
-
-            // @todo strict php
-            ArgumentAdderRector::class,
-            ParamTypeDeclarationRector::class,
-            ReturnTypeDeclarationRector::class,
-            RemoveExtraParametersRector::class,
-            EncapsedStringsToSprintfRector::class,
-            AddFalseDefaultToBoolPropertyRector::class,
-            WrapEncapsedVariableInCurlyBracesRector::class,
-            UseIdenticalOverEqualWithSameTypeRector::class,
+            RemoveExtraParametersRector::class => [
+                __DIR__ . '/../Classes/Domain/Repository/MappingRepository.php'
+            ]
         ]
     );
 

@@ -30,149 +30,86 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class Mapping extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $tstamp;
+    protected ?string $tstamp = null;
 
-    /**
-     * @var string
-     */
-    protected $crdate;
+    protected ?string $crdate = null;
 
-    /**
-     * @var \Aoe\FeatureFlag\Domain\Model\FeatureFlag
-     */
-    protected $featureFlag;
+    protected ?FeatureFlag $featureFlag = null;
 
-    /**
-     * @var int
-     */
-    protected $foreignTableUid;
+    protected ?int $foreignTableUid = null;
 
-    /**
-     * @var string
-     */
-    protected $foreignTableName;
+    protected ?string $foreignTableName = null;
 
-    /**
-     * @var int
-     */
-    protected $foreignTableColumn;
+    protected ?string $foreignTableColumn = null;
 
-    /**
-     * @var string
-     */
-    protected $behavior;
+    protected ?string $behavior = null;
 
-    /**
-     * @param string $crdate
-     */
-    public function setCrdate($crdate)
+    public function setCrdate(string $crdate): void
     {
         $this->crdate = $crdate;
     }
 
-    /**
-     * @return string
-     */
-    public function getCrdate()
+    public function getCrdate(): ?string
     {
         return $this->crdate;
     }
 
-    /**
-     * @param \Aoe\FeatureFlag\Domain\Model\FeatureFlag $featureFlag
-     */
-    public function setFeatureFlag(FeatureFlag $featureFlag)
+    public function setFeatureFlag(FeatureFlag $featureFlag): void
     {
         $this->featureFlag = $featureFlag;
     }
 
-    /**
-     * @return \Aoe\FeatureFlag\Domain\Model\FeatureFlag
-     */
-    public function getFeatureFlag()
+    public function getFeatureFlag(): ?FeatureFlag
     {
         return $this->featureFlag;
     }
 
-    /**
-     * @param int $foreignTableColumn
-     */
-    public function setForeignTableColumn($foreignTableColumn)
+    public function setForeignTableColumn(string $foreignTableColumn): void
     {
         $this->foreignTableColumn = $foreignTableColumn;
     }
 
-    /**
-     * @return int
-     */
-    public function getForeignTableColumn()
+    public function getForeignTableColumn(): ?string
     {
         return $this->foreignTableColumn;
     }
 
-    /**
-     * @param string $foreignTableName
-     */
-    public function setForeignTableName($foreignTableName)
+    public function setForeignTableName(string $foreignTableName): void
     {
         $this->foreignTableName = $foreignTableName;
     }
 
-    /**
-     * @return string
-     */
-    public function getForeignTableName()
+    public function getForeignTableName(): ?string
     {
         return $this->foreignTableName;
     }
 
-    /**
-     * @param int $foreignTableUid
-     */
-    public function setForeignTableUid($foreignTableUid)
+    public function setForeignTableUid(int $foreignTableUid): void
     {
         $this->foreignTableUid = $foreignTableUid;
     }
 
-    /**
-     * @return int
-     */
-    public function getForeignTableUid()
+    public function getForeignTableUid(): ?int
     {
         return $this->foreignTableUid;
     }
 
-    /**
-     * @param string $tstamp
-     */
-    public function setTstamp($tstamp)
+    public function setTstamp(string $tstamp): void
     {
         $this->tstamp = $tstamp;
     }
 
-    /**
-     * @return string
-     */
-    public function getTstamp()
+    public function getTstamp(): ?string
     {
         return $this->tstamp;
     }
 
-    /**
-     * @param string $behavior
-     */
-    public function setBehavior($behavior)
+    public function setBehavior(string $behavior): void
     {
-        $this->behavior = (int) $behavior;
+        $this->behavior = $behavior;
     }
 
-    /**
-     * @return int
-     */
-    public function getBehavior()
+    public function getBehavior(): int
     {
         return (int) $this->behavior;
     }

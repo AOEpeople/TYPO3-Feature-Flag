@@ -26,7 +26,6 @@ namespace Aoe\FeatureFlag\Form\Element;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Domain\Model\Mapping;
 
 /**
@@ -34,10 +33,7 @@ use Aoe\FeatureFlag\Domain\Model\Mapping;
  */
 class FeatureFlagFormSelectElement extends AbstractFormSelectElement
 {
-    /**
-     * @return array As defined in initializeResultArray() of AbstractNode
-     */
-    public function render()
+    public function render(): array
     {
         $propertyArray = [
             'table' => $this->data['tableName'],
@@ -59,7 +55,6 @@ class FeatureFlagFormSelectElement extends AbstractFormSelectElement
         ];
 
         foreach ($this->featureFlagRepository->findAll() as $featureFlag) {
-            /** @var FeatureFlag $featureFlag */
             $selected = false;
             if ($activeMapping instanceof Mapping &&
                 $activeMapping->getFeatureFlag()

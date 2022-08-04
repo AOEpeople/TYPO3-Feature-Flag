@@ -30,65 +30,38 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class FeatureFlag extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $description;
+    protected ?string $description = null;
 
-    /**
-     * @var string
-     */
-    protected $flag;
+    protected ?string $flag = null;
 
-    /**
-     * @var boolean
-     */
-    protected $enabled;
+    protected bool $enabled = false;
 
-    /**
-     * @param boolean $enabled
-     */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $flag
-     */
-    public function setFlag($flag)
+    public function setFlag(string $flag): void
     {
         $this->flag = $flag;
     }
 
-    /**
-     * @return string
-     */
-    public function getFlag()
+    public function getFlag(): ?string
     {
         return $this->flag;
     }
