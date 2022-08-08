@@ -58,7 +58,7 @@ class TCA
     public function processDatamap_preProcessFieldArray(
         array &$incomingFieldArray,
         string $table,
-        int $id,
+        string $id,
         DataHandler $dataHandler
     ): void {
         // @codingStandardsIgnoreEnd
@@ -66,7 +66,7 @@ class TCA
             array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) &&
             array_key_exists(self::FIELD_FLAG, $incomingFieldArray)
         ) {
-            $pid = $dataHandler->getPID($table, $id);
+            $pid = $dataHandler->getPID($table, (int) $id);
             $this->updateMapping($table, $id, $incomingFieldArray[self::FIELD_FLAG], $pid, $incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_FLAG]);
@@ -98,9 +98,9 @@ class TCA
             ->persistAll();
     }
 
-    public function postOverlayPriorityLookup(string $table, array $row, string &$status, string $iconName): string
+    public function postOverlayPriorityLookup(string $table, array $row, array $status, string $iconName): string
     {
-        if ($this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
+        if ($row['uid'] && $this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
             $mapping = $this->getMappingRepository()
                 ->findOneByForeignTableNameAndUid($row['uid'], $table);
             if ($mapping instanceof Mapping) {
@@ -122,7 +122,7 @@ class TCA
     /**
      * @todo fix code style
      */
-    protected function updateMapping(string $table, int $id, $featureFlag, $pid, string $behavior): void
+    protected function updateMapping(string $table, string $id, $featureFlag, $pid, string $behavior): void
     {
         $mapping = $this->getMappingRepository()
             ->findOneByForeignTableNameAndUid($id, $table);
@@ -143,7 +143,7 @@ class TCA
             $mapping->setPid($pid);
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             $mapping->setForeignTableName($table);
-            $mapping->setForeignTableUid($id);
+            $mapping->setForeignTableUid((int) $id);
             $mapping->setCrdate((string) time());
             $mapping->setTstamp((string) time());
             $mapping->setBehavior($behavior);
@@ -154,14 +154,14 @@ class TCA
             ->persistAll();
     }
 
-    protected function isMappingAvailableForTableAndUid(int $foreignTableUid, string $foreignTableName): bool
+    protected function isMappingAvailableForTableAndUid(string $foreignTableUid, string $foreignTableName): bool
     {
         if (self::$hashedMappings === null) {
             self::$hashedMappings = $this->getMappingRepository()->getHashedMappings();
         }
         $identifier = sha1($foreignTableUid . '_' . $foreignTableName);
 
-        return property_exists(self::$hashedMappings, $identifier);
+        return array_key_exists($identifier, self::$hashedMappings);
     }
 
     /**
