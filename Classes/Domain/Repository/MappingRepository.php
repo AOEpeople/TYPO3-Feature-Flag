@@ -44,7 +44,7 @@ class MappingRepository extends Repository
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
 
-    public function findOneByForeignTableNameAndUid(int $foreignTableUid, string $foreignTableName): ?object
+    public function findOneByForeignTableNameAndUid(string $foreignTableUid, string $foreignTableName): ?object
     {
         return $this->findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
             ->getFirst();
@@ -53,7 +53,7 @@ class MappingRepository extends Repository
     /**
      * @return QueryResultInterface
      */
-    public function findAllByForeignTableNameAndUid(int $foreignTableUid, string $foreignTableName)
+    public function findAllByForeignTableNameAndUid(string $foreignTableUid, string $foreignTableName)
     {
         $query = $this->createQuery();
         $query->matching(

@@ -143,7 +143,7 @@ class TCA
             $mapping->setPid($pid);
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
             $mapping->setForeignTableName($table);
-            $mapping->setForeignTableUid((int) $id);
+            $mapping->setForeignTableUid($id);
             $mapping->setCrdate((string) time());
             $mapping->setTstamp((string) time());
             $mapping->setBehavior($behavior);
