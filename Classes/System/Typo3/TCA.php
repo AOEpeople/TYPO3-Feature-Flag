@@ -67,7 +67,7 @@ class TCA
             array_key_exists(self::FIELD_FLAG, $incomingFieldArray)
         ) {
             $pid = $dataHandler->getPID($table, (int) $id);
-            $this->updateMapping($table, $id, $incomingFieldArray[self::FIELD_FLAG], $pid, $incomingFieldArray[self::FIELD_BEHAVIOR]);
+            $this->updateMapping($table, (int) $id, $incomingFieldArray[self::FIELD_FLAG], $pid, $incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_FLAG]);
         }
@@ -122,7 +122,7 @@ class TCA
     /**
      * @todo fix code style
      */
-    protected function updateMapping(string $table, string $id, $featureFlag, $pid, string $behavior): void
+    protected function updateMapping(string $table, int $id, $featureFlag, $pid, string $behavior): void
     {
         $mapping = $this->getMappingRepository()
             ->findOneByForeignTableNameAndUid($id, $table);

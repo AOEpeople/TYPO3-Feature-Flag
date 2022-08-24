@@ -84,12 +84,12 @@ class Mapping extends AbstractEntity
         return $this->foreignTableName;
     }
 
-    public function setForeignTableUid(string $foreignTableUid): void
+    public function setForeignTableUid(int $foreignTableUid): void
     {
         $this->foreignTableUid = $foreignTableUid;
     }
 
-    public function getForeignTableUid(): ?string
+    public function getForeignTableUid(): ?int
     {
         return $this->foreignTableUid;
     }
