@@ -4,9 +4,6 @@
 # Build folder
 .Build
 
-# Tests folder
-Tests
-
 # PHP Dependencies + Dev
 /composer.lock
 /index.php
