@@ -56,7 +56,7 @@ class TCA
      * @codingStandardsIgnoreStart
      */
     public function processDatamap_preProcessFieldArray(
-        array &$incomingFieldArray,
+        array & $incomingFieldArray,
         string $table,
         string $id,
         DataHandler $dataHandler
