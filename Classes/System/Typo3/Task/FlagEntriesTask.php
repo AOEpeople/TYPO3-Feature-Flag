@@ -31,11 +31,10 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 class FlagEntriesTask extends AbstractTask
 {
-    protected FeatureFlagService $featureFlagService;
+    protected ?FeatureFlagService $featureFlagService = null;
 
-    public function __construct(FeatureFlagService $featureFlagService)
+    public function injectFeatureFlagService(FeatureFlagService $featureFlagService): void
     {
-        parent::__construct();
         $this->featureFlagService = $featureFlagService;
     }
 
