@@ -28,6 +28,7 @@ services:
         command: 'featureflag:toggleRecords'
         description: 'Update the visibility of records (e.g. content elements), which are connected with features'
         schedulable: true
+        hidden: false
 
   # EventListeners
   Aoe\FeatureFlag\System\Typo3\TcaPostProcessor:
