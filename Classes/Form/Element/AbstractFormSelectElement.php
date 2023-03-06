@@ -108,7 +108,7 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
         $attributes = [
             'id' => StringUtility::getUniqueId('tceforms-select-'),
             'name' => $parameterArray['itemFormElName'],
-            'class' => 'form-control tceforms-select',
+            'class' => 'form-select tceforms-select',
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'disabled' => (string) !empty($config['readOnly']),
             'size' => $config['size'],
