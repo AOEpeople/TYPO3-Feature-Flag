@@ -100,7 +100,7 @@ class TCA
 
     public function postOverlayPriorityLookup(string $table, array $row, array $status, string $iconName): string
     {
-        if ($row['uid'] && $this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
+        if (!empty($row['uid']) && $this->isMappingAvailableForTableAndUid($row['uid'], $table)) {
             $mapping = $this->getMappingRepository()
                 ->findOneByForeignTableNameAndUid($row['uid'], $table);
             if ($mapping instanceof Mapping) {
