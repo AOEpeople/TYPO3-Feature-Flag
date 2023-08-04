@@ -57,7 +57,6 @@ class Configuration implements SingletonInterface
 
     /**
      * @return mixed
-     * @throws InvalidArgumentException
      */
     public function get(string $key)
     {

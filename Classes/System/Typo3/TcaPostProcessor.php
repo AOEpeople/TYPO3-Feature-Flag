@@ -89,6 +89,7 @@ class TcaPostProcessor
         if (isset($config['tables'])) {
             return explode(',', $config['tables']);
         }
+
         return [];
     }
 }

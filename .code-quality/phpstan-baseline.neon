@@ -11,16 +11,11 @@ parameters:
 			path: ../Classes/Form/Element/AbstractFormSelectElement.php
 
 		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$predicates of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\:\\:where\\(\\) expects array\\<int, mixed\\>\\|Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\CompositeExpression, string given\\.$#"
+			message: "#^Instead of abstract class, use specific service with composition$#"
 			count: 1
-			path: ../Classes/System/Db/FeatureFlagData.php
+			path: ../Classes/Form/Element/AbstractFormSelectElement.php
 
 		-
-			message: "#^Method Aoe\\\\FeatureFlag\\\\System\\\\Typo3\\\\TCA\\:\\:updateMapping\\(\\) has parameter \\$featureFlag with no typehint specified\\.$#"
+			message: "#^Use custom exceptions instead of native \\\"InvalidArgumentException\\\"$#"
 			count: 1
-			path: ../Classes/System/Typo3/TCA.php
-
-		-
-			message: "#^Method Aoe\\\\FeatureFlag\\\\System\\\\Typo3\\\\TCA\\:\\:updateMapping\\(\\) has parameter \\$pid with no typehint specified\\.$#"
-			count: 1
-			path: ../Classes/System/Typo3/TCA.php
+			path: ../Classes/System/Typo3/Configuration.php

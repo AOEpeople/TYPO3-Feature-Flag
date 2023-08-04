@@ -43,9 +43,6 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
 
     /**
      * Container objects give $nodeFactory down to other containers.
-     *
-     * @param FeatureFlagRepository|null $featureFlagRepository
-     * @param MappingRepository|null $mappingRepository
      */
     public function __construct(
         NodeFactory $nodeFactory,
