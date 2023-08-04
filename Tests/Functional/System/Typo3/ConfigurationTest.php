@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
 
 /***************************************************************
