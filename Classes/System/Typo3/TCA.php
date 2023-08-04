@@ -75,7 +75,7 @@ class TCA
     }
 
     /**
-     * Hook for deletes in Typo3 Backend. It also delete all overwrite protection
+     * Hook for deletes in Typo3 Backend. It also deletes all overwrite protection
      * @codingStandardsIgnoreStart
      */
     public function processCmdmap_postProcess(string $command, string $table, int $id): void

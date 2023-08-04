@@ -46,16 +46,19 @@ class MappingRepository extends Repository
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
 
-    public function findOneByForeignTableNameAndUid(string $foreignTableUid, string $foreignTableName): ?object
+    /**
+     * @param int|string $foreignTableUid
+     */
+    public function findOneByForeignTableNameAndUid($foreignTableUid, string $foreignTableName): ?object
     {
         return $this->findAllByForeignTableNameAndUid($foreignTableUid, $foreignTableName)
             ->getFirst();
     }
 
     /**
-     * @return QueryResultInterface
+     * @param int|string $foreignTableUid
      */
-    public function findAllByForeignTableNameAndUid(string $foreignTableUid, string $foreignTableName)
+    public function findAllByForeignTableNameAndUid($foreignTableUid, string $foreignTableName): QueryResultInterface
     {
         $query = $this->createQuery();
         $query->matching(

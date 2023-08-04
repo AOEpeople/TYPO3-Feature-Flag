@@ -132,8 +132,9 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
 
     /**
      * Renders a single <option> element
+     * @param int|string $value
      */
-    protected function renderOptionElement(string $value, string $label, array $attributes = []): string
+    protected function renderOptionElement($value, string $label, array $attributes = []): string
     {
         $attributes['value'] = $value;
         $html = [
