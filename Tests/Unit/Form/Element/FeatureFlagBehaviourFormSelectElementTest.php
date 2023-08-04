@@ -4,7 +4,7 @@ namespace Aoe\FeatureFlag\Tests\Unit\Form\Element;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2023 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *

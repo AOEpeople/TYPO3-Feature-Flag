@@ -20,12 +20,12 @@ composer require aoe/feature-flag
 
 ## Versions and Support
 
-| Release  | TYPO3    | PHP     | Fixes will contain
-|----------|----------|---------|--------------------|
-| 11.x.y   | 11.5     | 7.4-8.2 | Features, Bugfixes, Security Updates
-|  9.x.y   | 9.5-10.4 | 7.2-7.4 | Security Updates
-|  8.x.y   | 8.7      | 7.2-7.4 | Security Updates
-|  5.x.y   | 7.6      | 5.5-5.6 | End of life
+| Release  | TYPO3    | PHP     | Fixes will contain                    |
+|----------|----------|---------|---------------------------------------|
+| 11.x.y   | 11.5     | 8.0-8.2 | Features, Bugfixes, Security Updates  |
+|  9.x.y   | 9.5-10.4 | 7.2-7.4 | Security Updates                      |
+|  8.x.y   | 8.7      | 7.2-7.4 | Security Updates                      |
+|  5.x.y   | 7.6      | 5.5-5.6 | End of life                           |
 
 ## Copyright / License
 

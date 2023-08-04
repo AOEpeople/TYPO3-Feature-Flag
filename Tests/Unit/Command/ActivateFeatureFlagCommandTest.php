@@ -6,7 +6,7 @@ use Aoe\FeatureFlag\Command\ActivateFeatureFlagCommand;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2022 AOE GmbH <dev@aoe.com>
+ *  (c) 2023 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
