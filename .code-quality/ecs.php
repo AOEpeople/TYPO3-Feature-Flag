@@ -5,8 +5,6 @@ declare(strict_types=1);
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
 use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
-use PhpCsFixer\Fixer\Strict\StrictComparisonFixer;
-use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer;
 use PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayListItemNewlineFixer;
@@ -57,9 +55,6 @@ return static function (ECSConfig $ecsConfig): void {
             DocBlockLineLengthFixer::class => null,
             '\SlevomatCodingStandard\Sniffs\Whitespaces\DuplicateSpacesSniff.DuplicateSpaces' => null,
             '\SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff.PartialUse' => null,
-
-            StrictComparisonFixer::class => null,
-            StrictParamFixer::class => null,
         ]
     );
 };
