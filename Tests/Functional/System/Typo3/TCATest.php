@@ -92,7 +92,7 @@ class TCATest extends FunctionalTestCase
     /**
      * @test
      */
-    public function processDatamapDoNothingIfNothingSelected()
+    public function processDatamapDoNothingIfNothingSelected(): void
     {
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
@@ -112,15 +112,15 @@ class TCATest extends FunctionalTestCase
         $dataHandlerMock = $this->createMock(DataHandler::class);
         $incomingFieldArray = [
             'tx_featureflag_flag' => '0',
-            'tx_featureflag_behavior' => '0',
+            'tx_featureflag_behavior' => 0,
         ];
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $dataHandlerMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', "4711", $dataHandlerMock);
     }
 
     /**
      * @test
      */
-    public function processDatamapDoNothingIfNotInFeatureFlagContext()
+    public function processDatamapDoNothingIfNotInFeatureFlagContext(): void
     {
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
@@ -139,13 +139,13 @@ class TCATest extends FunctionalTestCase
 
         $dataHandlerMock = $this->createMock(DataHandler::class);
         $incomingFieldArray = ['hidden' => '0'];
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $dataHandlerMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', "4711", $dataHandlerMock);
     }
 
     /**
      * @test
      */
-    public function processDatamapRemoveMappingIfNothingSelectedAndMappingExists()
+    public function processDatamapRemoveMappingIfNothingSelectedAndMappingExists(): void
     {
         $mapping = $this->createMock(Mapping::class);
         $mappingRepository = $this
@@ -164,15 +164,15 @@ class TCATest extends FunctionalTestCase
         $dataHandlerMock = $this->createMock(DataHandler::class);
         $incomingFieldArray = [
             'tx_featureflag_flag' => '0',
-            'tx_featureflag_behavior' => '0',
+            'tx_featureflag_behavior' => 0,
         ];
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $dataHandlerMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', "4711", $dataHandlerMock);
     }
 
     /**
      * @test
      */
-    public function processDatamapCreateNewMappingIfFeatureFlagGivenAndNoMappingPreviouslyCreated()
+    public function processDatamapCreateNewMappingIfFeatureFlagGivenAndNoMappingPreviouslyCreated(): void
     {
         $featureFlag = $this
             ->getMockBuilder(FeatureFlag::class)
@@ -198,15 +198,15 @@ class TCATest extends FunctionalTestCase
         $dataHandlerMock->expects(self::once())->method('getPID')->willReturn(678);
         $incomingFieldArray = [
             'tx_featureflag_flag' => '4711',
-            'tx_featureflag_behavior' => '0',
+            'tx_featureflag_behavior' => 0,
         ];
-        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 123, $dataHandlerMock);
+        $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', "123", $dataHandlerMock);
     }
 
     /**
      * @test
      */
-    public function processCmdmapCommandIsNotDelete()
+    public function processCmdmapCommandIsNotDelete(): void
     {
         $this->tca->expects(self::never())->method('getMappingRepository');
         $this->tca->processCmdmap_postProcess('not_delete', 'my_table', 4711);
@@ -215,7 +215,7 @@ class TCATest extends FunctionalTestCase
     /**
      * @test
      */
-    public function processCmdmappostIsDelete()
+    public function processCmdmappostIsDelete(): void
     {
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
@@ -235,7 +235,7 @@ class TCATest extends FunctionalTestCase
     /**
      * @return array
      */
-    protected function getListOfMappings()
+    protected function getListOfMappings(): array
     {
         $mapping1 = $this->createMock(Mapping::class);
         $mapping2 = $this->createMock(Mapping::class);
@@ -247,7 +247,7 @@ class TCATest extends FunctionalTestCase
     /**
      * @return array
      */
-    protected function getListOfFeatureFlags()
+    protected function getListOfFeatureFlags(): array
     {
         $featureFlag1 = $this
             ->getMockBuilder(FeatureFlag::class)

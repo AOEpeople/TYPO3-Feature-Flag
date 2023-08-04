@@ -30,24 +30,13 @@ use Aoe\FeatureFlag\Tests\Unit\BaseTest;
 
 class FeatureFlagTest extends BaseTest
 {
-    /**
-     * @var FeatureFlag
-     */
-    private $featureFlag;
+    private ?FeatureFlag $featureFlag = null;
 
-    /**
-     * (non-PHPdoc)
-     * @see TestCase::setUp()
-     */
     protected function setUp(): void
     {
         $this->featureFlag = new FeatureFlag();
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see TestCase::tearDown()
-     */
     protected function tearDown(): void
     {
         $this->featureFlag = null;
@@ -57,13 +46,13 @@ class FeatureFlagTest extends BaseTest
     /**
      * @test
      */
-    public function checkProperties()
+    public function checkProperties(): void
     {
         $this->featureFlag->setDescription('This is a test description');
         $this->featureFlag->setEnabled(true);
         $this->featureFlag->setFlag('my_new_feature_flag');
         self::assertTrue($this->featureFlag->isEnabled());
-        self::assertEquals($this->featureFlag->getDescription(), 'This is a test description');
-        self::assertEquals($this->featureFlag->getFlag(), 'my_new_feature_flag');
+        self::assertEquals('This is a test description', $this->featureFlag->getDescription());
+        self::assertEquals('my_new_feature_flag', $this->featureFlag->getFlag());
     }
 }

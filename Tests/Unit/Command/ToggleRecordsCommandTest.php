@@ -32,7 +32,7 @@ class ToggleRecordsCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function shouldRunCommand()
+    public function shouldRunCommand(): void
     {
         $this->runCommand(ToggleRecordsCommand::class);
         self::assertThatFeaturesAreNotActivated();

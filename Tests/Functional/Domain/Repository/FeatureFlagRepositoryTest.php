@@ -59,10 +59,9 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::findByFlag()
      * @test
      */
-    public function shouldGetFeatureFlagByFlagName()
+    public function shouldGetFeatureFlagByFlagName(): void
     {
         $this->importDataSet(__DIR__ . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
         $flag = $this->featureFlagRepository->findByFlag('my_test_feature_flag');
@@ -70,13 +69,9 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
-     *
      * @test
      */
-    public function shouldHideElementForBehaviorHideAndEnabledFeatureFlag()
+    public function shouldHideElementForBehaviorHideAndEnabledFeatureFlag(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -94,13 +89,9 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
-     *
      * @test
      */
-    public function shouldHideElementForBehaviorShowAndDisabledFeatureFlag()
+    public function shouldHideElementForBehaviorShowAndDisabledFeatureFlag(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -118,13 +109,9 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
-     *
      * @test
      */
-    public function shouldShowElementForBehaviorShowAndEnabledFeatureFlag()
+    public function shouldShowElementForBehaviorShowAndEnabledFeatureFlag(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -142,13 +129,9 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
-     *
      * @test
      */
-    public function shouldShowElementForBehaviorHideAndDisabledFeatureFlag()
+    public function shouldShowElementForBehaviorHideAndDisabledFeatureFlag(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -164,15 +147,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
         self::assertEquals(0, $contentElements[0]['hidden']);
     }
 
-    /**
-     * Helper function for testing return
-     *
-     * @param string $table
-     * @param integer $uid
-     *
-     * @return array
-     */
-    public function getElementsData($table, $uid)
+    public function getElementsData(string $table, int $uid): array
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

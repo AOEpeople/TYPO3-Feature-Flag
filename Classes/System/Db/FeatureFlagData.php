@@ -111,7 +111,7 @@ class FeatureFlagData
         $query->execute();
     }
 
-    public function getContentElementsPIDs(string $table, int $uid): string
+    public function getContentElementsPIDs(string $table, int $uid): int
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

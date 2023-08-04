@@ -19,3 +19,33 @@ parameters:
 			message: "#^Use custom exceptions instead of native \\\"InvalidArgumentException\\\"$#"
 			count: 1
 			path: ../Classes/System/Typo3/Configuration.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject::run\\(\\)\\.$#"
+			count: 1
+			path: ../Tests/Unit/Command/AbstractCommandTest.php
+
+		-
+			message: "#^Unable to resolve the template type RealInstanceType in call to method (.*)$#"
+			count: 1
+			path: ../Tests/Unit/Command/AbstractCommandTest.php
+
+		-
+			message: "#^Cannot call method willReturn\\(\\) on (.*)$#"
+			paths:
+				- ../Tests/
+
+		-
+			message: "#^Call to an undefined method Prophecy\\\\Prophecy\\\\ObjectProphecy::sL\\(\\)\\.$#"
+			paths:
+				- ../Tests/
+
+		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\NodeInterface::willReturn\\(\\)\\.$#"
+			paths:
+				- ../Tests/
+
+		-
+			message: "#^Parameter (.)3 (.)configuration of class Aoe\\\\FeatureFlag\\\\Service\\\\FeatureFlagService constructor expects (.*)$#"
+			paths:
+				- ../Tests/Unit/Service/FeatureFlagServiceTest.php

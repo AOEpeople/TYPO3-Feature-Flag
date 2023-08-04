@@ -57,7 +57,7 @@ class MappingRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findOneByForeignTableNameAndUid()
+    public function findOneByForeignTableNameAndUid(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -72,7 +72,7 @@ class MappingRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findAllByForeignTableNameAndUid()
+    public function findAllByForeignTableNameAndUid(): void
     {
         $this->importDataSet(__DIR__ . '/fixtures/MappingTest.findAllByForeignTableNameAndUid.xml');
 
@@ -87,7 +87,7 @@ class MappingRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function shouldGetHashedMappings()
+    public function shouldGetHashedMappings(): void
     {
         $this->importDataSet(__DIR__ . '/fixtures/MappingTest.shouldGetHashedMappings.xml');
 

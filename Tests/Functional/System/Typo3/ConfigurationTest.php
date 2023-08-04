@@ -43,7 +43,7 @@ class ConfigurationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function methodGetShouldThrowException()
+    public function methodGetShouldThrowException(): void
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
         $this->expectException('InvalidArgumentException');
@@ -55,7 +55,7 @@ class ConfigurationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function methodGetShouldReturnCorrectConfiguration()
+    public function methodGetShouldReturnCorrectConfiguration(): void
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
         self::assertEquals('tt_content,pages,sys_template', $configuration->get('tables'));
@@ -64,7 +64,7 @@ class ConfigurationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTablesShouldReturnAnArray()
+    public function getTablesShouldReturnAnArray(): void
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
         self::assertThat($configuration->getTables(), new IsType('array'));

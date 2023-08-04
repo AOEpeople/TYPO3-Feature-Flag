@@ -32,47 +32,25 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 abstract class AbstractCommandTest extends BaseTest
 {
-    /**
-     * @var array
-     */
     private array $activatedFeatures = [];
 
-    /**
-     * @var array
-     */
     private array $deactivatedFeatures = [];
 
-    /**
-     * @var integer
-     */
     private int $countOfFlagEntries = 0;
 
-    /**
-     * @var array
-     */
     private array $shownInfos = [];
 
-    /**
-     * @return void
-     */
-    public function callbackOnFlagEntries()
+    public function callbackOnFlagEntries(): void
     {
         $this->countOfFlagEntries++;
     }
 
-    /**
-     * @param string $info
-     */
-    public function callbackOnShowInfo(string $info)
+    public function callbackOnShowInfo(string $info): void
     {
         $this->shownInfos[] = $info;
     }
 
-    /**
-     * @param string $feature
-     * @param boolean $enabled
-     */
-    public function callbackOnUpdateFeature(string $feature, bool $enabled)
+    public function callbackOnUpdateFeature(string $feature, bool $enabled): void
     {
         if ($enabled === true) {
             $this->activatedFeatures[] = $feature;
@@ -81,64 +59,39 @@ abstract class AbstractCommandTest extends BaseTest
         }
     }
 
-    /**
-     * @test
-     */
-    public abstract function shouldRunCommand();
+    public abstract function shouldRunCommand(): void;
 
-    /**
-     * check, that entries are flagged
-     */
-    protected function assertThatEntriesAreFlagged()
+    protected function assertThatEntriesAreFlagged(): void
     {
         self::assertEquals(1, $this->countOfFlagEntries);
     }
 
-    /**
-     * @param array $expectedFeatures
-     */
-    protected function assertThatFeaturesAreActivated(array $expectedFeatures)
+    protected function assertThatFeaturesAreActivated(array $expectedFeatures): void
     {
         self::assertEquals($expectedFeatures, $this->activatedFeatures);
     }
 
-    /**
-     * Check, that no feature is activated
-     */
-    protected function assertThatFeaturesAreNotActivated()
+    protected function assertThatFeaturesAreNotActivated(): void
     {
         self::assertThatFeaturesAreActivated([]);
     }
 
-    /**
-     * @param array $expectedFeatures
-     */
-    protected function assertThatFeaturesAreDeactivated(array $expectedFeatures)
+    protected function assertThatFeaturesAreDeactivated(array $expectedFeatures): void
     {
         self::assertEquals($expectedFeatures, $this->deactivatedFeatures);
     }
 
-    /**
-     * Check, that no feature is deactivated
-     */
-    protected function assertThatFeaturesAreNotDeactivated()
+    protected function assertThatFeaturesAreNotDeactivated(): void
     {
         self::assertThatFeaturesAreDeactivated([]);
     }
 
-    /**
-     * @param array $expectedInfos
-     */
-    protected function assertThatInfosAreShown(array $expectedInfos)
+    protected function assertThatInfosAreShown(array $expectedInfos): void
     {
         self::assertEquals($expectedInfos, $this->shownInfos);
     }
 
-    /**
-     * @param string $commandClass
-     * @param string $commaSeparatedListOfFeatures
-     */
-    protected function runCommand(string $commandClass, string $commaSeparatedListOfFeatures = '')
+    protected function runCommand(string $commandClass, string $commaSeparatedListOfFeatures = ''): void
     {
         $_SERVER['argv'] = ['/typo3/cms-cli/typo3'];
         if (false === empty($commaSeparatedListOfFeatures)) {

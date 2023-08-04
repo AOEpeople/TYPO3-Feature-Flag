@@ -45,7 +45,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function shouldGetContentElements()
+    public function shouldGetContentElements(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -63,7 +63,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function updateContentElements()
+    public function updateContentElements(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -81,7 +81,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getContentElementsPIDs()
+    public function getContentElementsPIDs(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -94,14 +94,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
         self::assertEquals(1001, $returnedPID);
     }
 
-
-    /**
-     * @param $table
-     * @param $uid
-     *
-     * @return array
-     */
-    public function getElementsData($table, $uid)
+    public function getElementsData(string $table, int $uid): array
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

@@ -32,7 +32,7 @@ class ActivateFeatureFlagCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function shouldRunCommand()
+    public function shouldRunCommand(): void
     {
         $this->runCommand(ActivateFeatureFlagCommand::class, 'feature1,feature2,feature3');
         self::assertThatFeaturesAreActivated(['feature1', 'feature2', 'feature3']);

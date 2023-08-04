@@ -44,7 +44,7 @@ class Mapping extends AbstractEntity
 
     protected ?string $foreignTableColumn = null;
 
-    protected ?string $behavior = null;
+    protected ?int $behavior = null;
 
     public function setCrdate(string $crdate): void
     {
@@ -106,13 +106,13 @@ class Mapping extends AbstractEntity
         return $this->tstamp;
     }
 
-    public function setBehavior(string $behavior): void
+    public function setBehavior(int $behavior): void
     {
         $this->behavior = $behavior;
     }
 
     public function getBehavior(): int
     {
-        return (int) $this->behavior;
+        return $this->behavior;
     }
 }

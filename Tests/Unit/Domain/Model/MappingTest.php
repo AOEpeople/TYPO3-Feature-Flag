@@ -34,7 +34,7 @@ class MappingTest extends BaseTest
     /**
      * @var Mapping
      */
-    private $mapping;
+    private ?Mapping $mapping = null;
 
     /**
      * (non-PHPdoc)
@@ -58,25 +58,22 @@ class MappingTest extends BaseTest
     /**
      * @test
      */
-    public function tstamp()
+    public function tstamp(): void
     {
-        $this->mapping->setTstamp(2183466346);
+        $this->mapping->setTstamp("2183466346");
         self::assertEquals($this->mapping->getTstamp(), 2183466346);
     }
 
     /**
      * @test
      */
-    public function crdate()
+    public function crdate(): void
     {
-        $this->mapping->setCrdate(2183466347);
+        $this->mapping->setCrdate("2183466347");
         self::assertEquals($this->mapping->getCrdate(), 2183466347);
     }
 
-    /**
-     * @test
-     */
-    public function featureFlag()
+    public function featureFlag(): void
     {
         $featureFlag = $this->getMockBuilder(FeatureFlag::class)->setMethods(['getFlag'])->getMock();
         $featureFlag->method('getFlag')->willReturn('my_awesome_feature_flag');
@@ -84,37 +81,25 @@ class MappingTest extends BaseTest
         self::assertEquals($this->mapping->getFeatureFlag()->getFlag(), 'my_awesome_feature_flag');
     }
 
-    /**
-     * @test
-     */
-    public function foreignTableColumn()
+    public function foreignTableColumn(): void
     {
         $this->mapping->setForeignTableColumn('my_foreign_column');
         self::assertEquals($this->mapping->getForeignTableColumn(), 'my_foreign_column');
     }
 
-    /**
-     * @test
-     */
-    public function foreignTableName()
+    public function foreignTableName(): void
     {
         $this->mapping->setForeignTableName('my_foreign_table');
         self::assertEquals($this->mapping->getForeignTableName(), 'my_foreign_table');
     }
 
-    /**
-     * @test
-     */
-    public function foreignTableUid()
+    public function foreignTableUid(): void
     {
         $this->mapping->setForeignTableUid(4711);
         self::assertEquals($this->mapping->getForeignTableUid(), 4711);
     }
 
-    /**
-     * @test
-     */
-    public function behavior()
+    public function behavior(): void
     {
         $this->mapping->setBehavior(1);
         self::assertEquals($this->mapping->getBehavior(), 1);

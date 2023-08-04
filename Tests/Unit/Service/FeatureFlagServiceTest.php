@@ -44,7 +44,7 @@ class FeatureFlagServiceTest extends BaseTest
     /**
      * @param FeatureFlagRepository $mockRepository
      */
-    protected function setService(FeatureFlagRepository $mockRepository)
+    protected function setService(FeatureFlagRepository $mockRepository): void
     {
         $mockPersistenceManager = $this->getMockBuilder(PersistenceManagerInterface::class)->getMock();
         $this->service = new FeatureFlagService(
@@ -54,11 +54,7 @@ class FeatureFlagServiceTest extends BaseTest
         );
     }
 
-    /**
-     * @param $isEnabled
-     * @return MockObject
-     */
-    private function getMockModel($isEnabled)
+    private function getMockModel(bool $isEnabled): MockObject
     {
         $mockModel = $this->getMockBuilder(FeatureFlag::class)
             ->disableOriginalConstructor()
@@ -75,9 +71,9 @@ class FeatureFlagServiceTest extends BaseTest
     }
 
     /**
-     * @param boolean $isEnabled
+     * @return MockObject|FeatureFlagRepository
      */
-    private function getMockRepository($isEnabled)
+    private function getMockRepository(bool $isEnabled)
     {
         $mockModel = $this->getMockModel($isEnabled);
         $mockRepository = $this->getMockBuilder(FeatureFlagRepository::class)
@@ -88,10 +84,7 @@ class FeatureFlagServiceTest extends BaseTest
         return $mockRepository;
     }
 
-    /**
-     * @return MockObject
-     */
-    private function getMockConfiguration()
+    private function getMockConfiguration(): MockObject
     {
         $mockConfiguration = $this->getMockBuilder(Configuration::class)
             ->disableOriginalConstructor()
@@ -102,10 +95,6 @@ class FeatureFlagServiceTest extends BaseTest
         return $mockConfiguration;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see TestCase::tearDown()
-     */
     protected function tearDown(): void
     {
         unset($this->service);
@@ -115,7 +104,7 @@ class FeatureFlagServiceTest extends BaseTest
     /**
      * @test
      */
-    public function shouldReturnTrueForEnabledFeature()
+    public function shouldReturnTrueForEnabledFeature(): void
     {
         $GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'] = 'mockedTca';
 
@@ -127,7 +116,7 @@ class FeatureFlagServiceTest extends BaseTest
     /**
      * @test
      */
-    public function shouldReturnFalseForDisabledFeature()
+    public function shouldReturnFalseForDisabledFeature(): void
     {
         $GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'] = 'mockedTca';
 
@@ -139,7 +128,7 @@ class FeatureFlagServiceTest extends BaseTest
     /**
      * @test
      */
-    public function shouldThrowExceptionIfFlagDoesNotExist()
+    public function shouldThrowExceptionIfFlagDoesNotExist(): void
     {
         $GLOBALS['TCA']['tx_featureflag_domain_model_featureflag'] = 'mockedTca';
 
@@ -155,7 +144,7 @@ class FeatureFlagServiceTest extends BaseTest
     /**
      * @test
      */
-    public function shouldUpdateFeatureFlag()
+    public function shouldUpdateFeatureFlag(): void
     {
         $mockModel = $this->getMockModel(false);
 

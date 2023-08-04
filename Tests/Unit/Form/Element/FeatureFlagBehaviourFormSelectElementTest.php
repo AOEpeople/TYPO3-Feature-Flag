@@ -44,7 +44,7 @@ class FeatureFlagBehaviourFormSelectElementTest extends BaseTest
     /**
      * @test
      */
-    public function shouldRender()
+    public function shouldRender(): void
     {
         $data = [
             'parameterArray' => [

@@ -125,12 +125,16 @@ class TCA
         return $iconName;
     }
 
-    protected function updateMapping(string $table, int $id, int $featureFlag, int $pid, string $behavior): void
+    /**
+     * @param int|string $featureFlag
+     * @param int|string $pid
+     */
+    protected function updateMapping(string $table, int $id, $featureFlag, $pid, int $behavior): void
     {
         $mapping = $this->getMappingRepository()
             ->findOneByForeignTableNameAndUid($id, $table);
         if ($mapping instanceof Mapping) {
-            if ($featureFlag === 0) {
+            if ($featureFlag === '0') {
                 $this->getMappingRepository()
                     ->remove($mapping);
             } else {
@@ -141,7 +145,7 @@ class TCA
             $mapping->setTstamp((string) time());
             $this->getMappingRepository()
                 ->update($mapping);
-        } else {
+        } elseif ($featureFlag !== '0') {
             $mapping = new Mapping();
             $mapping->setPid($pid);
             $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
@@ -169,7 +173,10 @@ class TCA
         return array_key_exists($identifier, self::$hashedMappings);
     }
 
-    protected function getFeatureFlagByUid(int $uid): FeatureFlag
+    /**
+     * @param int|string $uid
+     */
+    protected function getFeatureFlagByUid($uid): FeatureFlag
     {
         /** @var FeatureFlag $featureFlag */
         $featureFlag = $this->getFeatureFlagRepository()
