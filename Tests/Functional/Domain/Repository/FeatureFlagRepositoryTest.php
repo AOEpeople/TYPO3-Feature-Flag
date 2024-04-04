@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
 
 /***************************************************************
@@ -28,18 +29,15 @@ namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
 use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
 use Aoe\FeatureFlag\System\Db\FeatureFlagData;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FeatureFlagRepositoryTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
+    protected array $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
      * @var FeatureFlagRepository
@@ -55,25 +53,14 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
         $this->featureFlagRepository = GeneralUtility::makeInstance(FeatureFlagRepository::class);
     }
 
-    /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::findByFlag()
-     * @test
-     */
-    public function shouldGetFeatureFlagByFlagName()
+    public function testShouldGetFeatureFlagByFlagName(): void
     {
         $this->importDataSet(__DIR__ . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
         $flag = $this->featureFlagRepository->findByFlag('my_test_feature_flag');
-        self::assertInstanceOf(FeatureFlag::class, $flag);
+        $this->assertInstanceOf(FeatureFlag::class, $flag);
     }
 
-    /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
-     *
-     * @test
-     */
-    public function shouldHideElementForBehaviorHideAndEnabledFeatureFlag()
+    public function testShouldHideElementForBehaviorHideAndEnabledFeatureFlag(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -87,17 +74,10 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
 
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        self::assertEquals(1, $contentElements[0]['hidden']);
+        $this->assertSame(1, $contentElements[0]['hidden']);
     }
 
-    /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
-     *
-     * @test
-     */
-    public function shouldHideElementForBehaviorShowAndDisabledFeatureFlag()
+    public function testShouldHideElementForBehaviorShowAndDisabledFeatureFlag(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -111,17 +91,10 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
 
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        self::assertEquals(1, $contentElements[0]['hidden']);
+        $this->assertSame(1, $contentElements[0]['hidden']);
     }
 
-    /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
-     *
-     * @test
-     */
-    public function shouldShowElementForBehaviorShowAndEnabledFeatureFlag()
+    public function testShouldShowElementForBehaviorShowAndEnabledFeatureFlag(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -135,17 +108,10 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
 
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        self::assertEquals(0, $contentElements[0]['hidden']);
+        $this->assertSame(0, $contentElements[0]['hidden']);
     }
 
-    /**
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::hideEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::showEntries()
-     * @covers \Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository::getUpdateEntriesUids()
-     *
-     * @test
-     */
-    public function shouldShowElementForBehaviorHideAndDisabledFeatureFlag()
+    public function testShouldShowElementForBehaviorHideAndDisabledFeatureFlag(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -156,41 +122,42 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
         $instance = new FeatureFlagRepository($featureFlag);
 
         $instance->updateFeatureFlagStatusForTable('tt_content');
+
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        self::assertEquals(0, $contentElements[0]['hidden']);
+        $this->assertSame(0, $contentElements[0]['hidden']);
     }
 
     /**
      * Helper function for testing return
      *
-     * @param string $table
      * @param integer $uid
-     *
      * @return array
      */
-    public function getElementsData($table, $uid)
+    public function getElementsData(string $table, $uid)
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);
 
-        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()
+            ->removeAll();
 
         $query = $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter(
-                        $uid,
-                        Connection::PARAM_INT
+                $queryBuilder->expr()
+                    ->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter(
+                            $uid,
+                            Connection::PARAM_INT
+                        )
                     )
-                )
-
             );
 
-        return $query->execute()->fetchAllAssociative();
+        return $query->execute()
+            ->fetchAllAssociative();
     }
 }

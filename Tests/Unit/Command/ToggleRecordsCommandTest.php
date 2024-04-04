@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Unit\Command;
 
 use Aoe\FeatureFlag\Command\ToggleRecordsCommand;
@@ -27,19 +28,16 @@ use Aoe\FeatureFlag\Command\ToggleRecordsCommand;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class ToggleRecordsCommandTest extends AbstractCommandTest
+class ToggleRecordsCommandTest extends AbstractCommandTestCase
 {
-    /**
-     * @test
-     */
-    public function shouldRunCommand()
+    public function testShouldRunCommand(): void
     {
         $this->runCommand(ToggleRecordsCommand::class);
-        self::assertThatFeaturesAreNotActivated();
-        self::assertThatFeaturesAreNotDeactivated();
-        self::assertThatInfosAreShown([
-            'Update visibility of records (e.g. content elements), which are connected with features'
+        $this->assertThatFeaturesAreNotActivated();
+        $this->assertThatFeaturesAreNotDeactivated();
+        $this->assertThatInfosAreShown([
+            'Update visibility of records (e.g. content elements), which are connected with features',
         ]);
-        self::assertThatEntriesAreFlagged();
+        $this->assertThatEntriesAreFlagged();
     }
 }

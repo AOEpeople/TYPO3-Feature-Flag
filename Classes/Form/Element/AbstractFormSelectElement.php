@@ -43,9 +43,6 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
 
     /**
      * Container objects give $nodeFactory down to other containers.
-     *
-     * @param FeatureFlagRepository|null $featureFlagRepository
-     * @param MappingRepository|null $mappingRepository
      */
     public function __construct(
         NodeFactory $nodeFactory,
@@ -120,6 +117,7 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
             if ($option['isSelected']) {
                 $optionAttributes['selected'] = 'selected';
             }
+
             $optionElements[] = $this->renderOptionElement($option['value'], $option['name'], $optionAttributes);
         }
 

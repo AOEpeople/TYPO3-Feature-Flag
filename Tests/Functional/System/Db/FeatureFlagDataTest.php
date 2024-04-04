@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Functional\System\Db;
 
 /***************************************************************
@@ -26,23 +27,17 @@ namespace Aoe\FeatureFlag\Tests\Functional\System\Db;
  ***************************************************************/
 
 use Aoe\FeatureFlag\System\Db\FeatureFlagData;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FeatureFlagDataTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
+    protected array $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
-    /**
-     * @test
-     */
-    public function shouldGetContentElements()
+    public function testShouldGetContentElements(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -52,15 +47,13 @@ class FeatureFlagDataTest extends FunctionalTestCase
         $instance = new FeatureFlagData();
 
         $instance->getContentElements('tt_content', 0, 1);
+
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        self::assertEquals(0, $contentElements[0]['hidden']);
+        $this->assertSame(0, $contentElements[0]['hidden']);
     }
 
-    /**
-     * @test
-     */
-    public function updateContentElements()
+    public function testUpdateContentElements(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -70,15 +63,13 @@ class FeatureFlagDataTest extends FunctionalTestCase
         $instance = new FeatureFlagData();
 
         $instance->updateContentElements('tt_content', [4712], false);
+
         $contentElements = $this->getElementsData('tt_content', 4712);
 
-        self::assertEquals(1, $contentElements[0]['hidden']);
+        $this->assertSame(1, $contentElements[0]['hidden']);
     }
 
-    /**
-     * @test
-     */
-    public function getContentElementsPIDs()
+    public function testGetContentElementsPIDs(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -88,38 +79,36 @@ class FeatureFlagDataTest extends FunctionalTestCase
         $instance = new FeatureFlagData();
         $returnedPID = $instance->getContentElementsPIDs('tx_featureflag_domain_model_featureflag', 4711);
 
-        self::assertEquals(1001, $returnedPID);
+        $this->assertSame('1001', $returnedPID);
     }
 
-
     /**
-     * @param $table
-     * @param $uid
-     *
      * @return array
      */
-    public function getElementsData($table, $uid)
+    public function getElementsData(string $table, $uid)
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);
 
-        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()
+            ->removeAll();
 
         $query = $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter(
-                        $uid,
-                        Connection::PARAM_INT
+                $queryBuilder->expr()
+                    ->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter(
+                            $uid,
+                            Connection::PARAM_INT
+                        )
                     )
-                )
-
             );
 
-        return $query->execute()->fetchAllAssociative();
+        return $query->execute()
+            ->fetchAllAssociative();
     }
 }

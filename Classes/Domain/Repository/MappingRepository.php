@@ -88,6 +88,7 @@ class MappingRepository extends Repository
             $identifier = sha1($mapping['foreign_table_uid'] . '_' . $mapping['foreign_table_name']);
             $prepared[$identifier] = $identifier;
         }
+
         return $prepared;
     }
 }

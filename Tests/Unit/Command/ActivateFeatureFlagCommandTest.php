@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Unit\Command;
 
 use Aoe\FeatureFlag\Command\ActivateFeatureFlagCommand;
@@ -27,22 +28,19 @@ use Aoe\FeatureFlag\Command\ActivateFeatureFlagCommand;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class ActivateFeatureFlagCommandTest extends AbstractCommandTest
+class ActivateFeatureFlagCommandTest extends AbstractCommandTestCase
 {
-    /**
-     * @test
-     */
-    public function shouldRunCommand()
+    public function testShouldRunCommand(): void
     {
         $this->runCommand(ActivateFeatureFlagCommand::class, 'feature1,feature2,feature3');
-        self::assertThatFeaturesAreActivated(['feature1', 'feature2', 'feature3']);
-        self::assertThatFeaturesAreNotDeactivated();
-        self::assertThatInfosAreShown([
+        $this->assertThatFeaturesAreActivated(['feature1', 'feature2', 'feature3']);
+        $this->assertThatFeaturesAreNotDeactivated();
+        $this->assertThatInfosAreShown([
             'Activate feature: feature1',
             'Activate feature: feature2',
             'Activate feature: feature3',
-            'Update visibility of records (e.g. content elements), which are connected with features'
+            'Update visibility of records (e.g. content elements), which are connected with features',
         ]);
-        self::assertThatEntriesAreFlagged();
+        $this->assertThatEntriesAreFlagged();
     }
 }

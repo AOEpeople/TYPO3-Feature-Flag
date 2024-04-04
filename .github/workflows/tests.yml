@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         typo3: [ ^11.5 ]
-        php: [ '7.4', '8.0', '8.1' ]
+        php: [ '7.4', '8.0', '8.1', '8.2', '8.3' ]
         mysql: [ '5.7' ]
     steps:
       - name: Set up MySQL ${{ matrix.mysql }}
@@ -21,7 +21,7 @@ jobs:
           mysql root password: 'root'
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up PHP Version ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
@@ -47,20 +47,20 @@ jobs:
         run: find . -name \*.php ! -path "./.Build/*" ! -path "./scripts/*" ! -path "./typo3_src/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
 
       - name: Unit Tests without coverage
-        if: matrix.typo3 != '^11.5' || matrix.php != '7.4'
+        if: matrix.typo3 != '^11.5' || matrix.php != '8.3'
         run: |
-          export "UNIT_XML"=.Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml
+          export "UNIT_XML"=.Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml
           .Build/bin/phpunit --colors -c $UNIT_XML Tests/Unit
 
       - name: Unit Tests with coverage
-        if: matrix.typo3 == '^11.5' && matrix.php == '7.4'
+        if: matrix.typo3 == '^11.5' && matrix.php == '8.3'
         run: |
-          export "UNIT_XML"=.Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml
+          export "UNIT_XML"=.Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests-v10.xml 
           .Build/bin/phpunit --whitelist Classes --coverage-clover=unittest-coverage.clover --colors -c $UNIT_XML Tests/Unit/
 
       - name: Functional Tests without coverage
         run: |
-          export "FUNCTIONAL_XML"=.Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml
+          export "FUNCTIONAL_XML"=.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml
           .Build/bin/phpunit --colors -c $FUNCTIONAL_XML Tests/Functional
         if: matrix.typo3 != '^11.5' || matrix.php != '7.4'
         env:
@@ -71,7 +71,7 @@ jobs:
 
       - name: Functional Tests with coverage
         run: |
-          export "FUNCTIONAL_XML"=.Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml
+          export "FUNCTIONAL_XML"=.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-v10.xml
           find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --whitelist Classes --coverage-clover={}functionaltest-coverage.clover --colors -c $FUNCTIONAL_XML {}'
         if: matrix.typo3 == '^11.5' && matrix.php == '7.4'
         env:

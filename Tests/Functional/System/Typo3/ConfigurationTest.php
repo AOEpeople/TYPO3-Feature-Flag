@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
 
 /***************************************************************
@@ -26,21 +27,15 @@ namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
  ***************************************************************/
 
 use Aoe\FeatureFlag\System\Typo3\Configuration;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use PHPUnit\Framework\Constraint\IsType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ConfigurationTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
+    protected array $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
-    /**
-     * @test
-     */
-    public function methodGetShouldThrowException()
+    public function testMethodGetShouldThrowException(): void
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
         $this->expectException('InvalidArgumentException');
@@ -49,22 +44,16 @@ class ConfigurationTest extends FunctionalTestCase
         $configuration->get('InvalidConfigurationKey');
     }
 
-    /**
-     * @test
-     */
-    public function methodGetShouldReturnCorrectConfiguration()
+    public function testMethodGetShouldReturnCorrectConfiguration(): void
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
-        self::assertEquals('tt_content,pages,sys_template', $configuration->get('tables'));
+        $this->assertSame('tt_content,pages,sys_template', $configuration->get('tables'));
     }
 
-    /**
-     * @test
-     */
-    public function getTablesShouldReturnAnArray()
+    public function testGetTablesShouldReturnAnArray(): void
     {
         $configuration = GeneralUtility::makeInstance(Configuration::class);
-        self::assertThat($configuration->getTables(), new IsType('array'));
-        self::assertEquals(['tt_content', 'pages', 'sys_template'], $configuration->getTables());
+        $this->assertThat($configuration->getTables(), new IsType('array'));
+        $this->assertSame(['tt_content', 'pages', 'sys_template'], $configuration->getTables());
     }
 }

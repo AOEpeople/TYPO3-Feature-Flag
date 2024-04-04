@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Unit;
 
 /***************************************************************
@@ -25,10 +26,10 @@ namespace Aoe\FeatureFlag\Tests\Unit;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Nimut\TestingFramework\TestCase\UnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-abstract class BaseTest extends UnitTestCase
+class BaseTestCase extends UnitTestCase
 {
     use ProphecyTrait;
 

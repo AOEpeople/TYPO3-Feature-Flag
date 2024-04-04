@@ -1,8 +1,9 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Unit\Domain\Model;
 
 use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
-use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+use Aoe\FeatureFlag\Tests\Unit\BaseTestCase;
 
 /***************************************************************
  *  Copyright notice
@@ -28,12 +29,9 @@ use Aoe\FeatureFlag\Tests\Unit\BaseTest;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class FeatureFlagTest extends BaseTest
+class FeatureFlagTest extends BaseTestCase
 {
-    /**
-     * @var FeatureFlag
-     */
-    private $featureFlag;
+    private ?\Aoe\FeatureFlag\Domain\Model\FeatureFlag $featureFlag = null;
 
     /**
      * (non-PHPdoc)
@@ -54,16 +52,13 @@ class FeatureFlagTest extends BaseTest
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
-    public function checkProperties()
+    public function testCheckProperties(): void
     {
         $this->featureFlag->setDescription('This is a test description');
         $this->featureFlag->setEnabled(true);
         $this->featureFlag->setFlag('my_new_feature_flag');
-        self::assertTrue($this->featureFlag->isEnabled());
-        self::assertEquals($this->featureFlag->getDescription(), 'This is a test description');
-        self::assertEquals($this->featureFlag->getFlag(), 'my_new_feature_flag');
+        $this->assertTrue($this->featureFlag->isEnabled());
+        $this->assertEquals($this->featureFlag->getDescription(), 'This is a test description');
+        $this->assertEquals($this->featureFlag->getFlag(), 'my_new_feature_flag');
     }
 }

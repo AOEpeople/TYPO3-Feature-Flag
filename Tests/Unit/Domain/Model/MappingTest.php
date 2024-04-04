@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Unit\Domain\Model;
 
 /***************************************************************
@@ -27,14 +28,11 @@ namespace Aoe\FeatureFlag\Tests\Unit\Domain\Model;
 
 use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Domain\Model\Mapping;
-use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+use Aoe\FeatureFlag\Tests\Unit\BaseTestCase;
 
-class MappingTest extends BaseTest
+class MappingTest extends BaseTestCase
 {
-    /**
-     * @var Mapping
-     */
-    private $mapping;
+    private ?\Aoe\FeatureFlag\Domain\Model\Mapping $mapping = null;
 
     /**
      * (non-PHPdoc)
@@ -55,68 +53,48 @@ class MappingTest extends BaseTest
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
-    public function tstamp()
+    public function testTstamp(): void
     {
         $this->mapping->setTstamp(2183466346);
-        self::assertEquals($this->mapping->getTstamp(), 2183466346);
+        $this->assertEquals($this->mapping->getTstamp(), 2183466346);
     }
 
-    /**
-     * @test
-     */
-    public function crdate()
+    public function testCrdate(): void
     {
         $this->mapping->setCrdate(2183466347);
-        self::assertEquals($this->mapping->getCrdate(), 2183466347);
+        $this->assertEquals($this->mapping->getCrdate(), 2183466347);
     }
 
-    /**
-     * @test
-     */
-    public function featureFlag()
+    public function testFeatureFlag(): void
     {
-        $featureFlag = $this->getMockBuilder(FeatureFlag::class)->setMethods(['getFlag'])->getMock();
-        $featureFlag->method('getFlag')->willReturn('my_awesome_feature_flag');
+        $featureFlag = $this->getMockBuilder(FeatureFlag::class)->onlyMethods(['getFlag'])->getMock();
+        $featureFlag->method('getFlag')
+            ->willReturn('my_awesome_feature_flag');
         $this->mapping->setFeatureFlag($featureFlag);
-        self::assertEquals($this->mapping->getFeatureFlag()->getFlag(), 'my_awesome_feature_flag');
+        $this->assertEquals($this->mapping->getFeatureFlag()->getFlag(), 'my_awesome_feature_flag');
     }
 
-    /**
-     * @test
-     */
-    public function foreignTableColumn()
+    public function testForeignTableColumn(): void
     {
         $this->mapping->setForeignTableColumn('my_foreign_column');
-        self::assertEquals($this->mapping->getForeignTableColumn(), 'my_foreign_column');
+        $this->assertEquals($this->mapping->getForeignTableColumn(), 'my_foreign_column');
     }
 
-    /**
-     * @test
-     */
-    public function foreignTableName()
+    public function testForeignTableName(): void
     {
         $this->mapping->setForeignTableName('my_foreign_table');
-        self::assertEquals($this->mapping->getForeignTableName(), 'my_foreign_table');
+        $this->assertEquals($this->mapping->getForeignTableName(), 'my_foreign_table');
     }
 
-    /**
-     * @test
-     */
-    public function foreignTableUid()
+    public function testForeignTableUid(): void
     {
         $this->mapping->setForeignTableUid(4711);
-        self::assertEquals($this->mapping->getForeignTableUid(), 4711);
+        $this->assertEquals($this->mapping->getForeignTableUid(), 4711);
     }
 
-    /**
-     * @test
-     */
-    public function behavior()
+    public function testBehavior(): void
     {
         $this->mapping->setBehavior(1);
-        self::assertEquals($this->mapping->getBehavior(), 1);
+        $this->assertSame($this->mapping->getBehavior(), 1);
     }
 }

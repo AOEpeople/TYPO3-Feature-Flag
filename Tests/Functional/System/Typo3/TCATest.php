@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
 
 /***************************************************************
@@ -27,14 +28,13 @@ namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
 
 use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Domain\Model\Mapping;
-use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
 use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
 use Aoe\FeatureFlag\System\Typo3\TCA;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class TCATest extends FunctionalTestCase
 {
@@ -53,23 +53,23 @@ class TCATest extends FunctionalTestCase
 
         $this->tca = $this
             ->getMockBuilder(TCA::class)
-            ->setMethods([
+            ->onlyMethods([
                 'getMappingRepository',
                 'getFeatureFlagRepository',
                 'getFeatureFlagByUid',
                 'getPersistenceManager',
-                'getLanguageService'
+                'getLanguageService',
             ])
             ->getMock();
         $persistenceManager = $this
             ->getMockBuilder(PersistenceManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['persistAll'])
+            ->onlyMethods(['persistAll'])
             ->getMock();
 
         $languageService = $this->getMockBuilder(LanguageService::class)
             ->disableOriginalConstructor()
-            ->setMethods(['sL'])
+            ->onlyMethods(['sL'])
             ->getMock();
 
         $this->tca->expects(self::any())->method('getPersistenceManager')->willReturn($persistenceManager);
@@ -86,15 +86,12 @@ class TCATest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
-    public function processDatamapDoNothingIfNothingSelected()
+    public function testProcessDatamapDoNothingIfNothingSelected(): void
     {
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
+            ->onlyMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
             ->getMock();
         $mappingRepository
             ->expects(self::once())
@@ -114,15 +111,12 @@ class TCATest extends FunctionalTestCase
         $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $dataHandlerMock);
     }
 
-    /**
-     * @test
-     */
-    public function processDatamapDoNothingIfNotInFeatureFlagContext()
+    public function testProcessDatamapDoNothingIfNotInFeatureFlagContext(): void
     {
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
+            ->onlyMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
             ->getMock();
         $mappingRepository
             ->expects(self::never())
@@ -139,16 +133,13 @@ class TCATest extends FunctionalTestCase
         $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $dataHandlerMock);
     }
 
-    /**
-     * @test
-     */
-    public function processDatamapRemoveMappingIfNothingSelectedAndMappingExists()
+    public function testProcessDatamapRemoveMappingIfNothingSelectedAndMappingExists(): void
     {
         $mapping = $this->createMock(Mapping::class);
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findOneByForeignTableNameAndUid', 'remove', 'update'])
+            ->onlyMethods(['findOneByForeignTableNameAndUid', 'remove', 'update'])
             ->getMock();
         $mappingRepository
             ->expects(self::once())
@@ -166,21 +157,18 @@ class TCATest extends FunctionalTestCase
         $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 4711, $dataHandlerMock);
     }
 
-    /**
-     * @test
-     */
-    public function processDatamapCreateNewMappingIfFeatureFlagGivenAndNoMappingPreviouslyCreated()
+    public function testProcessDatamapCreateNewMappingIfFeatureFlagGivenAndNoMappingPreviouslyCreated(): void
     {
         $featureFlag = $this
             ->getMockBuilder(FeatureFlag::class)
-            ->setMethods(['getUid'])
+            ->onlyMethods(['getUid'])
             ->getMock();
         $featureFlag->expects(self::any())->method('getUid')->willReturn(4711);
 
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findOneByForeignTableNameAndUid', 'add'])
+            ->onlyMethods(['findOneByForeignTableNameAndUid', 'add'])
             ->getMock();
         $mappingRepository
             ->expects(self::once())
@@ -200,24 +188,18 @@ class TCATest extends FunctionalTestCase
         $this->tca->processDatamap_preProcessFieldArray($incomingFieldArray, 'my_table', 123, $dataHandlerMock);
     }
 
-    /**
-     * @test
-     */
-    public function processCmdmapCommandIsNotDelete()
+    public function testProcessCmdmapCommandIsNotDelete(): void
     {
         $this->tca->expects(self::never())->method('getMappingRepository');
         $this->tca->processCmdmap_postProcess('not_delete', 'my_table', 4711);
     }
 
-    /**
-     * @test
-     */
-    public function processCmdmappostIsDelete()
+    public function testProcessCmdmappostIsDelete(): void
     {
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findAllByForeignTableNameAndUid', 'remove'])
+            ->onlyMethods(['findAllByForeignTableNameAndUid', 'remove'])
             ->getMock();
         $mappingRepository
             ->expects(self::once())
@@ -229,10 +211,7 @@ class TCATest extends FunctionalTestCase
         $this->tca->processCmdmap_postProcess('delete', 'my_table', 4711);
     }
 
-    /**
-     * @return array
-     */
-    protected function getListOfMappings()
+    protected function getListOfMappings(): array
     {
         $mapping1 = $this->createMock(Mapping::class);
         $mapping2 = $this->createMock(Mapping::class);
@@ -241,26 +220,23 @@ class TCATest extends FunctionalTestCase
         return [$mapping1, $mapping2, $mapping3];
     }
 
-    /**
-     * @return array
-     */
-    protected function getListOfFeatureFlags()
+    protected function getListOfFeatureFlags(): array
     {
         $featureFlag1 = $this
             ->getMockBuilder(FeatureFlag::class)
-            ->setMethods(['getUid', 'getDescription'])
+            ->onlyMethods(['getUid', 'getDescription'])
             ->getMock();
         $featureFlag1->expects(self::any())->method('getUid')->willReturn(111);
         $featureFlag1->expects(self::any())->method('getDescription')->willReturn('flag 1');
         $featureFlag2 = $this
             ->getMockBuilder(FeatureFlag::class)
-            ->setMethods(['getUid', 'getDescription'])
+            ->onlyMethods(['getUid', 'getDescription'])
             ->getMock();
         $featureFlag2->expects(self::any())->method('getUid')->willReturn(4711);
         $featureFlag2->expects(self::any())->method('getDescription')->willReturn('flag 2');
         $featureFlag3 = $this
             ->getMockBuilder(FeatureFlag::class)
-            ->setMethods(['getUid', 'getDescription'])
+            ->onlyMethods(['getUid', 'getDescription'])
             ->getMock();
         $featureFlag3->expects(self::any())->method('getDescription')->willReturn('flag 3');
         $featureFlag3->expects(self::any())->method('getUid')->willReturn(222);

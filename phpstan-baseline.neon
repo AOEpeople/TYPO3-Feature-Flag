@@ -1,0 +1,121 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$features of method Aoe\\\\FeatureFlag\\\\Command\\\\AbstractCommand\\:\\:setFeatureStatus\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: Classes/Command/ActivateFeatureFlagCommand.php
+
+		-
+			message: "#^Parameter \\#1 \\$features of method Aoe\\\\FeatureFlag\\\\Command\\\\AbstractCommand\\:\\:setFeatureStatus\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: Classes/Command/DeactivateFeatureFlagCommand.php
+
+		-
+			message: "#^Parameter \\#1 \\$objectManager of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:__construct\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface, object given\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/FeatureFlagRepository.php
+
+		-
+			message: "#^Cannot access offset 'foreign_table_name' on object\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/MappingRepository.php
+
+		-
+			message: "#^Cannot access offset 'foreign_table_uid' on object\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/MappingRepository.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:findOneByForeignTableNameAndUid\\(\\)\\.$#"
+			count: 1
+			path: Classes/Form/Element/FeatureFlagBehaviourFormSelectElement.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:findAll\\(\\)\\.$#"
+			count: 1
+			path: Classes/Form/Element/FeatureFlagFormSelectElement.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:findOneByForeignTableNameAndUid\\(\\)\\.$#"
+			count: 1
+			path: Classes/Form/Element/FeatureFlagFormSelectElement.php
+
+		-
+			message: "#^Cannot call method getUid\\(\\) on Aoe\\\\FeatureFlag\\\\Domain\\\\Model\\\\FeatureFlag\\|null\\.$#"
+			count: 1
+			path: Classes/Form/Element/FeatureFlagFormSelectElement.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getQueryBuilderForTable\\(\\)\\.$#"
+			count: 3
+			path: Classes/System/Db/FeatureFlagData.php
+
+		-
+			message: "#^Cannot call method fetchAllAssociative\\(\\) on Doctrine\\\\DBAL\\\\Result\\|int\\.$#"
+			count: 1
+			path: Classes/System/Db/FeatureFlagData.php
+
+		-
+			message: "#^Cannot call method fetchOne\\(\\) on Doctrine\\\\DBAL\\\\Result\\|int\\.$#"
+			count: 1
+			path: Classes/System/Db/FeatureFlagData.php
+
+		-
+			message: "#^Method Aoe\\\\FeatureFlag\\\\System\\\\Db\\\\FeatureFlagData\\:\\:getContentElementsPIDs\\(\\) should return string but returns mixed\\.$#"
+			count: 1
+			path: Classes/System/Db/FeatureFlagData.php
+
+		-
+			message: "#^Parameter \\#2 \\$string of function explode expects string, mixed given\\.$#"
+			count: 1
+			path: Classes/System/Typo3/Configuration.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:add\\(\\)\\.$#"
+			count: 1
+			path: Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:findAllByForeignTableNameAndUid\\(\\)\\.$#"
+			count: 1
+			path: Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:findByUid\\(\\)\\.$#"
+			count: 1
+			path: Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:findOneByForeignTableNameAndUid\\(\\)\\.$#"
+			count: 2
+			path: Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getHashedMappings\\(\\)\\.$#"
+			count: 1
+			path: Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:persistAll\\(\\)\\.$#"
+			count: 2
+			path: Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:remove\\(\\)\\.$#"
+			count: 2
+			path: Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:update\\(\\)\\.$#"
+			count: 1
+			path: Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Method Aoe\\\\FeatureFlag\\\\System\\\\Typo3\\\\TCA\\:\\:updateMapping\\(\\) has parameter \\$featureFlag with no type specified\\.$#"
+			count: 1
+			path: Classes/System/Typo3/TCA.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:get\\(\\)\\.$#"
+			count: 1
+			path: Classes/System/Typo3/TcaPostProcessor.php
