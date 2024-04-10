@@ -62,7 +62,7 @@ jobs:
         run: |
           export "FUNCTIONAL_XML"=.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml
           .Build/bin/phpunit --colors -c $FUNCTIONAL_XML Tests/Functional
-        if: matrix.typo3 != '^11.5' || matrix.php != '7.4'
+        if: matrix.typo3 != '^11.5' || matrix.php != '8.3'
         env:
           typo3DatabaseHost: 127.0.0.1
           typo3DatabaseName: typo3
@@ -73,7 +73,7 @@ jobs:
         run: |
           export "FUNCTIONAL_XML"=.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-v10.xml
           find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --whitelist Classes --coverage-clover={}functionaltest-coverage.clover --colors -c $FUNCTIONAL_XML {}'
-        if: matrix.typo3 == '^11.5' && matrix.php == '7.4'
+        if: matrix.typo3 == '^11.5' && matrix.php == '8.3'
         env:
           typo3DatabaseHost: 127.0.0.1
           typo3DatabaseName: typo3
@@ -81,7 +81,7 @@ jobs:
           typo3DatabaseUsername: root
 
       - name: Upload coverage results to Scrutinizer
-        if: matrix.typo3 == '^11.5' && matrix.php == '7.4'
+        if: matrix.typo3 == '^11.5' && matrix.php == '8.3'
         run: |
           wget https://scrutinizer-ci.com/ocular.phar
           php ocular.phar code-coverage:upload --format=php-clover unittest-coverage.clover
