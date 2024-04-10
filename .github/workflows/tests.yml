@@ -16,6 +16,9 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+      - uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: "10.5"
 
       - name: Set up PHP Version ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
