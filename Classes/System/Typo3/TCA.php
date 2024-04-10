@@ -57,7 +57,7 @@ class TCA
     public function processDatamap_preProcessFieldArray(
         array &$incomingFieldArray,
         string $table,
-        string $id,
+        int $id,
         DataHandler $dataHandler
     ): void {
         // @codingStandardsIgnoreEnd
@@ -65,10 +65,10 @@ class TCA
             array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) &&
             array_key_exists(self::FIELD_FLAG, $incomingFieldArray)
         ) {
-            $pid = $dataHandler->getPID($table, (int) $id);
+            $pid = $dataHandler->getPID($table, $id);
             $this->updateMapping(
                 $table,
-                (int) $id,
+                $id,
                 $incomingFieldArray[self::FIELD_FLAG],
                 (int) $pid,
                 $incomingFieldArray[self::FIELD_BEHAVIOR]
@@ -132,13 +132,13 @@ class TCA
     /**
      * @todo fix code style
      */
-    protected function updateMapping(string $table, int $id, $featureFlag, int $pid, string $behavior): void
+    protected function updateMapping(string $table, int $id, int $featureFlag, int $pid, string $behavior): void
     {
         $mapping = $this->getMappingRepository()
             ->findOneByForeignTableNameAndUid($id, $table);
 
         if ($mapping instanceof Mapping) {
-            if ($featureFlag == '0') {
+            if ($featureFlag === 0) {
                 $this->getMappingRepository()
                     ->remove($mapping);
             } else {
@@ -149,7 +149,7 @@ class TCA
             $mapping->setTstamp((string) time());
             $this->getMappingRepository()
                 ->update($mapping);
-        } elseif ($featureFlag !== '0') {
+        } elseif ($featureFlag !== 0) {
             /** @var Mapping $mapping */
             $mapping = new Mapping();
             $mapping->setPid($pid);
