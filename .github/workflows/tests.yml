@@ -66,7 +66,7 @@ jobs:
       - name: Functional Tests with coverage
         run: |
           export "FUNCTIONAL_XML"=.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-v10.xml
-          find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --whitelist Classes --coverage-clover={}functionaltest-coverage.clover --colors -c $FUNCTIONAL_XML {}'
+          find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --coverage-filter Classes --coverage-clover={}functionaltest-coverage.clover --colors -c $FUNCTIONAL_XML {}'
         if: matrix.typo3 == '^11.5' && matrix.php == '8.3'
         env:
           typo3DatabaseHost: 127.0.0.1
