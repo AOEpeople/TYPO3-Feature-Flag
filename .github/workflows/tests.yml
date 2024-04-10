@@ -20,8 +20,7 @@ jobs:
         with:
           distribution: "mariadb"
           mysql-version: "10.5"
-          my-cnf: |
-            root-password=root
+          root-password: root
 
       - name: Set up PHP Version ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
