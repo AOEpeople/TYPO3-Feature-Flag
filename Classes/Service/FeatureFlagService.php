@@ -30,8 +30,6 @@ use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
 use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
 use Aoe\FeatureFlag\System\Typo3\Configuration;
-use RuntimeException;
-use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 
 class FeatureFlagService
@@ -64,19 +62,12 @@ class FeatureFlagService
         $this->configuration = $configuration;
     }
 
-    /**
-     * @throws FeatureNotFoundException
-     */
     public function isFeatureEnabled(string $flag): bool
     {
         return $this->getFeatureFlag($flag)
             ->isEnabled();
     }
 
-    /**
-     * @throws FeatureNotFoundException
-     * @throws IllegalObjectTypeException
-     */
     public function updateFeatureFlag(string $flag, bool $enabled): void
     {
         $flagModel = $this->getFeatureFlag($flag);
@@ -98,10 +89,6 @@ class FeatureFlagService
         }
     }
 
-    /**
-     * @throws FeatureNotFoundException
-     * @throws RuntimeException
-     */
     protected function getFeatureFlag(string $flag): FeatureFlag
     {
         if (!array_key_exists($flag, $this->cachedFlags)) {
@@ -109,8 +96,10 @@ class FeatureFlagService
             if (!$flagModel instanceof FeatureFlag) {
                 throw new FeatureNotFoundException('Feature Flag not found: "' . $flag . '"', 1383842028);
             }
+
             $this->cachedFlags[$flag] = $flagModel;
         }
+
         return $this->cachedFlags[$flag];
     }
 }

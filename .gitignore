@@ -5,6 +5,7 @@
 .Build
 
 # PHP Dependencies + Dev
+Tests/.phpunit.result.cache
 /composer.lock
 /index.php
 /typo3

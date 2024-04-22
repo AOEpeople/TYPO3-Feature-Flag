@@ -1,8 +1,9 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Unit\Command;
 
 use Aoe\FeatureFlag\Service\FeatureFlagService;
-use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+use Aoe\FeatureFlag\Tests\Unit\BaseTestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -30,76 +31,48 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-abstract class AbstractCommandTest extends BaseTest
+abstract class AbstractCommandTestCase extends BaseTestCase
 {
-    /**
-     * @var array
-     */
     private array $activatedFeatures = [];
 
-    /**
-     * @var array
-     */
     private array $deactivatedFeatures = [];
 
-    /**
-     * @var integer
-     */
     private int $countOfFlagEntries = 0;
 
-    /**
-     * @var array
-     */
     private array $shownInfos = [];
 
-    /**
-     * @return void
-     */
-    public function callbackOnFlagEntries()
+    public function callbackOnFlagEntries(): void
     {
-        $this->countOfFlagEntries++;
+        ++$this->countOfFlagEntries;
     }
 
-    /**
-     * @param string $info
-     */
-    public function callbackOnShowInfo(string $info)
+    public function callbackOnShowInfo(string $info): void
     {
         $this->shownInfos[] = $info;
     }
 
-    /**
-     * @param string $feature
-     * @param boolean $enabled
-     */
-    public function callbackOnUpdateFeature(string $feature, bool $enabled)
+    public function callbackOnUpdateFeature(string $feature, bool $enabled): void
     {
-        if ($enabled === true) {
+        if ($enabled) {
             $this->activatedFeatures[] = $feature;
         } else {
             $this->deactivatedFeatures[] = $feature;
         }
     }
 
-    /**
-     * @test
-     */
-    public abstract function shouldRunCommand();
+    abstract public function testShouldRunCommand();
 
     /**
      * check, that entries are flagged
      */
     protected function assertThatEntriesAreFlagged()
     {
-        self::assertEquals(1, $this->countOfFlagEntries);
+        $this->assertSame(1, $this->countOfFlagEntries);
     }
 
-    /**
-     * @param array $expectedFeatures
-     */
     protected function assertThatFeaturesAreActivated(array $expectedFeatures)
     {
-        self::assertEquals($expectedFeatures, $this->activatedFeatures);
+        $this->assertSame($expectedFeatures, $this->activatedFeatures);
     }
 
     /**
@@ -107,15 +80,12 @@ abstract class AbstractCommandTest extends BaseTest
      */
     protected function assertThatFeaturesAreNotActivated()
     {
-        self::assertThatFeaturesAreActivated([]);
+        $this->assertThatFeaturesAreActivated([]);
     }
 
-    /**
-     * @param array $expectedFeatures
-     */
     protected function assertThatFeaturesAreDeactivated(array $expectedFeatures)
     {
-        self::assertEquals($expectedFeatures, $this->deactivatedFeatures);
+        $this->assertEquals($expectedFeatures, $this->deactivatedFeatures);
     }
 
     /**
@@ -123,25 +93,18 @@ abstract class AbstractCommandTest extends BaseTest
      */
     protected function assertThatFeaturesAreNotDeactivated()
     {
-        self::assertThatFeaturesAreDeactivated([]);
+        $this->assertThatFeaturesAreDeactivated([]);
     }
 
-    /**
-     * @param array $expectedInfos
-     */
     protected function assertThatInfosAreShown(array $expectedInfos)
     {
-        self::assertEquals($expectedInfos, $this->shownInfos);
+        $this->assertEquals($expectedInfos, $this->shownInfos);
     }
 
-    /**
-     * @param string $commandClass
-     * @param string $commaSeparatedListOfFeatures
-     */
     protected function runCommand(string $commandClass, string $commaSeparatedListOfFeatures = '')
     {
         $_SERVER['argv'] = ['/typo3/cms-cli/typo3'];
-        if (false === empty($commaSeparatedListOfFeatures)) {
+        if (($commaSeparatedListOfFeatures === '' || $commaSeparatedListOfFeatures === '0') === false) {
             $_SERVER['argv'][] = $commaSeparatedListOfFeatures;
         }
 
@@ -152,13 +115,16 @@ abstract class AbstractCommandTest extends BaseTest
             ->disableOriginalConstructor()
             ->getMock();
         $featureFlagService
-            ->expects($this->any())
             ->method('flagEntries')
-            ->willReturnCallback(array($this, 'callbackOnFlagEntries'));
+            ->willReturnCallback(function (): void {
+                $this->callbackOnFlagEntries();
+            });
+
         $featureFlagService
-            ->expects($this->any())
             ->method('updateFeatureFlag')
-            ->willReturnCallback(array($this, 'callbackOnUpdateFeature'));
+            ->willReturnCallback(function (string $feature, bool $enabled): void {
+                $this->callbackOnUpdateFeature($feature, $enabled);
+            });
 
         $command = $this
             ->getMockBuilder($commandClass)
@@ -166,10 +132,12 @@ abstract class AbstractCommandTest extends BaseTest
             ->onlyMethods(['showInfo'])
             ->getMock();
         $command
-            ->expects($this->any())
             ->method('showInfo')
-            ->willReturnCallback(array($this, 'callbackOnShowInfo'));
+            ->willReturnCallback(function (string $info): void {
+                $this->callbackOnShowInfo($info);
+            });
+
         $returnCode = $command->run($input, $output);
-        self::assertEquals(0, $returnCode);
+        $this->assertSame(0, $returnCode);
     }
 }

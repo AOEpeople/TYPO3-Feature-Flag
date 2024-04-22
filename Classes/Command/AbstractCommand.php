@@ -26,11 +26,9 @@ namespace Aoe\FeatureFlag\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
 use Aoe\FeatureFlag\Service\FeatureFlagService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 
 abstract class AbstractCommand extends Command
 {
@@ -46,8 +44,6 @@ abstract class AbstractCommand extends Command
 
     /**
      * Enable or disable features. $features can be a comma-separated list of feature names
-     * @throws FeatureNotFoundException
-     * @throws IllegalObjectTypeException
      */
     protected function setFeatureStatus(string $features, bool $enabled): void
     {
@@ -57,6 +53,7 @@ abstract class AbstractCommand extends Command
             $this->showInfo($info . ' feature: ' . $feature);
             $this->featureFlagService->updateFeatureFlag($feature, $enabled);
         }
+
         $this->showInfo('Update visibility of records (e.g. content elements), which are connected with features');
         $this->featureFlagService->flagEntries();
     }

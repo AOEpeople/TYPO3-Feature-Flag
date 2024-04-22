@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
 
 /***************************************************************
@@ -27,15 +28,12 @@ namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
 
 use Aoe\FeatureFlag\Domain\Model\Mapping;
 use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MappingRepositoryTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
+    protected array $testExtensionsToLoad = ['typo3conf/ext/feature_flag'];
 
     /**
      * @var MappingRepository
@@ -51,10 +49,7 @@ class MappingRepositoryTest extends FunctionalTestCase
         $this->mappingRepository = GeneralUtility::makeInstance(MappingRepository::class);
     }
 
-    /**
-     * @test
-     */
-    public function findOneByForeignTableNameAndUid()
+    public function testFindOneByForeignTableNameAndUid(): void
     {
         $this->importDataSet(
             __DIR__ .
@@ -63,13 +58,10 @@ class MappingRepositoryTest extends FunctionalTestCase
 
         $mapping = $this->mappingRepository->findOneByForeignTableNameAndUid(4712, 'tt_content');
 
-        self::assertInstanceOf(Mapping::class, $mapping);
+        $this->assertInstanceOf(Mapping::class, $mapping);
     }
 
-    /**
-     * @test
-     */
-    public function findAllByForeignTableNameAndUid()
+    public function testFindAllByForeignTableNameAndUid(): void
     {
         $this->importDataSet(__DIR__ . '/fixtures/MappingTest.findAllByForeignTableNameAndUid.xml');
 
@@ -78,25 +70,16 @@ class MappingRepositoryTest extends FunctionalTestCase
             'tt_content'
         );
 
-        self::assertCount(2, $mapping);
+        $this->assertCount(2, $mapping);
     }
 
-    /**
-     * @test
-     */
-    public function shouldGetHashedMappings()
+    public function testShouldGetHashedMappings(): void
     {
         $this->importDataSet(__DIR__ . '/fixtures/MappingTest.shouldGetHashedMappings.xml');
 
         $hashedMappings = $this->mappingRepository->getHashedMappings();
 
-        self::assertEquals(
-            '35d83e54054892288a31e71e40d8394e76032697',
-            $hashedMappings['35d83e54054892288a31e71e40d8394e76032697']
-        );
-        self::assertEquals(
-            '39ecd17e510c064c9ea06162aaf58753b071177d',
-            $hashedMappings['39ecd17e510c064c9ea06162aaf58753b071177d']
-        );
+        $this->assertSame('35d83e54054892288a31e71e40d8394e76032697', $hashedMappings['35d83e54054892288a31e71e40d8394e76032697']);
+        $this->assertSame('39ecd17e510c064c9ea06162aaf58753b071177d', $hashedMappings['39ecd17e510c064c9ea06162aaf58753b071177d']);
     }
 }

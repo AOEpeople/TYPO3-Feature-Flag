@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeatureFlag\Tests\Unit\Form\Element;
 
 /***************************************************************
@@ -30,7 +31,7 @@ use Aoe\FeatureFlag\Domain\Model\Mapping;
 use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
 use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
 use Aoe\FeatureFlag\Form\Element\FeatureFlagFormSelectElement;
-use Aoe\FeatureFlag\Tests\Unit\BaseTest;
+use Aoe\FeatureFlag\Tests\Unit\BaseTestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\AbstractNode;
@@ -39,12 +40,9 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class FeatureFlagFormSelectElementTest extends BaseTest
+class FeatureFlagFormSelectElementTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
-    public function shouldRender()
+    public function testShouldRender(): void
     {
         $data = [
             'parameterArray' => [
@@ -62,30 +60,31 @@ class FeatureFlagFormSelectElementTest extends BaseTest
             'tableName' => 'tt_content',
             'fieldName' => 'tx_featureflag_behavior',
             'databaseRow' => [
-                'uid' => 9999
-            ]
+                'uid' => 9999,
+            ],
         ];
 
         GeneralUtility::addInstance(IconFactory::class, $this->prophesize(IconFactory::class)->reveal());
 
         /** @var AbstractNode|ObjectProphecy $abstractNode */
         $abstractNode = $this->prophesize(AbstractNode::class);
-        $abstractNode->render()->willReturn([
-            'additionalJavaScriptPost' => [],
-            'additionalJavaScriptSubmit' => [],
-            'additionalHiddenFields' => [],
-            'stylesheetFiles' => [],
-        ]);
+        $abstractNode->render()
+            ->willReturn([
+                'additionalJavaScriptPost' => [],
+                'additionalJavaScriptSubmit' => [],
+                'additionalHiddenFields' => [],
+                'stylesheetFiles' => [],
+            ]);
         /** @var NodeFactory|ObjectProphecy $nodeFactoryProphecy */
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $nodeFactoryProphecy->create((array) Argument::cetera())->willReturn($abstractNode->reveal());
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
 
-        /** @var FeatureFlagRepository|ObjectProphecy */
+        /** @var FeatureFlagRepository|ObjectProphecy $featureFlagRepository */
         $featureFlagRepository = $this->prophesize(FeatureFlagRepository::class);
 
-        /** @var MappingRepository|ObjectProphecy */
+        /** @var MappingRepository|ObjectProphecy $mappingRepository */
         $mappingRepository = $this->prophesize(MappingRepository::class);
 
         $featureFlag1 = new FeatureFlag();
@@ -100,12 +99,13 @@ class FeatureFlagFormSelectElementTest extends BaseTest
         $featureFlag2->setDescription('Special Feature Flag 2');
         $featureFlag2->setEnabled(true);
 
-        $featureFlagRepository->findAll()->willReturn(
-            [
-                $featureFlag1,
-                $featureFlag2
-            ]
-        );
+        $featureFlagRepository->findAll()
+            ->willReturn(
+                [
+                    $featureFlag1,
+                    $featureFlag2,
+                ]
+            );
 
         $mapping = new Mapping();
         $mapping->_setProperty('uid', 1000);
@@ -124,11 +124,8 @@ class FeatureFlagFormSelectElementTest extends BaseTest
         );
 
         $resultArray = $subject->render();
-        self::assertStringContainsString('<option value="0"></option>', $resultArray['html']);
-        self::assertStringContainsString('<option value="1000">Special Feature Flag 1</option>', $resultArray['html']);
-        self::assertStringContainsString(
-            '<option selected="selected" value="2000">Special Feature Flag 2</option>',
-            $resultArray['html']
-        );
+        $this->assertStringContainsString('<option value="0"></option>', $resultArray['html']);
+        $this->assertStringContainsString('<option value="1000">Special Feature Flag 1</option>', $resultArray['html']);
+        $this->assertStringContainsString('<option selected="selected" value="2000">Special Feature Flag 2</option>', $resultArray['html']);
     }
 }

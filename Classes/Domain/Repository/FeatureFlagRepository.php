@@ -44,7 +44,6 @@ class FeatureFlagRepository extends Repository
         parent::__construct($objectManager);
     }
 
-
     public function initializeObject(): void
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
@@ -89,14 +88,14 @@ class FeatureFlagRepository extends Repository
 
     private function hideEntries(string $table, array $uids): void
     {
-        if (!empty($uids)) {
+        if ($uids !== []) {
             $this->featureFlagData->updateContentElements($table, $uids, false);
         }
     }
 
     private function showEntries(string $table, array $uids): void
     {
-        if (!empty($uids)) {
+        if ($uids !== []) {
             $this->featureFlagData->updateContentElements($table, $uids, true);
         }
     }
@@ -105,7 +104,7 @@ class FeatureFlagRepository extends Repository
     {
         $rows = $this->featureFlagData->getContentElements($table, $behavior, $enabled);
 
-        if (empty($rows)) {
+        if ($rows === []) {
             return $rows;
         }
 

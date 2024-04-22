@@ -30,7 +30,6 @@ use Aoe\FeatureFlag\Domain\Model\FeatureFlag;
 use Aoe\FeatureFlag\Domain\Model\Mapping;
 use Aoe\FeatureFlag\Domain\Repository\FeatureFlagRepository;
 use Aoe\FeatureFlag\Domain\Repository\MappingRepository;
-use Aoe\FeatureFlag\Service\Exception\FeatureNotFoundException;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -58,7 +57,7 @@ class TCA
     public function processDatamap_preProcessFieldArray(
         array &$incomingFieldArray,
         string $table,
-        string $id,
+        int $id,
         DataHandler $dataHandler
     ): void {
         // @codingStandardsIgnoreEnd
@@ -66,8 +65,14 @@ class TCA
             array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) &&
             array_key_exists(self::FIELD_FLAG, $incomingFieldArray)
         ) {
-            $pid = $dataHandler->getPID($table, (int) $id);
-            $this->updateMapping($table, (int) $id, $incomingFieldArray[self::FIELD_FLAG], $pid, $incomingFieldArray[self::FIELD_BEHAVIOR]);
+            $pid = $dataHandler->getPID($table, $id);
+            $this->updateMapping(
+                $table,
+                $id,
+                $incomingFieldArray[self::FIELD_FLAG],
+                (int) $pid,
+                $incomingFieldArray[self::FIELD_BEHAVIOR]
+            );
             unset($incomingFieldArray[self::FIELD_BEHAVIOR]);
             unset($incomingFieldArray[self::FIELD_FLAG]);
         }
@@ -83,17 +88,20 @@ class TCA
         if ($command !== 'delete') {
             return;
         }
+
         $mappings = $this->getMappingRepository()
             ->findAllByForeignTableNameAndUid($id, $table);
         if (!is_array($mappings) && !$mappings instanceof QueryResultInterface) {
             return;
         }
+
         foreach ($mappings as $mapping) {
             if ($mapping instanceof Mapping) {
                 $this->getMappingRepository()
                     ->remove($mapping);
             }
         }
+
         $this->getPersistenceManager()
             ->persistAll();
     }
@@ -107,10 +115,12 @@ class TCA
                 if ($row['hidden'] === '1') {
                     return 'record-has-feature-flag-which-is-hidden';
                 }
+
                 if ($iconName !== '') {
                     // if record is e.g. hidden or protected by FE-group, than show that (e.g. 'hidden' or 'fe_group'-)overlay as default
                     return $iconName;
                 }
+
                 return 'record-has-feature-flag-which-is-visible';
             }
         }
@@ -122,22 +132,24 @@ class TCA
     /**
      * @todo fix code style
      */
-    protected function updateMapping(string $table, int $id, $featureFlag, $pid, string $behavior): void
+    protected function updateMapping(string $table, int $id, int $featureFlag, int $pid, string $behavior): void
     {
         $mapping = $this->getMappingRepository()
             ->findOneByForeignTableNameAndUid($id, $table);
+
         if ($mapping instanceof Mapping) {
-            if ($featureFlag == '0') {
+            if ($featureFlag === 0) {
                 $this->getMappingRepository()
                     ->remove($mapping);
             } else {
                 $mapping->setFeatureFlag($this->getFeatureFlagByUid($featureFlag));
                 $mapping->setBehavior($behavior);
             }
+
             $mapping->setTstamp((string) time());
             $this->getMappingRepository()
                 ->update($mapping);
-        } elseif ($featureFlag !== '0') {
+        } elseif ($featureFlag !== 0) {
             /** @var Mapping $mapping */
             $mapping = new Mapping();
             $mapping->setPid($pid);
@@ -150,6 +162,7 @@ class TCA
             $this->getMappingRepository()
                 ->add($mapping);
         }
+
         $this->getPersistenceManager()
             ->persistAll();
     }
@@ -159,14 +172,12 @@ class TCA
         if (self::$hashedMappings === null) {
             self::$hashedMappings = $this->getMappingRepository()->getHashedMappings();
         }
+
         $identifier = sha1($foreignTableUid . '_' . $foreignTableName);
 
         return array_key_exists($identifier, self::$hashedMappings);
     }
 
-    /**
-     * @throws FeatureNotFoundException
-     */
     protected function getFeatureFlagByUid(int $uid): FeatureFlag
     {
         /** @var FeatureFlag $featureFlag */

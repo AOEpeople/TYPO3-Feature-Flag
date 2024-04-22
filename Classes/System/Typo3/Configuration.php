@@ -26,8 +26,8 @@ namespace Aoe\FeatureFlag\System\Typo3;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use InvalidArgumentException;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\SingletonInterface;
 
 class Configuration implements SingletonInterface
@@ -37,10 +37,7 @@ class Configuration implements SingletonInterface
      */
     public const CONF_TABLES = 'tables';
 
-    /**
-     * @var array
-     */
-    private $configuration = [];
+    private array $configuration = [];
 
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
@@ -57,13 +54,13 @@ class Configuration implements SingletonInterface
 
     /**
      * @return mixed
-     * @throws InvalidArgumentException
      */
     public function get(string $key)
     {
         if (array_key_exists($key, $this->configuration)) {
             return $this->configuration[$key];
         }
+
         throw new InvalidArgumentException('Configuration key "' . $key . '" does not exist.', 1384161387);
     }
 }
