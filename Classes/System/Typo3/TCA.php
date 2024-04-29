@@ -57,7 +57,7 @@ class TCA
     public function processDatamap_preProcessFieldArray(
         array &$incomingFieldArray,
         string $table,
-        int $id,
+        string $id,
         DataHandler $dataHandler
     ): void {
         // @codingStandardsIgnoreEnd
@@ -65,10 +65,10 @@ class TCA
             array_key_exists(self::FIELD_BEHAVIOR, $incomingFieldArray) &&
             array_key_exists(self::FIELD_FLAG, $incomingFieldArray)
         ) {
-            $pid = $dataHandler->getPID($table, $id);
+            $pid = $dataHandler->getPID($table, (int) $id);
             $this->updateMapping(
                 $table,
-                $id,
+                (int) $id,
                 $incomingFieldArray[self::FIELD_FLAG],
                 (int) $pid,
                 $incomingFieldArray[self::FIELD_BEHAVIOR]
