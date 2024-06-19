@@ -39,9 +39,9 @@ class FeatureFlagDataTest extends FunctionalTestCase
 
     public function testShouldGetContentElements(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagDataTest.xml'
+            '/fixtures/FeatureFlagDataTest.csv'
         );
 
         $instance = new FeatureFlagData();
@@ -55,9 +55,9 @@ class FeatureFlagDataTest extends FunctionalTestCase
 
     public function testUpdateContentElements(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagDataTest.xml'
+            '/fixtures/FeatureFlagDataTest.csv'
         );
 
         $instance = new FeatureFlagData();
@@ -71,9 +71,9 @@ class FeatureFlagDataTest extends FunctionalTestCase
 
     public function testGetContentElementsPIDs(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagDataTest.xml'
+            '/fixtures/FeatureFlagDataTest.csv'
         );
 
         $instance = new FeatureFlagData();
