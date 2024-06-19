@@ -51,9 +51,9 @@ class MappingRepositoryTest extends FunctionalTestCase
 
     public function testFindOneByForeignTableNameAndUid(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/MappingTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.xml'
+            '/fixtures/MappingTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.csv'
         );
 
         $mapping = $this->mappingRepository->findOneByForeignTableNameAndUid(4712, 'tt_content');
@@ -63,7 +63,7 @@ class MappingRepositoryTest extends FunctionalTestCase
 
     public function testFindAllByForeignTableNameAndUid(): void
     {
-        $this->importDataSet(__DIR__ . '/fixtures/MappingTest.findAllByForeignTableNameAndUid.xml');
+        $this->importCSVDataSet(__DIR__ . '/fixtures/MappingTest.findAllByForeignTableNameAndUid.csv');
 
         $mapping = $this->mappingRepository->findAllByForeignTableNameAndUid(
             4711,
@@ -75,7 +75,7 @@ class MappingRepositoryTest extends FunctionalTestCase
 
     public function testShouldGetHashedMappings(): void
     {
-        $this->importDataSet(__DIR__ . '/fixtures/MappingTest.shouldGetHashedMappings.xml');
+        $this->importCSVDataSet(__DIR__ . '/fixtures/MappingTest.shouldGetHashedMappings.csv');
 
         $hashedMappings = $this->mappingRepository->getHashedMappings();
 

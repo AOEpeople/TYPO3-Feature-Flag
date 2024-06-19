@@ -108,7 +108,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
                     )
             );
 
-        return $query->execute()
+        return $query->executeQuery()
             ->fetchAllAssociative();
     }
 }

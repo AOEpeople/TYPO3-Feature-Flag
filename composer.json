@@ -17,9 +17,9 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "ext-json": "*",
-        "typo3/cms-core": "^11.5",
+        "typo3/cms-core": "^11.5 || ^12.4",
         "typo3/cms-extbase": "*",
         "typo3/cms-scheduler": "*"
     },

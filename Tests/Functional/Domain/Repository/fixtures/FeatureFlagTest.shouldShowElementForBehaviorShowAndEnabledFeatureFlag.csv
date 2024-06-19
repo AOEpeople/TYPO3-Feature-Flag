@@ -1,0 +1,9 @@
+tx_featureflag_domain_model_featureflag,,,,
+,uid,description,flag,enabled
+,4711,"lorem ipsum",shouldHideElementForBehaviorHideAndEnabledFeatureFlag,1
+tt_content,,,,
+,uid,bodytext,filelink_sorting,hidden
+,4712,"lorem ipsum",,0
+tx_featureflag_domain_model_mapping,,,,
+,feature_flag,foreign_table_uid,foreign_table_name,behavior
+,4711,4712,tt_content,1

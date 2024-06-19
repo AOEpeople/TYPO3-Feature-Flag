@@ -29,7 +29,6 @@ namespace Aoe\FeatureFlag\Domain\Repository;
 use Aoe\FeatureFlag\Service\FeatureFlagService;
 use Aoe\FeatureFlag\System\Db\FeatureFlagData;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -40,8 +39,7 @@ class FeatureFlagRepository extends Repository
     public function __construct(FeatureFlagData $featureFlagData)
     {
         $this->featureFlagData = $featureFlagData;
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        parent::__construct($objectManager);
+        parent::__construct();
     }
 
     public function initializeObject(): void
