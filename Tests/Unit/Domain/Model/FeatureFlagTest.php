@@ -39,6 +39,7 @@ class FeatureFlagTest extends BaseTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->featureFlag = new FeatureFlag();
     }
 
