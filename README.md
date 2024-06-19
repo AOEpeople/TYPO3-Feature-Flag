@@ -21,7 +21,7 @@ composer require aoe/feature-flag
 
 | Release | TYPO3    | PHP     | Fixes will contain                   |
 |---------|----------|---------|--------------------------------------|
-| 12.x.y  | 12.4     | 8.0-8.3 | Features, Bugfixes, Security Updates |
+| 12.x.y  | 12.4     | 8.1-8.3 | Features, Bugfixes, Security Updates |
 | 11.x.y  | 11.5     | 7.4-8.1 | Security Updates                     |
 | 9.x.y   | 9.5-10.4 | 7.2-7.4 | Security Updates                     |
 | 8.x.y   | 8.7      | 7.2-7.4 | Security Updates                     |
