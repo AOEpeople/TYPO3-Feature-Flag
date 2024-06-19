@@ -2,7 +2,7 @@
 Add ability to use feature flags for extensions and content elements
 
 ## Build information
-[![Build Status](https://github.com/AOEpeople/TYPO3-Feature-Flag/workflows/CI/badge.svg?branch=main)](https://github.com/AOEpeople/TYPO3-Feature-Flag/actions)
+[![Build Status](https://github.com/AOEpeople/TYPO3-Feature-Flag/actions/workflows/tests.yml/badge.svg)](https://github.com/AOEpeople/TYPO3-Feature-Flag/actions)
 [![Code Coverage](https://scrutinizer-ci.com/g/AOEpeople/TYPO3-Feature-Flag/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/AOEpeople/TYPO3-Feature-Flag/?branch=main)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AOEpeople/TYPO3-Feature-Flag/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/AOEpeople/TYPO3-Feature-Flag/?branch=main)
 
@@ -13,18 +13,19 @@ The documentation is available online at [docs.typo3.org][1].
 
 You can download and install this extension from the [TER (TYPO3 Extension Repository)][1] or use composer.
 
-```shell script
+```sh
 composer require aoe/feature-flag
 ```
 
 ## Versions and Support
 
-| Release  | TYPO3    | PHP     | Fixes will contain
-|----------|----------|---------|--------------------|
-| 11.x.y   | 11.5     | 7.4-8.1 | Features, Bugfixes, Security Updates
-|  9.x.y   | 9.5-10.4 | 7.2-7.4 | Security Updates
-|  8.x.y   | 8.7      | 7.2-7.4 | Security Updates
-|  5.x.y   | 7.6      | 5.5-5.6 | End of life
+| Release | TYPO3    | PHP     | Fixes will contain                   |
+|---------|----------|---------|--------------------------------------|
+| 12.x.y  | 12.4     | 8.0-8.3 | Features, Bugfixes, Security Updates |
+| 11.x.y  | 11.5     | 7.4-8.1 | Security Updates                     |
+| 9.x.y   | 9.5-10.4 | 7.2-7.4 | Security Updates                     |
+| 8.x.y   | 8.7      | 7.2-7.4 | Security Updates                     |
+| 5.x.y   | 7.6      | 5.5-5.6 | End of life                          |
 
 ## Copyright / License
 
