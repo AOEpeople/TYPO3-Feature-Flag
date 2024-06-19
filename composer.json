@@ -67,12 +67,8 @@
         ],
         "code-style": [
             "[ -e ./.Build/bin/rector ] || composer install",
-            "./.Build/bin/ecs check --config .code-quality/ecs.php",
-            "./.Build/bin/rector process --dry-run --config .code-quality/rector.php"
-        ],
-        "code-style-upgrade": [
-            "[ -e ./.Build/bin/rector ] || composer install",
-            "./.Build/bin/rector process --dry-run --config .code-quality/rector-8_0.php"
+            "./.Build/bin/ecs check --config code-quality/ecs.php",
+            "./.Build/bin/rector process --dry-run --config code-quality/rector.php"
         ],
         "code-analysis": [
             "./.Build/bin/phpstan analyse -c .code-quality/phpstan.neon --memory-limit=1G"
@@ -83,8 +79,7 @@
         "code-compatibility": [
             "[ -e ./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs ] || composer install",
             "[ -d ./reports/php_checkstyle ] || mkdir -p reports/php_checkstyle/",
-            "./.code-quality/configure-checkstyle.sh",
-            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/*,*.min.js -p . --runtime-set testVersion 7.4",
+            "./code-quality/configure-checkstyle.sh",
             "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/*,*.min.js -p . --runtime-set testVersion 8.0",
             "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/*,*.min.js -p . --runtime-set testVersion 8.1",
             "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/*,*.min.js -p . --runtime-set testVersion 8.2",
@@ -96,11 +91,8 @@
             "@composer code-compatibility"
         ],
         "extension-release": [
-            "rm -rf .Build",
-            "rm -rf .code-quality",
-            "rm -rf Tests/",
-            "rm .gitignore",
-            "rm .scrutinizer.yml"
+            "@composer install --no-dev",
+            "rm -rf .github .Build code-quality Tests .gitignore scrutinizer.yml"
         ]
     },
     "scripts-descriptions": {
