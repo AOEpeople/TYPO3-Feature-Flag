@@ -23,8 +23,8 @@ composer require aoe/feature-flag
 |---------|----------|---------|--------------------------------------|
 | 12.x.y  | 12.4     | 8.1-8.3 | Features, Bugfixes, Security Updates |
 | 11.x.y  | 11.5     | 7.4-8.1 | Security Updates                     |
-| 9.x.y   | 9.5-10.4 | 7.2-7.4 | Security Updates                     |
-| 8.x.y   | 8.7      | 7.2-7.4 | Security Updates                     |
+| 9.x.y   | 9.5-10.4 | 7.2-7.4 | End of life                          |
+| 8.x.y   | 8.7      | 7.2-7.4 | End of life                          |
 | 5.x.y   | 7.6      | 5.5-5.6 | End of life                          |
 
 ## Copyright / License
