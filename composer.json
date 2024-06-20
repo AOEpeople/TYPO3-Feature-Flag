@@ -25,13 +25,13 @@
     },
     "require-dev": {
         "typo3/testing-framework": "^8.0.9",
+        "phpunit/phpcov": "^9.0.0",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpcov": "*",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",
-        "symplify/easy-coding-standard": "12.1.14",
-        "symplify/phpstan-rules": "12.4.8"
+        "symplify/easy-coding-standard": "^12.1",
+        "symplify/phpstan-rules": "^13.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -71,10 +71,10 @@
             "./.Build/bin/rector process --dry-run --config code-quality/rector.php"
         ],
         "code-analysis": [
-            "./.Build/bin/phpstan analyse -c .code-quality/phpstan.neon --memory-limit=1G"
+            "./.Build/bin/phpstan analyse -c code-quality/phpstan.neon --memory-limit=1G"
         ],
         "code-analysis--baseline": [
-            "./.Build/bin/phpstan analyse -c .code-quality/phpstan.neon --memory-limit=1G --generate-baseline"
+            "./.Build/bin/phpstan analyse -c code-quality/phpstan.neon --memory-limit=1G --generate-baseline"
         ],
         "code-compatibility": [
             "[ -e ./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs ] || composer install",
@@ -100,7 +100,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "11.1.x-dev"
+            "dev-main": "12.0.x-dev"
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
