@@ -34,11 +34,9 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class FeatureFlagRepository extends Repository
 {
-    private FeatureFlagData $featureFlagData;
-
-    public function __construct(FeatureFlagData $featureFlagData)
-    {
-        $this->featureFlagData = $featureFlagData;
+    public function __construct(
+        private readonly FeatureFlagData $featureFlagData
+    ) {
         parent::__construct();
     }
 

@@ -57,13 +57,13 @@ class MappingTest extends BaseTestCase
     public function testTstamp(): void
     {
         $this->mapping->setTstamp(2183466346);
-        $this->assertEquals(2183466346, $this->mapping->getTstamp());
+        $this->assertSame('2183466346', $this->mapping->getTstamp());
     }
 
     public function testCrdate(): void
     {
         $this->mapping->setCrdate(2183466347);
-        $this->assertEquals(2183466347, $this->mapping->getCrdate());
+        $this->assertSame('2183466347', $this->mapping->getCrdate());
     }
 
     public function testFeatureFlag(): void
@@ -72,25 +72,25 @@ class MappingTest extends BaseTestCase
         $featureFlag->method('getFlag')
             ->willReturn('my_awesome_feature_flag');
         $this->mapping->setFeatureFlag($featureFlag);
-        $this->assertEquals('my_awesome_feature_flag', $this->mapping->getFeatureFlag()->getFlag());
+        $this->assertSame('my_awesome_feature_flag', $this->mapping->getFeatureFlag()->getFlag());
     }
 
     public function testForeignTableColumn(): void
     {
         $this->mapping->setForeignTableColumn('my_foreign_column');
-        $this->assertEquals('my_foreign_column', $this->mapping->getForeignTableColumn());
+        $this->assertSame('my_foreign_column', $this->mapping->getForeignTableColumn());
     }
 
     public function testForeignTableName(): void
     {
         $this->mapping->setForeignTableName('my_foreign_table');
-        $this->assertEquals('my_foreign_table', $this->mapping->getForeignTableName());
+        $this->assertSame('my_foreign_table', $this->mapping->getForeignTableName());
     }
 
     public function testForeignTableUid(): void
     {
         $this->mapping->setForeignTableUid(4711);
-        $this->assertEquals(4711, $this->mapping->getForeignTableUid());
+        $this->assertSame(4711, $this->mapping->getForeignTableUid());
     }
 
     public function testBehavior(): void

@@ -85,7 +85,7 @@ abstract class AbstractCommandTestCase extends BaseTestCase
 
     protected function assertThatFeaturesAreDeactivated(array $expectedFeatures)
     {
-        $this->assertEquals($expectedFeatures, $this->deactivatedFeatures);
+        $this->assertSame($expectedFeatures, $this->deactivatedFeatures);
     }
 
     /**
@@ -98,7 +98,7 @@ abstract class AbstractCommandTestCase extends BaseTestCase
 
     protected function assertThatInfosAreShown(array $expectedInfos)
     {
-        $this->assertEquals($expectedInfos, $this->shownInfos);
+        $this->assertSame($expectedInfos, $this->shownInfos);
     }
 
     protected function runCommand(string $commandClass, string $commaSeparatedListOfFeatures = '')

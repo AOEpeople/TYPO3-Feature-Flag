@@ -32,14 +32,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 abstract class AbstractCommand extends Command
 {
-    protected FeatureFlagService $featureFlagService;
-
     protected SymfonyStyle $inputOutput;
 
-    public function __construct(FeatureFlagService $featureFlagService)
-    {
+    public function __construct(
+        protected FeatureFlagService $featureFlagService
+    ) {
         parent::__construct();
-        $this->featureFlagService = $featureFlagService;
     }
 
     /**

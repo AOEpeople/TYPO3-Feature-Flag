@@ -120,7 +120,6 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
         $this->assertSame(0, $contentElements[0]['hidden']);
     }
 
-
     public function getElementsData(string $table, int $uid): array
     {
         /** @var QueryBuilder $queryBuilder */

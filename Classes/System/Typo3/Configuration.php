@@ -49,7 +49,7 @@ class Configuration implements SingletonInterface
 
     public function getTables(): array
     {
-        return explode(',', $this->get(self::CONF_TABLES));
+        return explode(',', (string) $this->get(self::CONF_TABLES));
     }
 
     /**

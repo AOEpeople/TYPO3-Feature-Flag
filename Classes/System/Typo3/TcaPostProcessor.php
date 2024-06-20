@@ -87,7 +87,7 @@ class TcaPostProcessor
         $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('feature_flag');
 
         if (isset($config['tables'])) {
-            return explode(',', $config['tables']);
+            return explode(',', (string) $config['tables']);
         }
 
         return [];
