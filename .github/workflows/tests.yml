@@ -85,4 +85,4 @@ jobs:
         uses: sudo-bot/action-scrutinizer@latest
         if: matrix.typo3 == '^12.4' && matrix.php == '8.3'
         with:
-          cli-args: "--format=php-clover functional-coverage.clover --revision=${{ github.event.pull_request.head.sha || github.sha }}"
+          cli-args: "--format=php-clover .Build/reports/php_all_tests/coverage_clover.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"
