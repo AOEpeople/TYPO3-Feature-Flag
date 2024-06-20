@@ -82,10 +82,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
         $this->assertSame('1001', $returnedPID);
     }
 
-    /**
-     * @return array
-     */
-    public function getElementsData(string $table, $uid)
+    public function getElementsData(string $table, int $uid): array
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
