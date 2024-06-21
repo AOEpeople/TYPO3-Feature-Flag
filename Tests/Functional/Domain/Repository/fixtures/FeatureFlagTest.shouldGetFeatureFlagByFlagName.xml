@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataset>
-	<tx_featureflag_domain_model_featureflag>
-		<uid>4711</uid>
-		<description>lorem ipsum</description>
-		<flag>my_test_feature_flag</flag>
-		<enabled>0</enabled>
-	</tx_featureflag_domain_model_featureflag>
-</dataset>

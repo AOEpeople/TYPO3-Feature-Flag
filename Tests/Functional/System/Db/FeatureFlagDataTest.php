@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\Tests\Functional\System\Db;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -39,9 +39,9 @@ class FeatureFlagDataTest extends FunctionalTestCase
 
     public function testShouldGetContentElements(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagDataTest.xml'
+            '/fixtures/FeatureFlagDataTest.csv'
         );
 
         $instance = new FeatureFlagData();
@@ -55,9 +55,9 @@ class FeatureFlagDataTest extends FunctionalTestCase
 
     public function testUpdateContentElements(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagDataTest.xml'
+            '/fixtures/FeatureFlagDataTest.csv'
         );
 
         $instance = new FeatureFlagData();
@@ -71,9 +71,9 @@ class FeatureFlagDataTest extends FunctionalTestCase
 
     public function testGetContentElementsPIDs(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagDataTest.xml'
+            '/fixtures/FeatureFlagDataTest.csv'
         );
 
         $instance = new FeatureFlagData();
@@ -82,10 +82,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
         $this->assertSame('1001', $returnedPID);
     }
 
-    /**
-     * @return array
-     */
-    public function getElementsData(string $table, $uid)
+    public function getElementsData(string $table, int $uid): array
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -108,7 +105,7 @@ class FeatureFlagDataTest extends FunctionalTestCase
                     )
             );
 
-        return $query->execute()
+        return $query->executeQuery()
             ->fetchAllAssociative();
     }
 }

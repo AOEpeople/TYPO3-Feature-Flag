@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\System\Typo3;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -87,7 +87,7 @@ class TcaPostProcessor
         $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('feature_flag');
 
         if (isset($config['tables'])) {
-            return explode(',', $config['tables']);
+            return explode(',', (string) $config['tables']);
         }
 
         return [];

@@ -21,7 +21,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required'
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
         'flag' => [
@@ -30,7 +31,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'alphanum_x,trim,required,unique'
+                'eval' => 'alphanum_x,trim,unique',
+                'required' => true,
             ],
         ],
         'enabled' => [

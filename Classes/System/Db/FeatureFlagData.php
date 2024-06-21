@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\System\Db;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -59,7 +59,7 @@ class FeatureFlagData
             ->from(self::TABLE_FLAGS)
             ->where(
                 $queryBuilder->expr()
-                    ->andX(
+                    ->and(
                         $queryBuilder->expr()
                             ->eq(
                                 self::TABLE_MAPPING . '.feature_flag',
@@ -88,7 +88,7 @@ class FeatureFlagData
                     )
             );
 
-        return $queryBuilder->execute()
+        return $queryBuilder->executeQuery()
             ->fetchAllAssociative();
     }
 
@@ -106,7 +106,7 @@ class FeatureFlagData
             ->set('hidden', $isVisible ? 0 : 1)
             ->add('where', $queryBuilder->expr()->in('uid', $uids));
 
-        $query->execute();
+        $query->executeStatement();
     }
 
     public function getContentElementsPIDs(string $table, int $uid): string
@@ -129,7 +129,7 @@ class FeatureFlagData
                     )
             );
 
-        return $query->execute()
+        return $query->executeQuery()
             ->fetchOne();
     }
 }

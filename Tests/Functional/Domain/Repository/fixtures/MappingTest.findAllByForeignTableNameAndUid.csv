@@ -1,0 +1,4 @@
+tx_featureflag_domain_model_mapping,,,,
+,feature_flag,foreign_table_uid,foreign_table_name,behavior
+,4711,4711,tt_content,0
+,4712,4711,tt_content,0

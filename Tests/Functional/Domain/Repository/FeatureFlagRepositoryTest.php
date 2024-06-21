@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\Tests\Functional\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -55,86 +55,72 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
 
     public function testShouldGetFeatureFlagByFlagName(): void
     {
-        $this->importDataSet(__DIR__ . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.xml');
+        $this->importCSVDataSet(__DIR__ . '/fixtures/FeatureFlagTest.shouldGetFeatureFlagByFlagName.csv');
         $flag = $this->featureFlagRepository->findByFlag('my_test_feature_flag');
         $this->assertInstanceOf(FeatureFlag::class, $flag);
     }
 
     public function testShouldHideElementForBehaviorHideAndEnabledFeatureFlag(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.xml'
+            '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorHideAndEnabledFeatureFlag.csv'
         );
-
         $featureFlag = new FeatureFlagData();
         $instance = new FeatureFlagRepository($featureFlag);
 
         $instance->updateFeatureFlagStatusForTable('tt_content');
 
         $contentElements = $this->getElementsData('tt_content', 4712);
-
         $this->assertSame(1, $contentElements[0]['hidden']);
     }
 
     public function testShouldHideElementForBehaviorShowAndDisabledFeatureFlag(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorShowAndDisabledFeatureFlag.xml'
+            '/fixtures/FeatureFlagTest.shouldHideElementForBehaviorShowAndDisabledFeatureFlag.csv'
         );
-
         $featureFlag = new FeatureFlagData();
         $instance = new FeatureFlagRepository($featureFlag);
 
         $instance->updateFeatureFlagStatusForTable('tt_content');
 
         $contentElements = $this->getElementsData('tt_content', 4712);
-
         $this->assertSame(1, $contentElements[0]['hidden']);
     }
 
     public function testShouldShowElementForBehaviorShowAndEnabledFeatureFlag(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
+            '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.csv'
         );
-
         $featureFlag = new FeatureFlagData();
         $instance = new FeatureFlagRepository($featureFlag);
 
         $instance->updateFeatureFlagStatusForTable('tt_content');
 
         $contentElements = $this->getElementsData('tt_content', 4712);
-
         $this->assertSame(0, $contentElements[0]['hidden']);
     }
 
     public function testShouldShowElementForBehaviorHideAndDisabledFeatureFlag(): void
     {
-        $this->importDataSet(
+        $this->importCSVDataSet(
             __DIR__ .
-            '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.xml'
+            '/fixtures/FeatureFlagTest.shouldShowElementForBehaviorShowAndEnabledFeatureFlag.csv'
         );
-
         $featureFlag = new FeatureFlagData();
         $instance = new FeatureFlagRepository($featureFlag);
 
         $instance->updateFeatureFlagStatusForTable('tt_content');
 
         $contentElements = $this->getElementsData('tt_content', 4712);
-
         $this->assertSame(0, $contentElements[0]['hidden']);
     }
 
-    /**
-     * Helper function for testing return
-     *
-     * @param integer $uid
-     * @return array
-     */
-    public function getElementsData(string $table, $uid)
+    public function getElementsData(string $table, int $uid): array
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -157,7 +143,7 @@ class FeatureFlagRepositoryTest extends FunctionalTestCase
                     )
             );
 
-        return $query->execute()
+        return $query->executeQuery()
             ->fetchAllAssociative();
     }
 }

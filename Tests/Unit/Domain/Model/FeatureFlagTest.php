@@ -8,7 +8,7 @@ use Aoe\FeatureFlag\Tests\Unit\BaseTestCase;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -39,6 +39,7 @@ class FeatureFlagTest extends BaseTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->featureFlag = new FeatureFlag();
     }
 
@@ -58,7 +59,7 @@ class FeatureFlagTest extends BaseTestCase
         $this->featureFlag->setEnabled(true);
         $this->featureFlag->setFlag('my_new_feature_flag');
         $this->assertTrue($this->featureFlag->isEnabled());
-        $this->assertEquals($this->featureFlag->getDescription(), 'This is a test description');
-        $this->assertEquals($this->featureFlag->getFlag(), 'my_new_feature_flag');
+        $this->assertSame('This is a test description', $this->featureFlag->getDescription());
+        $this->assertSame('my_new_feature_flag', $this->featureFlag->getFlag());
     }
 }

@@ -1,0 +1,3 @@
+tx_featureflag_domain_model_featureflag,,,,
+,uid,description,flag,enabled
+,4711,"lorem ipsum",my_test_feature_flag,0

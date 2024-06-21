@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Constant LF not found\\.$#"
+			count: 3
+			path: ../Classes/Form/Element/AbstractFormSelectElement.php
+
