@@ -12,7 +12,12 @@
         stopOnSkipped="false"
         cacheDirectory=".phpunit.cache"
         backupStaticProperties="false"
-        requireCoverageMetadata="false">
+        requireCoverageMetadata="false"
+        displayDetailsOnTestsThatTriggerDeprecations="true"
+        displayDetailsOnTestsThatTriggerErrors="true"
+        displayDetailsOnTestsThatTriggerNotices="true"
+        displayDetailsOnTestsThatTriggerWarnings="true"
+>
   <source>
     <include>
       <directory suffix=".php">../Classes</directory>
