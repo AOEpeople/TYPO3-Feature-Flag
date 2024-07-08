@@ -4,6 +4,7 @@ namespace Aoe\FeatureFlag\Tests\Unit\Command;
 
 use Aoe\FeatureFlag\Service\FeatureFlagService;
 use Aoe\FeatureFlag\Tests\Unit\BaseTestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -126,6 +127,7 @@ abstract class AbstractCommandTestCase extends BaseTestCase
                 $this->callbackOnUpdateFeature($feature, $enabled);
             });
 
+        /** @var Command $command */
         $command = $this
             ->getMockBuilder($commandClass)
             ->setConstructorArgs([$featureFlagService])

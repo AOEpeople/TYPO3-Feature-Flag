@@ -45,7 +45,7 @@ abstract class AbstractCommand extends Command
      */
     protected function setFeatureStatus(string $features, bool $enabled): void
     {
-        $features = array_map('trim', explode(',', $features));
+        $features = array_map(trim(...), explode(',', $features));
         foreach ($features as $feature) {
             $info = ($enabled) ? 'Activate' : 'Deactivate';
             $this->showInfo($info . ' feature: ' . $feature);
