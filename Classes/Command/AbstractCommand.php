@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\Command;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -32,14 +32,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 abstract class AbstractCommand extends Command
 {
-    protected FeatureFlagService $featureFlagService;
-
     protected SymfonyStyle $inputOutput;
 
-    public function __construct(FeatureFlagService $featureFlagService)
-    {
+    public function __construct(
+        protected FeatureFlagService $featureFlagService
+    ) {
         parent::__construct();
-        $this->featureFlagService = $featureFlagService;
     }
 
     /**
@@ -47,7 +45,7 @@ abstract class AbstractCommand extends Command
      */
     protected function setFeatureStatus(string $features, bool $enabled): void
     {
-        $features = array_map('trim', explode(',', $features));
+        $features = array_map(trim(...), explode(',', $features));
         foreach ($features as $feature) {
             $info = ($enabled) ? 'Activate' : 'Deactivate';
             $this->showInfo($info . ' feature: ' . $feature);

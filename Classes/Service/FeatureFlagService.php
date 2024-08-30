@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -44,22 +44,13 @@ class FeatureFlagService
      */
     public const BEHAVIOR_SHOW = 1;
 
-    private FeatureFlagRepository $featureFlagRepository;
-
-    private PersistenceManagerInterface $persistenceManager;
-
-    private Configuration $configuration;
-
     private array $cachedFlags = [];
 
     public function __construct(
-        FeatureFlagRepository $featureFlagRepository,
-        PersistenceManagerInterface $persistenceManager,
-        Configuration $configuration
+        private readonly FeatureFlagRepository $featureFlagRepository,
+        private readonly PersistenceManagerInterface $persistenceManager,
+        private readonly Configuration $configuration
     ) {
-        $this->featureFlagRepository = $featureFlagRepository;
-        $this->persistenceManager = $persistenceManager;
-        $this->configuration = $configuration;
     }
 
     public function isFeatureEnabled(string $flag): bool

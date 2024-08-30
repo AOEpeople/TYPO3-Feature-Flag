@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -29,19 +29,15 @@ namespace Aoe\FeatureFlag\Domain\Repository;
 use Aoe\FeatureFlag\Service\FeatureFlagService;
 use Aoe\FeatureFlag\System\Db\FeatureFlagData;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class FeatureFlagRepository extends Repository
 {
-    private FeatureFlagData $featureFlagData;
-
-    public function __construct(FeatureFlagData $featureFlagData)
-    {
-        $this->featureFlagData = $featureFlagData;
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        parent::__construct($objectManager);
+    public function __construct(
+        private readonly FeatureFlagData $featureFlagData
+    ) {
+        parent::__construct();
     }
 
     public function initializeObject(): void

@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\Tests\Functional\System\Typo3;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -38,10 +38,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class TCATest extends FunctionalTestCase
 {
-    /**
-     * @var TCA|MockObject
-     */
-    protected $tca;
+    protected MockObject $tca;
 
     /**
      * (non-PHPdoc)

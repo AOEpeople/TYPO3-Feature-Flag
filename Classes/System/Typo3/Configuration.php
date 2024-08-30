@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\System\Typo3;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -49,7 +49,7 @@ class Configuration implements SingletonInterface
 
     public function getTables(): array
     {
-        return explode(',', $this->get(self::CONF_TABLES));
+        return explode(',', (string) $this->get(self::CONF_TABLES));
     }
 
     /**

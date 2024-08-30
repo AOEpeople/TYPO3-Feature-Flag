@@ -4,13 +4,14 @@ namespace Aoe\FeatureFlag\Tests\Unit\Command;
 
 use Aoe\FeatureFlag\Service\FeatureFlagService;
 use Aoe\FeatureFlag\Tests\Unit\BaseTestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2022 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -85,7 +86,7 @@ abstract class AbstractCommandTestCase extends BaseTestCase
 
     protected function assertThatFeaturesAreDeactivated(array $expectedFeatures)
     {
-        $this->assertEquals($expectedFeatures, $this->deactivatedFeatures);
+        $this->assertSame($expectedFeatures, $this->deactivatedFeatures);
     }
 
     /**
@@ -98,7 +99,7 @@ abstract class AbstractCommandTestCase extends BaseTestCase
 
     protected function assertThatInfosAreShown(array $expectedInfos)
     {
-        $this->assertEquals($expectedInfos, $this->shownInfos);
+        $this->assertSame($expectedInfos, $this->shownInfos);
     }
 
     protected function runCommand(string $commandClass, string $commaSeparatedListOfFeatures = '')
@@ -126,6 +127,7 @@ abstract class AbstractCommandTestCase extends BaseTestCase
                 $this->callbackOnUpdateFeature($feature, $enabled);
             });
 
+        /** @var Command $command */
         $command = $this
             ->getMockBuilder($commandClass)
             ->setConstructorArgs([$featureFlagService])

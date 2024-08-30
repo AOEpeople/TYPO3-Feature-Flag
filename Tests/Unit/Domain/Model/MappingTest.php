@@ -5,7 +5,7 @@ namespace Aoe\FeatureFlag\Tests\Unit\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2021 AOE GmbH <dev@aoe.com>
+ *  (c) 2024 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -32,7 +32,7 @@ use Aoe\FeatureFlag\Tests\Unit\BaseTestCase;
 
 class MappingTest extends BaseTestCase
 {
-    private ?\Aoe\FeatureFlag\Domain\Model\Mapping $mapping = null;
+    private ?Mapping $mapping = null;
 
     /**
      * (non-PHPdoc)
@@ -40,6 +40,7 @@ class MappingTest extends BaseTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->mapping = new Mapping();
     }
 
@@ -56,13 +57,13 @@ class MappingTest extends BaseTestCase
     public function testTstamp(): void
     {
         $this->mapping->setTstamp(2183466346);
-        $this->assertEquals($this->mapping->getTstamp(), 2183466346);
+        $this->assertSame('2183466346', $this->mapping->getTstamp());
     }
 
     public function testCrdate(): void
     {
         $this->mapping->setCrdate(2183466347);
-        $this->assertEquals($this->mapping->getCrdate(), 2183466347);
+        $this->assertSame('2183466347', $this->mapping->getCrdate());
     }
 
     public function testFeatureFlag(): void
@@ -71,25 +72,25 @@ class MappingTest extends BaseTestCase
         $featureFlag->method('getFlag')
             ->willReturn('my_awesome_feature_flag');
         $this->mapping->setFeatureFlag($featureFlag);
-        $this->assertEquals($this->mapping->getFeatureFlag()->getFlag(), 'my_awesome_feature_flag');
+        $this->assertSame('my_awesome_feature_flag', $this->mapping->getFeatureFlag()->getFlag());
     }
 
     public function testForeignTableColumn(): void
     {
         $this->mapping->setForeignTableColumn('my_foreign_column');
-        $this->assertEquals($this->mapping->getForeignTableColumn(), 'my_foreign_column');
+        $this->assertSame('my_foreign_column', $this->mapping->getForeignTableColumn());
     }
 
     public function testForeignTableName(): void
     {
         $this->mapping->setForeignTableName('my_foreign_table');
-        $this->assertEquals($this->mapping->getForeignTableName(), 'my_foreign_table');
+        $this->assertSame('my_foreign_table', $this->mapping->getForeignTableName());
     }
 
     public function testForeignTableUid(): void
     {
         $this->mapping->setForeignTableUid(4711);
-        $this->assertEquals($this->mapping->getForeignTableUid(), 4711);
+        $this->assertSame(4711, $this->mapping->getForeignTableUid());
     }
 
     public function testBehavior(): void
