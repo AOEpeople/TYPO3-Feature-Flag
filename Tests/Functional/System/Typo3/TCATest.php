@@ -38,10 +38,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class TCATest extends FunctionalTestCase
 {
-    /**
-     * @var TCA|MockObject
-     */
-    protected $tca;
+    protected MockObject $tca;
 
     /**
      * (non-PHPdoc)

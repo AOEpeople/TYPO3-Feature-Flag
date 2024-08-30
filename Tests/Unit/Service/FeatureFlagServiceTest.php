@@ -115,10 +115,7 @@ class FeatureFlagServiceTest extends BaseTestCase
         );
     }
 
-    /**
-     * @return MockObject
-     */
-    private function getMockModel($isEnabled)
+    private function getMockModel($isEnabled): MockObject
     {
         $mockModel = $this->getMockBuilder(FeatureFlag::class)
             ->disableOriginalConstructor()
@@ -137,7 +134,7 @@ class FeatureFlagServiceTest extends BaseTestCase
     /**
      * @param boolean $isEnabled
      */
-    private function getMockRepository($isEnabled)
+    private function getMockRepository($isEnabled): MockObject
     {
         $mockModel = $this->getMockModel($isEnabled);
         $mockRepository = $this->getMockBuilder(FeatureFlagRepository::class)
@@ -148,10 +145,7 @@ class FeatureFlagServiceTest extends BaseTestCase
         return $mockRepository;
     }
 
-    /**
-     * @return MockObject
-     */
-    private function getMockConfiguration()
+    private function getMockConfiguration(): MockObject
     {
         $mockConfiguration = $this->getMockBuilder(Configuration::class)
             ->disableOriginalConstructor()
