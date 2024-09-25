@@ -4,7 +4,7 @@ return [
     'ctrl' => [
         'title' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_domain_model_mapping',
         'label' => 'uid',
-        'label_alt' => 'foreign_table_uid,foreign_table_name,foreign_table_column',
+        'label_alt' => 'foreign_table_uid,foreign_table_name',
         'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
