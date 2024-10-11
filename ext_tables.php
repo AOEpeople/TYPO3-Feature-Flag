@@ -3,13 +3,12 @@ use Aoe\FeatureFlag\System\Typo3\TCA;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 defined('TYPO3') or die();
 
-ExtensionManagementUtility::allowTableOnStandardPages('tx_featureflag_domain_model_featureflag');
-ExtensionManagementUtility::allowTableOnStandardPages('tx_featureflag_domain_model_mapping');
+$GLOBALS['TCA']['tx_featureflag_domain_model_featureflag']['ctrl']['security']['ignorePageTypeRestriction'] = true;
+$GLOBALS['TCA']['tx_featureflag_domain_model_mapping']['ctrl']['security']['ignorePageTypeRestriction'] = true;
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = TCA::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = TCA::class;
