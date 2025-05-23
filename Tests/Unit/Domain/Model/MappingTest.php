@@ -96,6 +96,6 @@ class MappingTest extends BaseTestCase
     public function testBehavior(): void
     {
         $this->mapping->setBehavior(1);
-        $this->assertSame($this->mapping->getBehavior(), 1);
+        $this->assertSame(1, $this->mapping->getBehavior());
     }
 }

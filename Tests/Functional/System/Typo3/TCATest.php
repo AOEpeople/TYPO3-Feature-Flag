@@ -69,8 +69,12 @@ class TCATest extends FunctionalTestCase
             ->onlyMethods(['sL'])
             ->getMock();
 
-        $this->tca->expects(self::any())->method('getPersistenceManager')->willReturn($persistenceManager);
-        $this->tca->expects(self::any())->method('getLanguageService')->willReturn($languageService);
+        $this->tca->expects(self::any())
+            ->method('getPersistenceManager')
+            ->willReturn($persistenceManager);
+        $this->tca->expects(self::any())
+            ->method('getLanguageService')
+            ->willReturn($languageService);
     }
 
     /**
@@ -91,14 +95,20 @@ class TCATest extends FunctionalTestCase
             ->onlyMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
             ->getMock();
         $mappingRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('findOneByForeignTableNameAndUid')
             ->willReturn(null);
-        $mappingRepository->expects(self::never())->method('add');
-        $mappingRepository->expects(self::never())->method('remove');
-        $mappingRepository->expects(self::never())->method('update');
-        $this->tca->expects(self::once())->method('getMappingRepository')->willReturn($mappingRepository);
-        $this->tca->expects(self::never())->method('getFeatureFlagByUid');
+        $mappingRepository->expects($this->never())
+            ->method('add');
+        $mappingRepository->expects($this->never())
+            ->method('remove');
+        $mappingRepository->expects($this->never())
+            ->method('update');
+        $this->tca->expects($this->once())
+            ->method('getMappingRepository')
+            ->willReturn($mappingRepository);
+        $this->tca->expects($this->never())
+            ->method('getFeatureFlagByUid');
 
         $dataHandlerMock = $this->createMock(DataHandler::class);
         $incomingFieldArray = [
@@ -116,14 +126,20 @@ class TCATest extends FunctionalTestCase
             ->onlyMethods(['findOneByForeignTableNameAndUid', 'add', 'remove', 'update'])
             ->getMock();
         $mappingRepository
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('findOneByForeignTableNameAndUid')
             ->willReturn(null);
-        $mappingRepository->expects(self::never())->method('add');
-        $mappingRepository->expects(self::never())->method('remove');
-        $mappingRepository->expects(self::never())->method('update');
-        $this->tca->expects(self::never())->method('getMappingRepository')->willReturn($mappingRepository);
-        $this->tca->expects(self::never())->method('getFeatureFlagByUid');
+        $mappingRepository->expects($this->never())
+            ->method('add');
+        $mappingRepository->expects($this->never())
+            ->method('remove');
+        $mappingRepository->expects($this->never())
+            ->method('update');
+        $this->tca->expects($this->never())
+            ->method('getMappingRepository')
+            ->willReturn($mappingRepository);
+        $this->tca->expects($this->never())
+            ->method('getFeatureFlagByUid');
 
         $dataHandlerMock = $this->createMock(DataHandler::class);
         $incomingFieldArray = ['hidden' => '0'];
@@ -139,12 +155,15 @@ class TCATest extends FunctionalTestCase
             ->onlyMethods(['findOneByForeignTableNameAndUid', 'remove', 'update'])
             ->getMock();
         $mappingRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('findOneByForeignTableNameAndUid')
             ->willReturn($mapping);
-        $mappingRepository->expects(self::once())->method('remove');
-        $mappingRepository->expects(self::once())->method('update');
-        $this->tca->expects(self::any())->method('getMappingRepository')->willReturn($mappingRepository);
+        $mappingRepository->expects($this->once())
+            ->method('remove');
+        $mappingRepository->expects($this->once())
+            ->method('update');
+        $this->tca->expects(self::any())->method('getMappingRepository')
+            ->willReturn($mappingRepository);
 
         $dataHandlerMock = $this->createMock(DataHandler::class);
         $incomingFieldArray = [
@@ -160,7 +179,8 @@ class TCATest extends FunctionalTestCase
             ->getMockBuilder(FeatureFlag::class)
             ->onlyMethods(['getUid'])
             ->getMock();
-        $featureFlag->expects(self::any())->method('getUid')->willReturn(4711);
+        $featureFlag->expects(self::any())->method('getUid')
+            ->willReturn(4711);
 
         $mappingRepository = $this
             ->getMockBuilder(MappingRepository::class)
@@ -168,16 +188,23 @@ class TCATest extends FunctionalTestCase
             ->onlyMethods(['findOneByForeignTableNameAndUid', 'add'])
             ->getMock();
         $mappingRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('findOneByForeignTableNameAndUid')
             ->willReturn(null);
-        $mappingRepository->expects(self::once())->method('add');
+        $mappingRepository->expects($this->once())
+            ->method('add');
 
-        $this->tca->expects(self::any())->method('getMappingRepository')->willReturn($mappingRepository);
-        $this->tca->expects(self::any())->method('getFeatureFlagByUid')->willReturn($featureFlag);
+        $this->tca->expects(self::any())
+            ->method('getMappingRepository')
+            ->willReturn($mappingRepository);
+        $this->tca->expects(self::any())
+            ->method('getFeatureFlagByUid')
+            ->willReturn($featureFlag);
 
         $dataHandlerMock = $this->createMock(DataHandler::class);
-        $dataHandlerMock->expects(self::once())->method('getPID')->willReturn(678);
+        $dataHandlerMock->expects($this->once())
+            ->method('getPID')
+            ->willReturn(678);
         $incomingFieldArray = [
             'tx_featureflag_flag' => '4711',
             'tx_featureflag_behavior' => '0',
@@ -187,7 +214,8 @@ class TCATest extends FunctionalTestCase
 
     public function testProcessCmdmapCommandIsNotDelete(): void
     {
-        $this->tca->expects(self::never())->method('getMappingRepository');
+        $this->tca->expects($this->never())
+            ->method('getMappingRepository');
         $this->tca->processCmdmap_postProcess('not_delete', 'my_table', 4711);
     }
 
@@ -199,11 +227,14 @@ class TCATest extends FunctionalTestCase
             ->onlyMethods(['findAllByForeignTableNameAndUid', 'remove'])
             ->getMock();
         $mappingRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('findAllByForeignTableNameAndUid')
             ->willReturn($this->getListOfMappings());
-        $mappingRepository->expects(self::exactly(2))->method('remove');
-        $this->tca->expects(self::any())->method('getMappingRepository')->willReturn($mappingRepository);
+        $mappingRepository->expects($this->exactly(2))
+            ->method('remove');
+        $this->tca->expects(self::any())
+            ->method('getMappingRepository')
+            ->willReturn($mappingRepository);
 
         $this->tca->processCmdmap_postProcess('delete', 'my_table', 4711);
     }
@@ -223,20 +254,32 @@ class TCATest extends FunctionalTestCase
             ->getMockBuilder(FeatureFlag::class)
             ->onlyMethods(['getUid', 'getDescription'])
             ->getMock();
-        $featureFlag1->expects(self::any())->method('getUid')->willReturn(111);
-        $featureFlag1->expects(self::any())->method('getDescription')->willReturn('flag 1');
+        $featureFlag1->expects(self::any())
+            ->method('getUid')
+            ->willReturn(111);
+        $featureFlag1->expects(self::any())
+            ->method('getDescription')
+            ->willReturn('flag 1');
         $featureFlag2 = $this
             ->getMockBuilder(FeatureFlag::class)
             ->onlyMethods(['getUid', 'getDescription'])
             ->getMock();
-        $featureFlag2->expects(self::any())->method('getUid')->willReturn(4711);
-        $featureFlag2->expects(self::any())->method('getDescription')->willReturn('flag 2');
+        $featureFlag2->expects(self::any())
+            ->method('getUid')
+            ->willReturn(4711);
+        $featureFlag2->expects(self::any())
+            ->method('getDescription')
+            ->willReturn('flag 2');
         $featureFlag3 = $this
             ->getMockBuilder(FeatureFlag::class)
             ->onlyMethods(['getUid', 'getDescription'])
             ->getMock();
-        $featureFlag3->expects(self::any())->method('getDescription')->willReturn('flag 3');
-        $featureFlag3->expects(self::any())->method('getUid')->willReturn(222);
+        $featureFlag3->expects(self::any())
+            ->method('getDescription')
+            ->willReturn('flag 3');
+        $featureFlag3->expects(self::any())
+            ->method('getUid')
+            ->willReturn(222);
 
         return [$featureFlag1, $featureFlag2, $featureFlag3];
     }

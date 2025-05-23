@@ -10,7 +10,7 @@ return [
         'crdate' => 'crdate',
         'delete' => 'deleted',
         'enablecolumns' => [],
-        'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/Mapping.gif'
+        'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/Mapping.gif',
     ],
     'columns' => [
         'uid' => [
@@ -18,14 +18,14 @@ return [
             'label' => 'LLL:EXT:feature_flag/Resources/Private/Language/locallang.xlf:tx_featureflag_domain_model_mapping.uid',
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
         'pid' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.pid',
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
         'tstamp' => [
             'exclude' => 1,
@@ -36,7 +36,7 @@ return [
                 'format' => 'date',
                 'eval' => 'date',
                 'readOnly' => 1,
-            ]
+            ],
         ],
         'crdate' => [
             'exclude' => 1,
@@ -47,7 +47,7 @@ return [
                 'format' => 'date',
                 'eval' => 'date',
                 'readOnly' => 1,
-            ]
+            ],
         ],
         'feature_flag' => [
             'exclude' => 1,
@@ -93,9 +93,13 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior'],
+        '1' => [
+            'showitem' => 'uid,pid,crdate,tstamp,feature_flag,foreign_table_uid,foreign_table_name,behavior',
+        ],
     ],
     'palettes' => [
-        '1' => ['showitem' => ''],
-    ]
+        '1' => [
+            'showitem' => '',
+        ],
+    ],
 ];
