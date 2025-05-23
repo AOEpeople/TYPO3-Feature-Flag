@@ -47,8 +47,8 @@ abstract class AbstractFormSelectElement extends AbstractFormElement
     public function __construct(
         NodeFactory $nodeFactory,
         array $data,
-        FeatureFlagRepository $featureFlagRepository = null,
-        MappingRepository $mappingRepository = null
+        ?FeatureFlagRepository $featureFlagRepository = null,
+        ?MappingRepository $mappingRepository = null
     ) {
         parent::__construct($nodeFactory, $data);
 

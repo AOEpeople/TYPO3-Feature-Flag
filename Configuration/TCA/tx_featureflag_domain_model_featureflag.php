@@ -9,10 +9,10 @@ return [
         'searchFields' => 'description,flag,',
         'delete' => 'deleted',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
         'rootLevel' => 1,
-        'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/FeatureFlag.gif'
+        'iconfile' => 'EXT:feature_flag/Resources/Public/Icons/TCA/FeatureFlag.gif',
     ],
     'columns' => [
         'description' => [
@@ -44,9 +44,13 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'description,flag,enabled'],
+        '1' => [
+            'showitem' => 'description,flag,enabled',
+        ],
     ],
     'palettes' => [
-        '1' => ['showitem' => ''],
-    ]
+        '1' => [
+            'showitem' => '',
+        ],
+    ],
 ];
